@@ -71,8 +71,8 @@
     <string name="settings_storage_local">On device</string>
     <string name="settings_storage_local_desc">Most privacy-friendly solution: data doesn\'t leave your device</string>
     <string name="settings_storage_dav">On a WebDAV server</string>
-    <string name="settings_storage_dav_desc">You can use any WebDAV service (i.e. Nextcloud, Owncloud, Dropbox, Box…) to save the data. In this way you can syncronize it between more devices, i.e. the dad\'s, the mom\'s, the grandma\'s… You will need the WebDAV url, you can find it in your provider\'s documentation (i.e. in Nextcloud web is in the Files app settings)</string>
-    <string name="settings_storage_dav_url">WebDAV url</string>
+    <string name="settings_storage_dav_desc">You can use any WebDAV service (i.e. Nextcloud, Owncloud, Dropbox, Box…) to save the data. In this way, you can syncronize it between more devices, i.e., the dad\'s, the mom\'s, the grandma\'s… You will need the WebDAV url, you can find it in your provider\'s documentation (i.e. in Nextcloud web is in the Files app settings)</string>
+    <string name="settings_storage_dav_url">WebDAV URL</string>
     <string name="settings_storage_dav_url_hint">https://</string>
     <string name="settings_storage_dav_user">Username</string>
     <string name="settings_storage_dav_pass">Password</string>
@@ -81,14 +81,14 @@
     <string name="settings_webdav_error_server_offline">WebDAV server is currently unavailable</string>
     <string name="settings_webdav_error_generic">Error while trying to access WebDAV:</string>
     <string name="settings_webdav_creation_error_generic">Unable to save a file on the WebDAV server:</string>
-    <string name="settings_webdav_creation_ok">Successfully connected with WebDAV server</string>
-    <string name="settings_json_error">There\'s a save file on the server, but is corrupted or unreadable. Please delete it </string>
+    <string name="settings_webdav_creation_ok">Successfully connected with the WebDAV server</string>
+    <string name="settings_json_error">There\'s a save file on the server, but it is corrupted or unreadable. Please delete it </string>
     <string name="settings_generic_error">Error: </string>
     <string name="settings_webdav_upload_error">Error while uploading local logbook %1$s to webdav: %2$s</string>
 
     <string name="trim_logbook_dialog_title">Your logbook is pretty big!</string>
     <string name="trim_logbook_dialog_message_local">Your logbook file is growing a lot. We suggest trimming the oldest events to avoid crashes.</string>
-    <string name="trim_logbook_dialog_message_dav">Your logbook file is growing a lot. We suggest trimming the oldest events to avoid crashes. If you want to preserve all the events, please backup the "lunatracker_logbook.json" file on the WebDAV server or rename it to start a new logbook keeping the old one.</string>
+    <string name="trim_logbook_dialog_message_dav">Your logbook file is growing a lot. We suggest trimming the oldest events to avoid crashes. If you want to preserve all the events, please back up the "lunatracker_logbook.json" file on the WebDAV server or rename it to start a new logbook, keeping the old one.</string>
     <string name="trim_logbook_dialog_button_ok">Trim it now</string>
     <string name="trim_logbook_dialog_button_cancel">Remind me later</string>
 
@@ -114,7 +114,7 @@
     <string name="dialog_add_logbook_title">Add logbook</string>
     <string name="dialog_add_logbook_logbookname">👶 Logbook name</string>
     <string name="dialog_add_logbook_message">Write a name to identify this logbook. This name will appear on top of the screen and, if you use WebDAV, will be in the save file name as well.</string>
-    <string name="dialog_add_logbook_message_intro">Welcome! To use this app you need to create at least one logbook. You would probably want to call it with your child\'s name.</string>
+    <string name="dialog_add_logbook_message_intro">Welcome! To use this app, you need to create at least one logbook. You would probably want to call it with your child\'s name.</string>
 
     <string name="default_logbook_name">👶 My first logbook</string>
     <string name="logbook_created">New logbook created: </string>

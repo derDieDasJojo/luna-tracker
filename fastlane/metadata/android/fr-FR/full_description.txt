@@ -1,0 +1,13 @@
+Être parent n'est pas toujours facile. Vous rentrez de la maternité, épuisé, avec cette petite créature inconnue et fragile qui n'a pas de mode d'emploi et une seule façon de vous faire savoir que quelque chose ne va pas : les pleurs.
+Vous devez réagir rapidement, même s'il est 4 heures du matin et que vous n'avez aucune idée de la raison de ses pleurs.
+
+Cette application est destinée à enregistrer tous les événements importants (changement de couche, allaitement, biberon...), afin que vous puissiez toujours vous souvenir de ce qui a été fait la dernière fois (et quand). 
+
+Elle permet de synchroniser les données entre différents appareils (en utilisant votre serveur WebDAV pour une meilleure confidentialité). Ainsi, lorsque le bébé a besoin d'attention, le papa peut intervenir et laisser la maman dormir tranquillement.
+
+Dédié à ma fille Luna.
+
+
+REMARQUE : le contenu de cette application est fourni à titre informatif ou éducatif uniquement et ne remplace pas les conseils médicaux professionnels ou les consultations avec des professionnels de la santé.
+
+Crédit image ("Baby and baby milk bottle. Baby feeding."): © Vyacheslav Argenberg / http://www.vascoplanet.com/, CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>, via Wikimedia Commons

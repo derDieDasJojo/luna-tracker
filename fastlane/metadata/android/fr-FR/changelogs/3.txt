@@ -1,0 +1,2 @@
+Prise en charge de plusieurs enfants
+Correction de l'interface sur les appareils avec une grande taille de police.
