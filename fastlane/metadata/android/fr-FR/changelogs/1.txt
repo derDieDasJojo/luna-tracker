@@ -1,0 +1,1 @@
+Première version alpha : carnet de bord, synchronisation.
