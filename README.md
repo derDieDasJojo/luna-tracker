@@ -10,3 +10,8 @@ This app is meant to log all the relevant events (diaper change, breastfeeding, 
 Dedicated to my daughter Luna.
 
 ![Screenshot](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
+
+Thanks for the valuable contributions to:
+
+Chepycou (French translation)
+Daniel Neubauer (German translation)

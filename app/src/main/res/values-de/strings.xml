@@ -1,0 +1,97 @@
+<resources>
+    <string name="app_name">LunaTracker</string>
+    <string name="title">🌜 LunaTracker 🌛</string>
+    <string name="log_an_event">Ereignis protokollieren:</string>
+    <string name="logbook">Ereignisprotokoll</string>
+
+    <string name="log_bottle_dialog_title">Fläschchen</string>
+    <string name="log_bottle_dialog_description">Trinkmenge eingeben</string>
+
+    <string name="log_weight_dialog_title">Gewicht</string>
+    <string name="log_weight_dialog_description">Gewicht eingeben</string>
+
+    <string name="log_temperature_dialog_title">Temperatur</string>
+    <string name="log_temperature_dialog_description">Temperatur eingeben</string>
+
+    <string name="event_bottle_desc">Fläschchen</string>
+    <string name="event_food_desc">Essen</string>
+    <string name="event_scale_desc">Gewicht</string>
+    <string name="event_breastfeeding_left_desc">Stillen (links)</string>
+    <string name="event_breastfeeding_both_desc">Stillen</string>
+    <string name="event_breastfeeding_right_desc">Stillen (rechts)</string>
+    <string name="event_diaperchange_poo_desc">Windelwechsel (Stuhl)</string>
+    <string name="event_diaperchange_pee_desc">Windelwechsel (Urin)</string>
+    <string name="event_medicine_desc">Medikament</string>
+    <string name="event_enema_desc">Einlauf</string>
+    <string name="event_note_desc">Notiz</string>
+    <string name="event_temperature_desc">Temperatur</string>
+    <string name="event_colic_desc">Blähungskolik</string>
+    <string name="event_unknown_desc"></string>
+
+    <string name="overflow_event_scale">⚖️ Gewicht</string>
+    <string name="overflow_event_medicine">💊 Medikament</string>
+    <string name="overflow_event_enema">🪠 Einlauf</string>
+    <string name="overflow_event_note">📝 Notiz</string>
+    <string name="overflow_event_temperature">🌡️ Temperatur</string>
+    <string name="overflow_event_colic">💨 Blähungskolik</string>
+
+    <string name="toast_event_added">Ereignis gespeichert</string>
+    <string name="toast_logbook_saved">Logbuch gespeichert</string>
+    <string name="toast_event_add_error">Ereignis konnte nicht protokolliert werden</string>
+    <string name="toast_integer_error">Ungültiger Wert. Bitte eine Ganzzahl eingeben.</string>
+
+    <string name="now">jetzt</string>   
+    <string name="hour_ago">Std.</string>
+    <string name="hours_ago">Std.</string>
+    <string name="minute_ago">Min.</string>
+    <string name="minutes_ago">Min.</string>
+
+    <string name="no_connection">Keine Verbindung</string>
+    <string name="no_connection_explain">WebDAV-Dienst nicht erreichbar</string>
+    <string name="no_connection_go_to_settings">Einstellungen</string>
+    <string name="no_connection_retry">Erneut versuchen</string>
+
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_storage">Speicherort für Daten auswählen</string>
+    <string name="settings_storage_local">Auf dem Gerät</string>
+    <string name="settings_storage_local_desc">Datenschutzfreundlichste Lösung: Deine Daten verlassen dein Gerät nicht</string>
+    <string name="settings_storage_dav">Auf einem WebDAV-Server</string>
+    <string name="settings_storage_dav_desc">Du kannst jeden WebDAV-Dienst (z. B. Nextcloud, ownCloud, Dropbox, …) verwenden, um die Daten zu speichern. Auf diese Weise kannst du sie zwischen mehreren Geräten synchronisieren (z. B. dem vom Vater, der Mutter, der Großmutter, …). Dazu benötigst du die WebDAV-URL. Du findest diese in der Dokumentation deines Anbieters (z. B. bei Nextcloud im Bereich Einstellungen der Dateien-App).</string>
+    <string name="settings_storage_dav_url">WebDAV URL</string>
+    <string name="settings_storage_dav_url_hint">https://</string>
+    <string name="settings_storage_dav_user">Benutzername</string>
+    <string name="settings_storage_dav_pass">Passwort</string>
+    <string name="settings_network_error">Server nicht erreichbar: </string>
+    <string name="settings_webdav_error_denied">Falscher WebDAV-Benutzer oder falsches Passwort</string>
+    <string name="settings_webdav_error_server_offline">WebDAV-Server ist derzeit nicht verfügbar</string>
+    <string name="settings_webdav_error_generic">Fehler beim Zugriff auf WebDAV:</string>
+    <string name="settings_webdav_creation_error_generic">Eine Datei konnte auf dem WebDAV-Server nicht gespeichert werden:</string>
+    <string name="settings_webdav_creation_ok">Erfolgreich mit dem WebDAV-Server verbunden</string>
+    <string name="settings_json_error">Es befindet sich eine Speicherdatei auf dem Server, aber sie ist beschädigt oder unlesbar. Bitte lösche die Datei.</string>
+    <string name="settings_generic_error">Fehler: </string>
+    <string name="settings_webdav_upload_error">Fehler beim Hochladen des lokalen Logbuchs %1$s zu WebDAV: %2$s</string>
+
+    <string name="trim_logbook_dialog_title">Dein Logbuch ist ziemlich groß!</string>
+    <string name="trim_logbook_dialog_message_local">Deine Logbuchdatei wird sehr groß. Wir empfehlen, die ältesten Einträge zu entfernen, um Abstürze zu vermeiden.</string>
+    <string name="trim_logbook_dialog_message_dav">Deine Logbuchdatei wird sehr groß. Wir empfehlen, die ältesten Einträge (durch Entfernen) zu bereinigen, um Abstürze zu vermeiden. Wenn du alle Einträge behalten möchtest, sichere bitte die Datei "lunatracker_logbook.json" auf dem WebDAV‑Server oder benenne sie um, um ein neues Logbuch zu beginnen und das alte zu behalten.</string>
+    <string name="trim_logbook_dialog_button_ok">Jetzt bereinigen</string>
+    <string name="trim_logbook_dialog_button_cancel">Später erinnern</string>
+
+    <string name="log_notes_dialog_description">Notizen:</string>
+    <string name="log_medicine_dialog_description">Medikamentenname, Menge, Art, Notizen, …:</string>
+    <string name="log_notes_dialog_qty_hint">Menge (optional)</string>
+    <string name="log_notes_dialog_note_hint">Notiz eingeben</string>
+
+    <string name="dialog_event_detail_title">Ereignisdetails</string>
+    <string name="dialog_event_detail_close_button">OK</string>
+    <string name="dialog_event_detail_delete_button">Löschen</string>
+
+    <string name="dialog_add_logbook_title">Logbuch hinzufügen</string>
+    <string name="dialog_add_logbook_logbookname">👶 Logbuchname</string>
+    <string name="dialog_add_logbook_message">Gib einen Namen ein, um dieses Logbuch zu bezeichnen. Dieser Name erscheint oben auf dem Bildschirm und wird, falls du WebDAV verwendest, auch im Dateinamen der gespeicherten Datei enthalten sein.</string>
+    <string name="dialog_add_logbook_message_intro">Willkommen! Um diese App zu benutzen, musst du mindestens ein Logbuch erstellen. Am besten benennst du es nach dem Namen deines Kindes.</string>
+
+    <string name="default_logbook_name">👶 Mein erstes Logbuch</string>
+    <string name="logbook_created">Neues Logbuch erstellt: </string>
+
+</resources>
