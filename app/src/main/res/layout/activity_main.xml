@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/title"
-                android:textSize="26dp"
+                android:textSize="26sp"
                 android:gravity="center"/>
 
             <ImageView
@@ -68,12 +68,12 @@
                 android:id="@+id/logbooks_add_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:textStyle="bold"
                 android:textColor="@color/accent"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:text="+"
                 android:background="@drawable/button_background"/>
 
@@ -104,7 +104,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="50dp"
+                    android:textSize="50sp"
                     android:text="@string/event_bottle_type"/>
 
                 <TextView
@@ -115,7 +115,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="50dp"
+                    android:textSize="50sp"
                     android:text="@string/event_food_type"/>
 
             </LinearLayout>
@@ -132,7 +132,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:text="🤱⬅️"/>
 
                 <TextView
@@ -143,7 +143,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:text="🤱↔️"/>
 
                 <TextView
@@ -154,7 +154,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:text="🤱➡️️"/>
 
             </LinearLayout>
@@ -171,7 +171,7 @@
                     android:layout_weight="2"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:text="🚼 💩"/>
 
                 <TextView
@@ -182,7 +182,7 @@
                     android:layout_weight="2"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:text="🚼 💧"/>
 
                 <ImageView
@@ -247,7 +247,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textColor="@color/accent"
             android:text="@string/no_connection"/>
 
@@ -264,7 +264,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:drawableLeft="@drawable/ic_sync"
+            android:drawableStart="@drawable/ic_sync"
             android:drawableTint="@color/white"
             android:drawablePadding="10dp"
             android:text="@string/no_connection_retry"
@@ -275,7 +275,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:drawableLeft="@drawable/ic_settings"
+            android:drawableStart="@drawable/ic_settings"
             android:drawableTint="@color/white"
             android:drawablePadding="10dp"
             android:text="@string/no_connection_go_to_settings"
