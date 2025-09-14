@@ -168,6 +168,12 @@ class MainActivity : AppCompatActivity() {
             logbookRepo = FileLogbookRepository()
         }
 
+        val noBreastfeeding = settingsRepository.loadNoBreastfeeding()
+        findViewById<View>(R.id.layout_nipples).visibility = when (noBreastfeeding) {
+            true -> View.GONE
+            false -> View.VISIBLE
+        }
+
         // Update list dates
         recyclerView.adapter?.notifyDataSetChanged()
 

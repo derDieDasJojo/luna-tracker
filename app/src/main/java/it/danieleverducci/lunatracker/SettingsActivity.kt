@@ -7,6 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.thegrizzlylabs.sardineandroid.impl.SardineException
 import it.danieleverducci.lunatracker.repository.FileLogbookRepository
 import it.danieleverducci.lunatracker.repository.LocalSettingsRepository
@@ -24,6 +25,7 @@ open class SettingsActivity : AppCompatActivity() {
     protected lateinit var textViewWebDAVUser: TextView
     protected lateinit var textViewWebDAVPass: TextView
     protected lateinit var progressIndicator: LinearProgressIndicator
+    protected lateinit var switchNoBreastfeeding: SwitchMaterial
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,8 @@ open class SettingsActivity : AppCompatActivity() {
         textViewWebDAVUser = findViewById(R.id.settings_data_webdav_user)
         textViewWebDAVPass = findViewById(R.id.settings_data_webdav_pass)
         progressIndicator = findViewById(R.id.progress_indicator)
+        switchNoBreastfeeding = findViewById(R.id.switch_no_breastfeeding)
+
         findViewById<View>(R.id.settings_save).setOnClickListener({
             validateAndSave()
         })
@@ -49,11 +53,15 @@ open class SettingsActivity : AppCompatActivity() {
     fun loadSettings() {
         val dataRepo = settingsRepository.loadDataRepository()
         val webDavCredentials = settingsRepository.loadWebdavCredentials()
+        val noBreastfeeding = settingsRepository.loadNoBreastfeeding()
 
         when (dataRepo) {
             LocalSettingsRepository.DATA_REPO.LOCAL_FILE -> radioDataLocal.isChecked = true
             LocalSettingsRepository.DATA_REPO.WEBDAV -> radioDataWebDAV.isChecked = true
         }
+
+        switchNoBreastfeeding.isChecked = noBreastfeeding
+
         if (webDavCredentials != null) {
             textViewWebDAVUrl.setText(webDavCredentials[0])
             textViewWebDAVUser.setText(webDavCredentials[1])
@@ -149,6 +157,7 @@ open class SettingsActivity : AppCompatActivity() {
             if (radioDataWebDAV.isChecked) LocalSettingsRepository.DATA_REPO.WEBDAV
             else LocalSettingsRepository.DATA_REPO.LOCAL_FILE
         )
+        settingsRepository.saveNoBreastfeeding(switchNoBreastfeeding.isChecked)
         settingsRepository.saveWebdavCredentials(
             textViewWebDAVUrl.text.toString(),
             textViewWebDAVUser.text.toString(),
