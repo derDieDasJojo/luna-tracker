@@ -71,7 +71,7 @@
     <string name="settings_storage_local">On device</string>
     <string name="settings_storage_local_desc">Most privacy-friendly solution: data doesn\'t leave your device</string>
     <string name="settings_storage_dav">On a WebDAV server</string>
-    <string name="settings_storage_dav_desc">You can use any WebDAV service (i.e. Nextcloud, Owncloud, Dropbox, Box…) to save the data. In this way, you can syncronize it between more devices, i.e., the dad\'s, the mom\'s, the grandma\'s… You will need the WebDAV url, you can find it in your provider\'s documentation (i.e. in Nextcloud web is in the Files app settings)</string>
+    <string name="settings_storage_dav_desc">You can use any WebDAV service (i.e. Nextcloud, Owncloud, Dropbox, Box…) to save the data. In this way, you can syncronize it between more devices, i.e., the dad\'s, the mom\'s, the grandma\'s… You will need the WebDAV URL, you can find it in your provider\'s documentation (i.e. in Nextcloud web is in the Files app settings)</string>
     <string name="settings_storage_dav_url">WebDAV URL</string>
     <string name="settings_storage_dav_url_hint">https://</string>
     <string name="settings_storage_dav_user">Username</string>
