@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:text="@string/settings_storage_local_desc"/>
 
             <RadioButton android:id="@+id/settings_data_webdav"
@@ -51,14 +51,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:text="@string/settings_storage_dav_desc"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:textStyle="bold"
                 android:text="@string/settings_storage_dav_url"/>
 
@@ -66,7 +66,7 @@
                 android:id="@+id/settings_data_webdav_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:hint="@string/settings_storage_dav_url_hint"
                 android:inputType="textUri"
                 android:background="@drawable/textview_background"/>
@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:textStyle="bold"
                 android:text="@string/settings_storage_dav_user"/>
 
@@ -83,7 +83,7 @@
                 android:id="@+id/settings_data_webdav_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:inputType="textEmailAddress"
                 android:background="@drawable/textview_background"/>
 
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:textStyle="bold"
                 android:text="@string/settings_storage_dav_pass"/>
 
@@ -99,7 +99,7 @@
                 android:id="@+id/settings_data_webdav_pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:inputType="textPassword"
                 android:background="@drawable/textview_background"/>
 
