@@ -95,13 +95,19 @@
                 android:textStyle="bold"
                 android:text="@string/settings_storage_dav_pass"/>
 
-            <EditText
-                android:id="@+id/settings_data_webdav_pass"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:inputType="textPassword"
-                android:background="@drawable/textview_background"/>
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/settings_data_webdav_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_background"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/progress_indicator"
