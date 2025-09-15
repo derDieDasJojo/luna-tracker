@@ -39,6 +39,7 @@ import it.danieleverducci.lunatracker.repository.WebDAVLogbookRepository
 import kotlinx.coroutines.Runnable
 import okio.IOException
 import org.json.JSONException
+import utils.DateUtils
 import utils.NumericUtils
 import java.text.DateFormat
 import java.util.Calendar
@@ -131,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = LunaEventRecyclerAdapter(this, items)
         adapter.onItemClickListener = object: LunaEventRecyclerAdapter.OnItemClickListener{
             override fun onItemClick(event: LunaEvent) {
-                showEventDetailDialog(event)
+                showEventDetailDialog(event, items)
             }
         }
         recyclerView.adapter = adapter
@@ -308,7 +309,35 @@ class MainActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-    fun showEventDetailDialog(event: LunaEvent) {
+    fun getPreviousSameEvent(event: LunaEvent, items: ArrayList<LunaEvent>): LunaEvent? {
+        var previousEvent: LunaEvent? = null
+        for (item in items) {
+            if (item.type == event.type && item.time < event.time) {
+                if (previousEvent == null) {
+                    previousEvent = item
+                } else if (previousEvent.time < item.time) {
+                    previousEvent = item
+                }
+            }
+        }
+        return previousEvent
+    }
+
+    fun getNextSameEvent(event: LunaEvent, items: ArrayList<LunaEvent>): LunaEvent? {
+        var nextEvent: LunaEvent? = null
+        for (item in items) {
+            if (item.type == event.type && item.time > event.time) {
+                if (nextEvent == null) {
+                    nextEvent = item
+                } else if (nextEvent.time > item.time) {
+                    nextEvent = item
+                }
+            }
+        }
+        return nextEvent
+    }
+
+    fun showEventDetailDialog(event: LunaEvent, items: ArrayList<LunaEvent>) {
         // Do not update list while the detail is shown, to avoid changing the object below while it is changed by the user
         pauseLogbookUpdate = true
         val dateFormat = DateFormat.getDateTimeInstance()
@@ -359,6 +388,37 @@ class MainActivity : AppCompatActivity() {
             // Resume logbook update
             pauseLogbookUpdate = false
         })
+
+        // create next/previous links to events of the same type
+
+        val previousTextView = dialogView.findViewById<TextView>(R.id.dialog_event_previous)
+        val nextTextView = dialogView.findViewById<TextView>(R.id.dialog_event_next)
+        val nextEvent = getNextSameEvent(event, items)
+        val previousEvent = getPreviousSameEvent(event, items)
+
+        if (previousEvent != null) {
+            val emoji = previousEvent.getTypeEmoji(applicationContext)
+            val time = DateUtils.formatTimeDuration(applicationContext, event.time - previousEvent.time)
+            previousTextView.text = String.format("⬅️ %s %s", emoji, time)
+            previousTextView.setOnClickListener {
+                alertDialog.cancel()
+                showEventDetailDialog(previousEvent, items)
+            }
+        } else {
+            previousTextView.visibility = View.GONE
+        }
+
+        if (nextEvent != null) {
+            val emoji = nextEvent.getTypeEmoji(applicationContext)
+            val time = DateUtils.formatTimeDuration(applicationContext, nextEvent.time - event.time)
+            nextTextView.text = String.format("%s %s ➡️", time, emoji)
+            nextTextView.setOnClickListener {
+                alertDialog.cancel()
+                showEventDetailDialog(nextEvent, items)
+            }
+        } else {
+            nextTextView.visibility = View.GONE
+        }
     }
 
     fun showAddLogbookDialog(requestedByUser: Boolean) {
