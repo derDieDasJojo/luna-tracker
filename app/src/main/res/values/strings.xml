@@ -108,7 +108,7 @@
     <string name="measurement_unit_temperature_base_metric" translatable="false">°C</string>
 
     <string name="dialog_event_detail_title">Event detail</string>
-    <string name="dialog_event_detail_datetime_icon" translatable="false">🕒 %s1</string>
+    <string name="dialog_event_detail_datetime_icon" translatable="false">🕒 %s</string>
     <string name="dialog_event_detail_close_button">OK</string>
     <string name="dialog_event_detail_delete_button">Delete</string>
 
