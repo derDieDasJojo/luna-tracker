@@ -345,7 +345,7 @@ class MainActivity : AppCompatActivity() {
                     logbook?.sort()
                     recyclerView.adapter?.notifyDataSetChanged()
                     saveLogbook()
-                }, startHour, startMinute, false).show()
+                }, startHour, startMinute, android.text.format.DateFormat.is24HourFormat(this@MainActivity)).show()
             }, startYear, startMonth, startDay).show()
         }
 
