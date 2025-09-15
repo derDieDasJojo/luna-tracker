@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:textSize="28sp"
-        android:text="Quantity"/>
+        android:text="@string/dialog_event_detail_quantity"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:textStyle="italic"
             android:textSize="20sp"
-            android:text="Notes"/>
+            android:text="@string/dialog_event_detail_notes"/>
 
     </ScrollView>
 </LinearLayout>

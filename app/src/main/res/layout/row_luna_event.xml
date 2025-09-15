@@ -25,7 +25,7 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:textColor="@color/accent"
-        android:text="Description"/>
+        android:text="@string/row_luna_event_description"/>
 
     <TextView
         android:id="@+id/quantity"
@@ -35,7 +35,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:gravity="center_horizontal"
-        android:text="Qty"/>
+        android:text="@string/row_luna_event_quantity"/>
 
     <TextView
         android:id="@+id/time"
@@ -46,6 +46,6 @@
         android:textStyle="bold"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="Time"/>
+        android:text="@string/row_luna_event_time"/>
 
 </LinearLayout>
