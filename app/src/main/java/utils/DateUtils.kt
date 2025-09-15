@@ -81,10 +81,10 @@ class DateUtils {
                 return DateFormat.getDateFormat(context).format(Date(unixTime*1000)) + "\n" +
                         DateFormat.getTimeFormat(context).format(Date(unixTime*1000))
 
-            var formattedTime = StringBuilder()
+            val formattedTime = StringBuilder()
             if (hoursAgo > 0) {
                 formattedTime.append(hoursAgo).append(" ")
-                if (hoursAgo.toInt() == 1)
+                if (hoursAgo == 1)
                     formattedTime.append(context.getString(R.string.hour_ago))
                 else
                     formattedTime.append(context.getString(R.string.hours_ago))
@@ -93,7 +93,7 @@ class DateUtils {
                 if (formattedTime.isNotEmpty())
                     formattedTime.append(", ")
                 formattedTime.append(minutesAgo).append(" ")
-                if (minutesAgo.toInt() == 1)
+                if (minutesAgo == 1)
                     formattedTime.append(context.getString(R.string.minute_ago))
                 else
                     formattedTime.append(context.getString(R.string.minutes_ago))
