@@ -12,10 +12,8 @@ import com.thegrizzlylabs.sardineandroid.impl.SardineException
 import it.danieleverducci.lunatracker.repository.FileLogbookRepository
 import it.danieleverducci.lunatracker.repository.LocalSettingsRepository
 import it.danieleverducci.lunatracker.repository.LogbookListObtainedListener
-import it.danieleverducci.lunatracker.repository.LogbookRepository
 import it.danieleverducci.lunatracker.repository.WebDAVLogbookRepository
 import okio.IOException
-import org.json.JSONException
 
 open class SettingsActivity : AppCompatActivity() {
     protected lateinit var settingsRepository: LocalSettingsRepository
