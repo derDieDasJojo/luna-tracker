@@ -3,6 +3,7 @@ package it.danieleverducci.lunatracker.repository
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 class LocalSettingsRepository(val context: Context) {
     companion object {
@@ -12,6 +13,7 @@ class LocalSettingsRepository(val context: Context) {
         val SHARED_PREFS_DAV_URL = "webdav_url"
         val SHARED_PREFS_DAV_USER = "webdav_user"
         val SHARED_PREFS_DAV_PASS = "webdav_password"
+        val SHARED_PREFS_NO_BREASTFEEDING = "no_breastfeeding"
     }
     enum class DATA_REPO {LOCAL_FILE, WEBDAV}
     val sharedPreferences: SharedPreferences
@@ -26,6 +28,14 @@ class LocalSettingsRepository(val context: Context) {
 
     fun loadBabyBottleContent(): Int {
         return sharedPreferences.getInt(SHARED_PREFS_BB_CONTENT, 1)
+    }
+
+    fun saveNoBreastfeeding(content: Boolean) {
+        sharedPreferences.edit().putBoolean(SHARED_PREFS_NO_BREASTFEEDING, content).apply()
+    }
+
+    fun loadNoBreastfeeding(): Boolean {
+        return sharedPreferences.getBoolean(SHARED_PREFS_NO_BREASTFEEDING, false)
     }
 
     fun saveDataRepository(repo: DATA_REPO) {

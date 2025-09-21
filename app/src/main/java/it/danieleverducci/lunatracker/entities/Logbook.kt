@@ -2,7 +2,7 @@ package it.danieleverducci.lunatracker.entities
 
 class Logbook(val name: String) {
     companion object {
-        val MAX_SAFE_LOGBOOK_SIZE = 30000
+        const val MAX_SAFE_LOGBOOK_SIZE = 30000
     }
     val logs = ArrayList<LunaEvent>()
 

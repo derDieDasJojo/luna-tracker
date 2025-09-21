@@ -39,6 +39,7 @@ import it.danieleverducci.lunatracker.repository.WebDAVLogbookRepository
 import kotlinx.coroutines.Runnable
 import okio.IOException
 import org.json.JSONException
+import utils.DateUtils
 import utils.NumericUtils
 import java.text.DateFormat
 import java.util.Calendar
@@ -74,9 +75,9 @@ class MainActivity : AppCompatActivity() {
         // Show view
         setContentView(R.layout.activity_main)
 
-        progressIndicator = findViewById<LinearProgressIndicator>(R.id.progress_indicator)
-        buttonsContainer = findViewById<ViewGroup>(R.id.buttons_container)
-        recyclerView = findViewById<RecyclerView>(R.id.list_events)
+        progressIndicator = findViewById(R.id.progress_indicator)
+        buttonsContainer = findViewById(R.id.buttons_container)
+        recyclerView = findViewById(R.id.list_events)
         recyclerView.setLayoutManager(LinearLayoutManager(applicationContext))
 
         // Set listeners
@@ -131,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = LunaEventRecyclerAdapter(this, items)
         adapter.onItemClickListener = object: LunaEventRecyclerAdapter.OnItemClickListener{
             override fun onItemClick(event: LunaEvent) {
-                showEventDetailDialog(event)
+                showEventDetailDialog(event, items)
             }
         }
         recyclerView.adapter = adapter
@@ -166,6 +167,12 @@ class MainActivity : AppCompatActivity() {
             )
         } else {
             logbookRepo = FileLogbookRepository()
+        }
+
+        val noBreastfeeding = settingsRepository.loadNoBreastfeeding()
+        findViewById<View>(R.id.layout_nipples).visibility = when (noBreastfeeding) {
+            true -> View.GONE
+            false -> View.VISIBLE
         }
 
         // Update list dates
@@ -302,25 +309,52 @@ class MainActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-    fun showEventDetailDialog(event: LunaEvent) {
+    fun getPreviousSameEvent(event: LunaEvent, items: ArrayList<LunaEvent>): LunaEvent? {
+        var previousEvent: LunaEvent? = null
+        for (item in items) {
+            if (item.type == event.type && item.time < event.time) {
+                if (previousEvent == null) {
+                    previousEvent = item
+                } else if (previousEvent.time < item.time) {
+                    previousEvent = item
+                }
+            }
+        }
+        return previousEvent
+    }
+
+    fun getNextSameEvent(event: LunaEvent, items: ArrayList<LunaEvent>): LunaEvent? {
+        var nextEvent: LunaEvent? = null
+        for (item in items) {
+            if (item.type == event.type && item.time > event.time) {
+                if (nextEvent == null) {
+                    nextEvent = item
+                } else if (nextEvent.time > item.time) {
+                    nextEvent = item
+                }
+            }
+        }
+        return nextEvent
+    }
+
+    fun showEventDetailDialog(event: LunaEvent, items: ArrayList<LunaEvent>) {
         // Do not update list while the detail is shown, to avoid changing the object below while it is changed by the user
         pauseLogbookUpdate = true
-        val dateFormat = DateFormat.getDateTimeInstance();
+        val dateFormat = DateFormat.getDateTimeInstance()
         val d = AlertDialog.Builder(this)
         d.setTitle(R.string.dialog_event_detail_title)
         val dialogView = layoutInflater.inflate(R.layout.dialog_event_detail, null)
-        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_emoji).setText(event.getTypeEmoji(this))
-        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_description).setText(event.getTypeDescription(this))
-        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_quantity).setText(
+        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_emoji).text = event.getTypeEmoji(this)
+        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_description).text = event.getTypeDescription(this)
+        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_quantity).text =
             NumericUtils(this).formatEventQuantity(event)
-        )
-        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_notes).setText(event.notes)
+        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_notes).text = event.notes
 
         val currentDateTime = Calendar.getInstance()
         currentDateTime.time = Date(event.time * 1000)
         val dateTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_date)
         dateTextView.text = String.format(getString(R.string.dialog_event_detail_datetime_icon), dateFormat.format(currentDateTime.time))
-        dateTextView.setOnClickListener({
+        dateTextView.setOnClickListener {
             // Show datetime picker
             val startYear = currentDateTime.get(Calendar.YEAR)
             val startMonth = currentDateTime.get(Calendar.MONTH)
@@ -328,8 +362,8 @@ class MainActivity : AppCompatActivity() {
             val startHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
             val startMinute = currentDateTime.get(Calendar.MINUTE)
 
-            DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, day ->
-                TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+            DatePickerDialog(this, { _, year, month, day ->
+                TimePickerDialog(this, { _, hour, minute ->
                     val pickedDateTime = Calendar.getInstance()
                     pickedDateTime.set(year, month, day, hour, minute)
                     currentDateTime.time = pickedDateTime.time
@@ -340,9 +374,9 @@ class MainActivity : AppCompatActivity() {
                     logbook?.sort()
                     recyclerView.adapter?.notifyDataSetChanged()
                     saveLogbook()
-                }, startHour, startMinute, false).show()
+                }, startHour, startMinute, android.text.format.DateFormat.is24HourFormat(this@MainActivity)).show()
             }, startYear, startMonth, startDay).show()
-        })
+        }
 
         d.setView(dialogView)
         d.setPositiveButton(R.string.dialog_event_detail_close_button) { dialogInterface, i -> dialogInterface.dismiss() }
@@ -354,6 +388,37 @@ class MainActivity : AppCompatActivity() {
             // Resume logbook update
             pauseLogbookUpdate = false
         })
+
+        // create next/previous links to events of the same type
+
+        val previousTextView = dialogView.findViewById<TextView>(R.id.dialog_event_previous)
+        val nextTextView = dialogView.findViewById<TextView>(R.id.dialog_event_next)
+        val nextEvent = getNextSameEvent(event, items)
+        val previousEvent = getPreviousSameEvent(event, items)
+
+        if (previousEvent != null) {
+            val emoji = previousEvent.getTypeEmoji(applicationContext)
+            val time = DateUtils.formatTimeDuration(applicationContext, event.time - previousEvent.time)
+            previousTextView.text = String.format("⬅️ %s %s", emoji, time)
+            previousTextView.setOnClickListener {
+                alertDialog.cancel()
+                showEventDetailDialog(previousEvent, items)
+            }
+        } else {
+            previousTextView.visibility = View.GONE
+        }
+
+        if (nextEvent != null) {
+            val emoji = nextEvent.getTypeEmoji(applicationContext)
+            val time = DateUtils.formatTimeDuration(applicationContext, nextEvent.time - event.time)
+            nextTextView.text = String.format("%s %s ➡️", time, emoji)
+            nextTextView.setOnClickListener {
+                alertDialog.cancel()
+                showEventDetailDialog(nextEvent, items)
+            }
+        } else {
+            nextTextView.visibility = View.GONE
+        }
     }
 
     fun showAddLogbookDialog(requestedByUser: Boolean) {
@@ -392,7 +457,7 @@ class MainActivity : AppCompatActivity() {
                     sAdapter.setDropDownViewResource(R.layout.row_logbook_spinner)
                     for (ln in logbooksNames) {
                         sAdapter.add(
-                            if (ln.isEmpty()) getString(R.string.default_logbook_name) else ln
+                            ln.ifEmpty { getString(R.string.default_logbook_name) }
                         )
                     }
                     spinner.adapter = sAdapter
@@ -410,7 +475,6 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>?) {}
-
                     }
                 })
             }
@@ -560,7 +624,6 @@ class MainActivity : AppCompatActivity() {
                     onRepoError(getString(R.string.settings_generic_error) + error.toString())
                 })
             }
-
         })
     }
 
@@ -708,10 +771,10 @@ class MainActivity : AppCompatActivity() {
             isOutsideTouchable = true
             val inflater = LayoutInflater.from(anchor.context)
             contentView = inflater.inflate(R.layout.more_events_popup, null)
-            contentView.findViewById<View>(R.id.button_medicine).setOnClickListener({
+            contentView.findViewById<View>(R.id.button_medicine).setOnClickListener {
                 askNotes(LunaEvent(LunaEvent.TYPE_MEDICINE))
                 dismiss()
-            })
+            }
             contentView.findViewById<View>(R.id.button_enema).setOnClickListener({
                 logEvent(LunaEvent(LunaEvent.TYPE_ENEMA))
                 dismiss()

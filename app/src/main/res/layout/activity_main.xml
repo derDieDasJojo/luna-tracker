@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/title"
-                android:textSize="26dp"
+                android:textSize="26sp"
                 android:gravity="center"/>
 
             <ImageView
@@ -47,7 +47,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
@@ -68,22 +68,16 @@
                 android:id="@+id/logbooks_add_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:textStyle="bold"
                 android:textColor="@color/accent"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:text="+"
                 android:background="@drawable/button_background"/>
 
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/log_an_event"
-            android:gravity="center_horizontal"/>
 
         <LinearLayout
             android:id="@+id/buttons_container"
@@ -101,10 +95,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="50dp"
+                    android:textSize="50sp"
                     android:text="@string/event_bottle_type"/>
 
                 <TextView
@@ -112,49 +106,50 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="50dp"
+                    android:textSize="50sp"
                     android:text="@string/event_food_type"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/layout_nipples">
 
                 <TextView
                     android:id="@+id/button_nipple_left"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:text="🤱⬅️"/>
 
                 <TextView
                     android:id="@+id/button_nipple_both"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:text="🤱↔️"/>
 
                 <TextView
                     android:id="@+id/button_nipple_right"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:text="🤱➡️️"/>
 
             </LinearLayout>
@@ -167,29 +162,29 @@
                     android:id="@+id/button_change_poo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:layout_weight="2"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:text="🚼 💩"/>
 
                 <TextView
                     android:id="@+id/button_change_pee"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:layout_weight="2"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:text="🚼 💧"/>
 
                 <ImageView
                     android:id="@+id/button_more"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
@@ -200,21 +195,31 @@
 
         </LinearLayout>
 
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progress_indicator"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:indeterminate="true"
-            app:indicatorColor="@color/accent"
-            android:visibility="invisible"/>
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/logbook"
-            android:textColor="@color/accent"
-            android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/logbook"
+                android:textColor="@color/accent"
+                android:textStyle="bold"/>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_indicator"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:indeterminate="true"
+                app:indicatorColor="@color/accent"
+                android:visibility="invisible"/>
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_events"
@@ -247,7 +252,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textColor="@color/accent"
             android:text="@string/no_connection"/>
 
@@ -264,7 +269,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:drawableLeft="@drawable/ic_sync"
+            android:drawableStart="@drawable/ic_sync"
             android:drawableTint="@color/white"
             android:drawablePadding="10dp"
             android:text="@string/no_connection_retry"
@@ -275,7 +280,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:drawableLeft="@drawable/ic_settings"
+            android:drawableStart="@drawable/ic_settings"
             android:drawableTint="@color/white"
             android:drawablePadding="10dp"
             android:text="@string/no_connection_go_to_settings"

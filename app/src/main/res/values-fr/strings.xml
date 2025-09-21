@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">LunaTracker</string>
     <string name="title">🌜 LunaTracker 🌛</string>
-    <string name="log_an_event">Ajouter une entrée:</string>
     <string name="logbook">Entrées enregistrées</string>
 
     <string name="log_bottle_dialog_title">Biberon</string>
@@ -37,7 +36,7 @@
 
     <string name="toast_event_added">Entrée ajoutée</string>
     <string name="toast_logbook_saved">Journal ajouté</string>
-    <string name="toast_event_add_error">Impossible d'enregistrer cette entrée</string>
+    <string name="toast_event_add_error">Impossible d\'enregistrer cette entrée</string>
     <string name="toast_integer_error">Valeur invalide. Renseignez un nombre.</string>
 
     <string name="now">maintenant </string>
@@ -53,18 +52,18 @@
 
     <string name="settings_title">Paramètres</string>
     <string name="settings_storage">Choisir le lieu de stockage des données</string>
-    <string name="settings_storage_local">Sur l'appareil'</string>
-    <string name="settings_storage_local_desc">La solution la plus respectueuse de la vie privée : les données ne quittent pas l'appareil</string>
+    <string name="settings_storage_local">Sur l\'appareil\'</string>
+    <string name="settings_storage_local_desc">La solution la plus respectueuse de la vie privée : les données ne quittent pas l\'appareil</string>
     <string name="settings_storage_dav">Sur un serveur WebDAV</string>
-    <string name="settings_storage_dav_desc">Vous pouvez utiliser n'importe quel service WebDAV (par exemple Nextcloud, Owncloud, Dropbox, Box...) pour sauvegarder les données. De cette façon, vous pouvez les synchroniser entre plusieurs appareils (Ex : celui de papa, celui de maman, celui de grand-mère...). Vous aurez besoin de l'adresse WebDAV, que vous trouverez dans la documentation de votre fournisseur (par exemple, pour Nextcloud web, vous la trouverez dans les paramètres de l'application Fichiers).</string>
+    <string name="settings_storage_dav_desc">Vous pouvez utiliser n\'importe quel service WebDAV (par exemple Nextcloud, Owncloud, Dropbox, Box...) pour sauvegarder les données. De cette façon, vous pouvez les synchroniser entre plusieurs appareils (Ex : celui de papa, celui de maman, celui de grand-mère...). Vous aurez besoin de l\'adresse WebDAV, que vous trouverez dans la documentation de votre fournisseur (par exemple, pour Nextcloud web, vous la trouverez dans les paramètres de l\'application Fichiers).</string>
     <string name="settings_storage_dav_url">URL WebDAV</string>
     <string name="settings_storage_dav_url_hint">https://</string>
-    <string name="settings_storage_dav_user">Nom d'utilisateur</string>
+    <string name="settings_storage_dav_user">Nom d\'utilisateur</string>
     <string name="settings_storage_dav_pass">Mot de passe</string>
-    <string name="settings_network_error">Impossible d'accéder au serveur: </string>
-    <string name="settings_webdav_error_denied">Nom d'utilisateur ou mot de passe incorrect pour le service WebDAV</string>
-    <string name="settings_webdav_error_server_offline">Impossible d'accéder au serveur WebDAV</string>
-    <string name="settings_webdav_error_generic">Une erreur est survenue en essayant d'accéder au serveur WebDAV:</string>
+    <string name="settings_network_error">Impossible d\'accéder au serveur: </string>
+    <string name="settings_webdav_error_denied">Nom d\'utilisateur ou mot de passe incorrect pour le service WebDAV</string>
+    <string name="settings_webdav_error_server_offline">Impossible d\'accéder au serveur WebDAV</string>
+    <string name="settings_webdav_error_generic">Une erreur est survenue en essayant d\'accéder au serveur WebDAV:</string>
     <string name="settings_webdav_creation_error_generic">Impossible de sauvegarder un fichier sur le serveur WebDAV:</string>
     <string name="settings_webdav_creation_ok">Connexion réussie avec le serveur WebDAV</string>
     <string name="settings_json_error">Il y a un fichier sur le serveur WebDAV, toutefois il est corronpu ou illisible. Merci de le supprimer et réessayer</string>
@@ -72,8 +71,8 @@
     <string name="settings_webdav_upload_error">Une erreur est survenue en téléversant le journal local %1$s sur %2$s</string>
 
     <string name="trim_logbook_dialog_title">Votre journal grossit !</string>
-    <string name="trim_logbook_dialog_message_local">Le fichier de votre journal a beaucoup grossi. Nous recommandons de supprimer les entrées les plus vieilles pour éviter des crashs de l'application.</string>
-    <string name="trim_logbook_dialog_message_dav">Le fichier de votre journal a beaucoup grossi. Nous recommandons de supprimer les entrées les plus vieilles pour éviter des crashs de l'application. Si vous voulez garder un historique, vous pouvez sauvegarder le fichier "lunatracker_logbook.json" ou le renommer pour créer un nouveau journal.</string>
+    <string name="trim_logbook_dialog_message_local">Le fichier de votre journal a beaucoup grossi. Nous recommandons de supprimer les entrées les plus vieilles pour éviter des crashs de l\'application.</string>
+    <string name="trim_logbook_dialog_message_dav">Le fichier de votre journal a beaucoup grossi. Nous recommandons de supprimer les entrées les plus vieilles pour éviter des crashs de l\'application. Si vous voulez garder un historique, vous pouvez sauvegarder le fichier "lunatracker_logbook.json" ou le renommer pour créer un nouveau journal.</string>
     <string name="trim_logbook_dialog_button_ok">Supprimer les vieilles entrées maintenant</string>
     <string name="trim_logbook_dialog_button_cancel">Me rappeller plus tard</string>
 
@@ -82,15 +81,15 @@
     <string name="log_notes_dialog_qty_hint">Quantité (ou vide)</string>
     <string name="log_notes_dialog_note_hint">Notes ...</string>
 
-    <string name="dialog_event_detail_title">Détails de l'entrée</string>
+    <string name="dialog_event_detail_title">Détails de l\'entrée</string>
     <string name="dialog_event_detail_close_button">OK</string>
     <string name="dialog_event_detail_delete_button">Supprimer</string>
 
     <string name="dialog_add_logbook_title">Ajouter un journal</string>
     <string name="dialog_add_logbook_logbookname">👶 Nom du journal</string>
-    <string name="dialog_add_logbook_message">Renseignez un nom pour identifier ce journal. Ce nom apparaîtra en haut de l'écran et, si vous utilisez WebDAV, il figurera également dans le nom du fichier enreigstré.</string>
-    <string name="dialog_add_logbook_message_intro">Bienvenue ! Pour utiliser cette application, vous devez créer au moins un carnet de bord. Vous voudrez probablement l'appeler avec le nom de votre enfant.</string>
 
+    <string name="dialog_add_logbook_message">Renseignez un nom pour identifier ce journal. Ce nom apparaîtra en haut de l\'écran et, si vous utilisez WebDAV, il figurera également dans le nom du fichier enreigstré.</string>
+    <string name="dialog_add_logbook_message_intro">Bienvenue ! Pour utiliser cette application, vous devez créer au moins un carnet de bord. Vous voudrez probablement l\'appeler avec le nom de votre enfant.</string>
     <string name="default_logbook_name">👶 Mon premier carnet de bord</string>
     <string name="logbook_created">Journal ajouté: </string>
 

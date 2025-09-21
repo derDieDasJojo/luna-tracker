@@ -14,20 +14,20 @@ import java.util.Date
 class LunaEvent: Comparable<LunaEvent> {
 
     companion object {
-        val TYPE_BABY_BOTTLE = "BABY_BOTTLE"
-        val TYPE_WEIGHT = "WEIGHT"
-        val TYPE_BREASTFEEDING_LEFT_NIPPLE = "BREASTFEEDING_LEFT_NIPPLE"
-        val TYPE_BREASTFEEDING_BOTH_NIPPLE = "BREASTFEEDING_BOTH_NIPPLE"
-        val TYPE_BREASTFEEDING_RIGHT_NIPPLE = "BREASTFEEDING_RIGHT_NIPPLE"
-        val TYPE_DIAPERCHANGE_POO = "DIAPERCHANGE_POO"
-        val TYPE_DIAPERCHANGE_PEE = "DIAPERCHANGE_PEE"
-        val TYPE_MEDICINE = "MEDICINE"
-        val TYPE_ENEMA = "ENEMA"
-        val TYPE_NOTE = "NOTE"
-        val TYPE_CUSTOM = "CUSTOM"
-        val TYPE_COLIC = "COLIC"
-        val TYPE_TEMPERATURE = "TEMPERATURE"
-        val TYPE_FOOD = "FOOD"
+        const val TYPE_BABY_BOTTLE = "BABY_BOTTLE"
+        const val TYPE_WEIGHT = "WEIGHT"
+        const val TYPE_BREASTFEEDING_LEFT_NIPPLE = "BREASTFEEDING_LEFT_NIPPLE"
+        const val TYPE_BREASTFEEDING_BOTH_NIPPLE = "BREASTFEEDING_BOTH_NIPPLE"
+        const val TYPE_BREASTFEEDING_RIGHT_NIPPLE = "BREASTFEEDING_RIGHT_NIPPLE"
+        const val TYPE_DIAPERCHANGE_POO = "DIAPERCHANGE_POO"
+        const val TYPE_DIAPERCHANGE_PEE = "DIAPERCHANGE_PEE"
+        const val TYPE_MEDICINE = "MEDICINE"
+        const val TYPE_ENEMA = "ENEMA"
+        const val TYPE_NOTE = "NOTE"
+        const val TYPE_CUSTOM = "CUSTOM"
+        const val TYPE_COLIC = "COLIC"
+        const val TYPE_TEMPERATURE = "TEMPERATURE"
+        const val TYPE_FOOD = "FOOD"
     }
 
     private val jo: JSONObject
