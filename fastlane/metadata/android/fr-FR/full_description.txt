@@ -8,6 +8,8 @@ Elle permet de synchroniser les données entre différents appareils (en utilisa
 Dédié à ma fille Luna.
 
 
+Un grand merci à tous nos contributeurs. Voir https://git.ichibi.eu/penguin86/luna-tracker/src/branch/master/README.md
+
 REMARQUE : le contenu de cette application est fourni à titre informatif ou éducatif uniquement et ne remplace pas les conseils médicaux professionnels ou les consultations avec des professionnels de la santé.
 
 Crédit image ("Baby and baby milk bottle. Baby feeding."): © Vyacheslav Argenberg / http://www.vascoplanet.com/, CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>, via Wikimedia Commons

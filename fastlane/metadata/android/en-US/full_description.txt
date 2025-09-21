@@ -6,6 +6,7 @@ This app is meant to log all the relevant events (diaper change, breastfeeding, 
 Dedicated to my daughter Luna.
 
 
+A HUGE thanks to all our contributors. See https://git.ichibi.eu/penguin86/luna-tracker/src/branch/master/README.md
 
 NOTE: The content on this app is for informational or educational purposes only and does not substitute professional medical advice or consultations with healthcare professionals.
 Feature graphic ("Baby and baby milk bottle. Baby feeding."): © Vyacheslav Argenberg / http://www.vascoplanet.com/, CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>, via Wikimedia Commons

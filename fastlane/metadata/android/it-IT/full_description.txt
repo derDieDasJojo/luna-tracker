@@ -6,6 +6,7 @@ Quest'app è pensata per memorizzare tutti gli eventi del bambino (cambio di pan
 Dedicato a mia figlia Luna.
 
 
+Un grandissimo ringraziamento a tutti i contributors! Vedi https://git.ichibi.eu/penguin86/luna-tracker/src/branch/master/README.md
 
 NOTA: il contenuto di quest'app ha solo scopo informativo o didattico e non sostituisce il consulto medico professionale o le consulenze con operatori sanitari.
 Feature graphic ("Baby and baby milk bottle. Baby feeding."): © Vyacheslav Argenberg / http://www.vascoplanet.com/, CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>, via Wikimedia Commons
