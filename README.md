@@ -1,5 +1,7 @@
 # 🌜 LunaTracker 🌛
 
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="80">](https://f-droid.org/it/packages/it.danieleverducci.lunatracker/)
+
 LunaTracker is a newborn baby tracking app.
 
 Parenting can be tough. You get home from the hospital, exhausted, with this little fragile unknown thingy that has no user manual and a single way to let you know something's not ok: crying.
