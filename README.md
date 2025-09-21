@@ -11,7 +11,8 @@ Dedicated to my daughter Luna.
 
 ![Screenshot](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
 
-Thanks for the valuable contributions to:
+## Thanks for the valuable contributions to:
 
-Chepycou (French translation)
-Daniel Neubauer (German translation)
+- Chepycou (French translation)
+- Daniel Neubauer (German translation)
+- Moritz Warning (Various bugfixes and new features)
