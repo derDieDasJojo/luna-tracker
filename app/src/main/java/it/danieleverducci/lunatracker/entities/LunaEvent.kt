@@ -28,6 +28,7 @@ class LunaEvent: Comparable<LunaEvent> {
         const val TYPE_COLIC = "COLIC"
         const val TYPE_TEMPERATURE = "TEMPERATURE"
         const val TYPE_FOOD = "FOOD"
+        const val TYPE_PUKE = "PUKE"
     }
 
     private val jo: JSONObject
@@ -90,6 +91,7 @@ class LunaEvent: Comparable<LunaEvent> {
                 TYPE_TEMPERATURE -> R.string.event_temperature_type
                 TYPE_COLIC -> R.string.event_colic_type
                 TYPE_FOOD -> R.string.event_food_type
+                TYPE_PUKE -> R.string.event_puke_type
                 else -> R.string.event_unknown_type
             }
         )
@@ -111,6 +113,7 @@ class LunaEvent: Comparable<LunaEvent> {
                 TYPE_TEMPERATURE -> R.string.event_temperature_desc
                 TYPE_COLIC -> R.string.event_colic_desc
                 TYPE_FOOD -> R.string.event_food_desc
+                TYPE_PUKE -> R.string.event_puke_desc
                 else -> R.string.event_unknown_desc
             }
         )

@@ -50,6 +50,16 @@
                 android:text="@string/overflow_event_temperature"/>
 
             <TextView
+                android:id="@+id/button_puke"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:padding="20dp"
+                android:background="@drawable/dropdown_list_item_background"
+                style="@style/OverflowMenuText"
+                android:text="@string/overflow_event_puke"/>
+
+            <TextView
                 android:id="@+id/button_colic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -260,6 +260,26 @@ class MainActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
+    fun askPukeValue() {
+        val d = AlertDialog.Builder(this)
+        val dialogView = layoutInflater.inflate(R.layout.puke_dialog, null)
+        d.setTitle(R.string.log_puke_dialog_title)
+        d.setMessage(R.string.log_puke_dialog_description)
+        d.setView(dialogView)
+
+        val spinner = dialogView.findViewById<Spinner>(R.id.dialog_puke_value)
+        spinner.adapter = ArrayAdapter.createFromResource(this, R.array.AmountLabels, android.R.layout.simple_spinner_dropdown_item)
+        spinner.setSelection(1)
+
+        d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
+            val pos = spinner.selectedItemPosition
+            logEvent(LunaEvent(LunaEvent.TYPE_PUKE, pos))
+        }
+        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i -> dialogInterface.dismiss() }
+        val alertDialog = d.create()
+        alertDialog.show()
+    }
+
     fun askNotes(lunaEvent: LunaEvent) {
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_notes, null)
@@ -785,6 +805,10 @@ class MainActivity : AppCompatActivity() {
             })
             contentView.findViewById<View>(R.id.button_temperature).setOnClickListener({
                 askTemperatureValue()
+                dismiss()
+            })
+            contentView.findViewById<View>(R.id.button_puke).setOnClickListener({
+                askPukeValue()
                 dismiss()
             })
             contentView.findViewById<View>(R.id.button_colic).setOnClickListener({

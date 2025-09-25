@@ -12,6 +12,9 @@
     <string name="log_temperature_dialog_title">Temperature</string>
     <string name="log_temperature_dialog_description">Insert the temperature</string>
 
+    <string name="log_puke_dialog_title">Puke</string>
+    <string name="log_puke_dialog_description">Select the amount</string>
+
     <string name="event_bottle_type" translatable="false">🍼</string>
     <string name="event_food_type" translatable="false">🥣</string>
     <string name="event_scale_type" translatable="false">⚖️</string>
@@ -25,6 +28,7 @@
     <string name="event_note_type" translatable="false">📝</string>
     <string name="event_temperature_type" translatable="false">🌡️</string>
     <string name="event_colic_type" translatable="false">💨</string>
+    <string name="event_puke_type" translatable="false">🤮</string>
     <string name="event_unknown_type" translatable="false">\?</string>
 
     <string name="event_bottle_desc">Baby bottle</string>
@@ -40,6 +44,7 @@
     <string name="event_note_desc">Note</string>
     <string name="event_temperature_desc">Temperature</string>
     <string name="event_colic_desc">Gaseous colic</string>
+    <string name="event_puke_desc">Puke</string>
     <string name="event_unknown_desc"></string>
 
     <string name="overflow_event_scale">⚖️ Weight</string>
@@ -48,6 +53,7 @@
     <string name="overflow_event_note">📝 Note</string>
     <string name="overflow_event_temperature">🌡️ Temperature</string>
     <string name="overflow_event_colic">💨 Gaseous colic</string>
+    <string name="overflow_event_puke">🤮 Puke</string>
 
     <string name="toast_event_added">Event logged</string>
     <string name="toast_logbook_saved">Logbook saved</string>
@@ -65,6 +71,10 @@
     <string name="days_ago">days</string>
     <string name="year_ago">year</string>
     <string name="years_ago">years</string>
+
+    <string name="amount_little">Little</string>
+    <string name="amount_normal">Normal</string>
+    <string name="amount_plenty">Plenty</string>
 
     <string name="no_connection">No connection</string>
     <string name="no_connection_explain">Unable to reach WebDAV service</string>

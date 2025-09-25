@@ -18,8 +18,8 @@ class NumericUtils (val context: Context) {
     private fun isMetricSystem(): Boolean {
        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val measurementSystem = LocaleData.getMeasurementSystem(ULocale.getDefault())
-            return (measurementSystem == LocaleData. MeasurementSystem.SI)
-        } else {
+            return (measurementSystem == LocaleData.MeasurementSystem.SI)
+       } else {
             val locale = context.resources.configuration.locale
             return when (locale.country) {
                 // https://en.wikipedia.org/wiki/United_States_customary_units
@@ -27,9 +27,9 @@ class NumericUtils (val context: Context) {
                 "US" -> false // US IMPERIAL
                 // UK, Myanmar, Liberia,
                 "GB", "MM", "LR" -> false // IMPERIAL
-                else -> true // UnitSystem.METRIC
+                else -> true // METRIC
             }
-        }
+       }
     }
 
     init {
@@ -62,11 +62,15 @@ class NumericUtils (val context: Context) {
 
     fun formatEventQuantity(item: LunaEvent): String {
         val formatted = StringBuilder()
-        if ((item.quantity ?: 0) > 0) {
-            if (item.type == LunaEvent.TYPE_TEMPERATURE)
-                formatted.append((item.quantity / 10.0f).toString())
-            else
-                formatted.append(item.quantity)
+        if (item.quantity > 0) {
+            formatted.append(when (item.type) {
+                LunaEvent.TYPE_TEMPERATURE ->
+                    (item.quantity / 10.0f).toString()
+                LunaEvent.TYPE_PUKE ->
+                    context.resources.getStringArray(R.array.AmountLabels)[item.quantity]
+                else ->
+                    item.quantity
+            })
 
             formatted.append(" ")
             formatted.append(
