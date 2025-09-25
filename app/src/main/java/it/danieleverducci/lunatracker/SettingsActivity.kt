@@ -61,9 +61,9 @@ open class SettingsActivity : AppCompatActivity() {
         switchNoBreastfeeding.isChecked = noBreastfeeding
 
         if (webDavCredentials != null) {
-            textViewWebDAVUrl.setText(webDavCredentials[0])
-            textViewWebDAVUser.setText(webDavCredentials[1])
-            textViewWebDAVPass.setText(webDavCredentials[2])
+            textViewWebDAVUrl.text = webDavCredentials[0]
+            textViewWebDAVUser.text = webDavCredentials[1]
+            textViewWebDAVPass.text = webDavCredentials[2]
         }
     }
 
@@ -170,7 +170,7 @@ open class SettingsActivity : AppCompatActivity() {
      */
     private fun copyLocalLogbooksToWebdav(webDAVLogbookRepository: WebDAVLogbookRepository, listener: OnCopyLocalLogbooksToWebdavFinishedListener) {
         Thread(Runnable {
-            var errors = StringBuilder()
+            val errors = StringBuilder()
             val fileLogbookRepo = FileLogbookRepository()
             val logbooks = fileLogbookRepo.getAllLogbooks(this)
             for (logbook in logbooks) {

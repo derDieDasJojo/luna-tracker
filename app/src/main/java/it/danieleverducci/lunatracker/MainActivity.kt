@@ -47,9 +47,9 @@ import java.util.Date
 
 class MainActivity : AppCompatActivity() {
     companion object {
-        val TAG = "MainActivity"
-        val UPDATE_EVERY_SECS: Long = 30
-        val DEBUG_CHECK_LOGBOOK_CONSISTENCY = false
+        const val TAG = "MainActivity"
+        const val UPDATE_EVERY_SECS: Long = 30
+        const val DEBUG_CHECK_LOGBOOK_CONSISTENCY = false
     }
 
     var logbook: Logbook? = null
@@ -113,24 +113,24 @@ class MainActivity : AppCompatActivity() {
         moreButton.setOnClickListener {
             showOverflowPopupWindow(moreButton)
         }
-        findViewById<View>(R.id.button_no_connection_settings).setOnClickListener({
+        findViewById<View>(R.id.button_no_connection_settings).setOnClickListener {
             showSettings()
-        })
-        findViewById<View>(R.id.button_settings).setOnClickListener({
+        }
+        findViewById<View>(R.id.button_settings).setOnClickListener {
             showSettings()
-        })
-        findViewById<View>(R.id.button_no_connection_retry).setOnClickListener({
+        }
+        findViewById<View>(R.id.button_no_connection_retry).setOnClickListener {
             // This may happen at start, when logbook is still null: better ask the logbook list
             loadLogbookList()
-        })
-        findViewById<View>(R.id.button_sync).setOnClickListener({
+        }
+        findViewById<View>(R.id.button_sync).setOnClickListener {
             loadLogbookList()
-        })
+        }
     }
 
     private fun setListAdapter(items: ArrayList<LunaEvent>) {
         val adapter = LunaEventRecyclerAdapter(this, items)
-        adapter.onItemClickListener = object: LunaEventRecyclerAdapter.OnItemClickListener{
+        adapter.onItemClickListener = object: LunaEventRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(event: LunaEvent) {
                 showEventDetailDialog(event, items)
             }

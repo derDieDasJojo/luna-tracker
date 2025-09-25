@@ -128,7 +128,7 @@ class LunaEvent: Comparable<LunaEvent> {
     }
 
     override fun toString(): String {
-        return "${type} qty: $quantity time: ${Date(time * 1000)}"
+        return "$type qty: $quantity time: ${Date(time * 1000)}"
     }
 
     override fun compareTo(other: LunaEvent): Int {

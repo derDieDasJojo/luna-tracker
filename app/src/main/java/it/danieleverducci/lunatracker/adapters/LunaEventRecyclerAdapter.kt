@@ -53,7 +53,7 @@ class LunaEventRecyclerAdapter: RecyclerView.Adapter<LunaEventRecyclerAdapter.Lu
         holder.quantity.setTextColor(ContextCompat.getColor(context, R.color.textColor))
         // Contents
         holder.type.text = item.getTypeEmoji(context)
-        holder.description.text = when(item.type) {
+        holder.description.text = when (item.type) {
             LunaEvent.TYPE_MEDICINE -> item.notes
             LunaEvent.TYPE_NOTE -> item.notes
             LunaEvent.TYPE_CUSTOM -> item.notes

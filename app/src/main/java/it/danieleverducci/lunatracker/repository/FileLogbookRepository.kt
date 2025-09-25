@@ -13,9 +13,9 @@ import java.io.FilenameFilter
 
 class FileLogbookRepository: LogbookRepository {
     companion object {
-        val TAG = "FileLogbookRepository"
-        val FILE_NAME_START = "data"
-        val FILE_NAME_END = ".json"
+        const val TAG = "FileLogbookRepository"
+        const val FILE_NAME_START = "data"
+        const val FILE_NAME_END = ".json"
     }
 
     override fun loadLogbook(context: Context, name: String, listener: LogbookLoadedListener) {
@@ -32,7 +32,7 @@ class FileLogbookRepository: LogbookRepository {
     fun loadLogbook(context: Context, name: String): Logbook {
         val logbook = Logbook(name)
         val fileName = getFileName(name)
-        val file = File(context.getFilesDir(), fileName)
+        val file = File(context.filesDir, fileName)
         val json = FileInputStream(file).bufferedReader().use { it.readText() }
         val ja = JSONArray(json)
         for (i in 0 until ja.length()) {
@@ -58,7 +58,7 @@ class FileLogbookRepository: LogbookRepository {
 
     fun saveLogbook(context: Context, logbook: Logbook) {
         val fileName = getFileName(logbook.name)
-        val file = File(context.getFilesDir(), fileName)
+        val file = File(context.filesDir, fileName)
         val ja = JSONArray()
         for (l in logbook.logs) {
             ja.put(l.toJson())
@@ -82,7 +82,7 @@ class FileLogbookRepository: LogbookRepository {
     }
 
     private fun listLogbooks(context: Context): ArrayList<String> {
-        val logbooksFileNames = context.getFilesDir().list(object: FilenameFilter {
+        val logbooksFileNames = context.filesDir.list(object: FilenameFilter {
             override fun accept(dir: File?, name: String?): Boolean {
                 if (name == null)
                     return false
