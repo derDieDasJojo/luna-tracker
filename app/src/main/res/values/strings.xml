@@ -81,8 +81,6 @@
     <string name="no_connection_go_to_settings">Settings</string>
     <string name="no_connection_retry">Retry</string>
 
-    <string name="no_breastfeeding">No Breastfeeding</string>
-
     <string name="settings_title">Settings</string>
     <string name="settings_storage">Choose where to save data</string>
     <string name="settings_storage_local">On device</string>
@@ -99,6 +97,8 @@
     <string name="settings_webdav_error_generic">Error while trying to access WebDAV:</string>
     <string name="settings_webdav_creation_error_generic">Unable to save a file on the WebDAV server:</string>
     <string name="settings_webdav_creation_ok">Successfully connected with the WebDAV server</string>
+    <string name="settings_no_breastfeeding">No Breastfeeding</string>
+    <string name="settings_no_breastfeeding_desc">Hide the Breastfeeding buttons for when they are not needed.</string>
     <string name="settings_json_error">There\'s a save file on the server, but it is corrupted or unreadable. Please delete it </string>
     <string name="settings_generic_error">Error: </string>
     <string name="settings_webdav_upload_error">Error while uploading local logbook %1$s to webdav: %2$s</string>

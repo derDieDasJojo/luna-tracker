@@ -131,7 +131,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="@string/no_breastfeeding" />
+                android:text="@string/settings_no_breastfeeding" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switch_no_breastfeeding"
@@ -140,6 +140,12 @@
                 android:layout_weight="1" />
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/settings_no_breastfeeding_desc"/>
 
         <LinearLayout
             android:layout_width="match_parent"
