@@ -821,6 +821,12 @@ class MainActivity : AppCompatActivity() {
                 askWeightValue()
                 dismiss()
             })
+            contentView.findViewById<View>(R.id.button_bath).setOnClickListener({
+                logEvent(
+                    LunaEvent(LunaEvent.TYPE_BATH)
+                )
+                dismiss()
+            })
         }.also { popupWindow ->
             popupWindow.setOnDismissListener({
                 Handler(mainLooper).postDelayed({

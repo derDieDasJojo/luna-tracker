@@ -29,6 +29,7 @@
     <string name="event_temperature_type" translatable="false">🌡️</string>
     <string name="event_colic_type" translatable="false">💨</string>
     <string name="event_puke_type" translatable="false">🤮</string>
+    <string name="event_bath_type" translatable="false">🛁</string>
     <string name="event_unknown_type" translatable="false">\?</string>
 
     <string name="event_bottle_desc">Baby bottle</string>
@@ -45,6 +46,7 @@
     <string name="event_temperature_desc">Temperature</string>
     <string name="event_colic_desc">Gaseous colic</string>
     <string name="event_puke_desc">Puke</string>
+    <string name="event_bath_desc">Bath</string>
     <string name="event_unknown_desc"></string>
 
     <string name="overflow_event_scale">⚖️ Weight</string>
@@ -54,6 +56,7 @@
     <string name="overflow_event_temperature">🌡️ Temperature</string>
     <string name="overflow_event_colic">💨 Gaseous colic</string>
     <string name="overflow_event_puke">🤮 Puke</string>
+    <string name="overflow_event_bath">🛁 Bath</string>
 
     <string name="toast_event_added">Event logged</string>
     <string name="toast_logbook_saved">Logbook saved</string>
