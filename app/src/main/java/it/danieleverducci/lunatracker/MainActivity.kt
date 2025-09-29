@@ -41,7 +41,6 @@ import okio.IOException
 import org.json.JSONException
 import utils.DateUtils
 import utils.NumericUtils
-import java.text.DateFormat
 import java.util.Calendar
 import java.util.Date
 
@@ -360,7 +359,6 @@ class MainActivity : AppCompatActivity() {
     fun showEventDetailDialog(event: LunaEvent, items: ArrayList<LunaEvent>) {
         // Do not update list while the detail is shown, to avoid changing the object below while it is changed by the user
         pauseLogbookUpdate = true
-        val dateFormat = DateFormat.getDateTimeInstance()
         val d = AlertDialog.Builder(this)
         d.setTitle(R.string.dialog_event_detail_title)
         val dialogView = layoutInflater.inflate(R.layout.dialog_event_detail, null)
@@ -372,8 +370,9 @@ class MainActivity : AppCompatActivity() {
 
         val currentDateTime = Calendar.getInstance()
         currentDateTime.time = Date(event.time * 1000)
+
         val dateTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_date)
-        dateTextView.text = String.format(getString(R.string.dialog_event_detail_datetime_icon), dateFormat.format(currentDateTime.time))
+        dateTextView.text = String.format(getString(R.string.dialog_event_detail_datetime_icon), DateUtils.formatDateTime(event.time))
         dateTextView.setOnClickListener {
             // Show datetime picker
             val startYear = currentDateTime.get(Calendar.YEAR)
@@ -386,11 +385,9 @@ class MainActivity : AppCompatActivity() {
                 TimePickerDialog(this, { _, hour, minute ->
                     val pickedDateTime = Calendar.getInstance()
                     pickedDateTime.set(year, month, day, hour, minute)
-                    currentDateTime.time = pickedDateTime.time
-                    dateTextView.text = String.format(getString(R.string.dialog_event_detail_datetime_icon), dateFormat.format(currentDateTime.time))
-
                     // Save event and move it to the right position in the logbook
-                    event.time = currentDateTime.time.time / 1000 // Seconds since epoch
+                    event.time = pickedDateTime.time.time / 1000 // Seconds since epoch
+                    dateTextView.text = String.format(getString(R.string.dialog_event_detail_datetime_icon), DateUtils.formatDateTime(event.time))
                     logbook?.sort()
                     recyclerView.adapter?.notifyDataSetChanged()
                     saveLogbook()

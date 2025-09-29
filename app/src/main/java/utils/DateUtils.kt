@@ -1,12 +1,17 @@
 package utils
 
 import android.content.Context
+import android.os.Build
 import android.text.format.DateFormat
 import it.danieleverducci.lunatracker.R
 import java.util.Date
 
 class DateUtils {
     companion object {
+        /**
+         * Format time duration in seconds as e.g. "2 hours, 1 min".
+         * Used for the duration to the next/previous event in the event details dialog.
+         */
         fun formatTimeDuration(context: Context, secondsDiff: Long): String {
             var seconds = secondsDiff
 
@@ -65,7 +70,8 @@ class DateUtils {
         }
 
         /**
-         * Formats the provided unix timestamp in a string like "3 hours, 26 minutes ago)
+         * Formats the provided unix timestamp in a string like "3 hours, 26 minutes ago".
+         * Used for the event list.
          */
         fun formatTimeAgo(context: Context, unixTime: Long): String {
             val secondsDiff = (System.currentTimeMillis() / 1000) - unixTime
@@ -99,6 +105,22 @@ class DateUtils {
                     formattedTime.append(context.getString(R.string.minutes_ago))
             }
             return formattedTime.toString()
+        }
+
+        /**
+         * Format time as localized string without seconds. E.g. "Sept 18, 2025, 03:36 PM".
+         * Used in the event detail dialog.
+         */
+        fun formatDateTime(unixTime: Long): String {
+            val date = Date(unixTime * 1000)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                val dateFormat = android.icu.text.DateFormat.getDateTimeInstance(android.icu.text.DateFormat.DEFAULT, android.icu.text.DateFormat.SHORT)
+                return dateFormat.format(date)
+            } else {
+                // fallback
+                val dateFormat = java.text.DateFormat.getDateTimeInstance()
+                return dateFormat.format(date)
+            }
         }
     }
 }
