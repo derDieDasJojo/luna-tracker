@@ -14,6 +14,7 @@ class LocalSettingsRepository(val context: Context) {
         const val SHARED_PREFS_DAV_USER = "webdav_user"
         const val SHARED_PREFS_DAV_PASS = "webdav_password"
         const val SHARED_PREFS_NO_BREASTFEEDING = "no_breastfeeding"
+        const val SHARED_PREFS_SIGNATURE = "signature"
     }
     enum class DATA_REPO {LOCAL_FILE, WEBDAV}
     val sharedPreferences: SharedPreferences
@@ -28,6 +29,14 @@ class LocalSettingsRepository(val context: Context) {
 
     fun loadBabyBottleContent(): Int {
         return sharedPreferences.getInt(SHARED_PREFS_BB_CONTENT, 1)
+    }
+
+    fun saveSignature(content: String) {
+        sharedPreferences.edit { putString(SHARED_PREFS_SIGNATURE, content) }
+    }
+
+    fun loadSignature(): String {
+        return sharedPreferences.getString(SHARED_PREFS_SIGNATURE, "") ?: ""
     }
 
     fun saveNoBreastfeeding(content: Boolean) {

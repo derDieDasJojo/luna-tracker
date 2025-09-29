@@ -55,6 +55,12 @@ class LunaEvent: Comparable<LunaEvent> {
         set(value) {
             jo.put("notes", value)
         }
+    var signature: String
+        get(): String = jo.optString("signature")
+        set(value) {
+            if (value.isNotEmpty())
+                jo.put("signature", value)
+        }
 
     constructor(jo: JSONObject) {
         this.jo = jo

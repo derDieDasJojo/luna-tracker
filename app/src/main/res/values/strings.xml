@@ -85,6 +85,8 @@
     <string name="no_connection_retry">Retry</string>
 
     <string name="settings_title">Settings</string>
+    <string name="settings_signature">Signature</string>
+    <string name="settings_signature_desc">Attach a signature to each event you create and for others to see. Useful if multiple people add events.</string>
     <string name="settings_storage">Choose where to save data</string>
     <string name="settings_storage_local">On device</string>
     <string name="settings_storage_local_desc">Most privacy-friendly solution: data doesn\'t leave your device</string>
@@ -136,6 +138,7 @@
     <string name="dialog_event_detail_delete_button">Delete</string>
     <string name="dialog_event_detail_quantity">Quantity</string>
     <string name="dialog_event_detail_notes">Notes</string>
+    <string name="dialog_event_detail_signature">by %s</string>
 
     <string name="dialog_add_logbook_title">Add logbook</string>
     <string name="dialog_add_logbook_logbookname">👶 Logbook name</string>

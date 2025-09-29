@@ -119,6 +119,28 @@
                 android:visibility="invisible"/>
         </RadioGroup>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/settings_signature" />
+
+        <EditText
+            android:id="@+id/settings_signature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/textview_background"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/settings_signature_desc"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

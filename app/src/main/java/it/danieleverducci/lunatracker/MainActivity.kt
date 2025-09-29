@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var buttonsContainer: ViewGroup
     lateinit var recyclerView: RecyclerView
     lateinit var handler: Handler
+    var signature = ""
     var savingEvent = false
     val updateListRunnable: Runnable = Runnable {
         if (logbook != null && !pauseLogbookUpdate)
@@ -167,6 +168,8 @@ class MainActivity : AppCompatActivity() {
         } else {
             logbookRepo = FileLogbookRepository()
         }
+
+        signature = settingsRepository.loadSignature()
 
         val noBreastfeeding = settingsRepository.loadNoBreastfeeding()
         findViewById<View>(R.id.layout_nipples).visibility = when (noBreastfeeding) {
@@ -405,6 +408,13 @@ class MainActivity : AppCompatActivity() {
             // Resume logbook update
             pauseLogbookUpdate = false
         })
+
+        // show optional signature
+        if (event.signature.isNotEmpty()) {
+            val signatureTextEdit = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_signature)
+            signatureTextEdit.text =  String.format(getString(R.string.dialog_event_detail_signature), event.signature)
+            signatureTextEdit.visibility = View.VISIBLE
+        }
 
         // create next/previous links to events of the same type
 
@@ -654,6 +664,8 @@ class MainActivity : AppCompatActivity() {
 
     fun logEvent(event: LunaEvent) {
         savingEvent(true)
+
+        event.signature = signature
 
         setLoading(true)
         logbook?.logs?.add(0, event)
