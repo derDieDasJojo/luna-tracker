@@ -60,21 +60,21 @@ class NumericUtils (val context: Context) {
         )
     }
 
-    fun formatEventQuantity(item: LunaEvent): String {
+    fun formatEventQuantity(event: LunaEvent): String {
         val formatted = StringBuilder()
-        if (item.quantity > 0) {
-            formatted.append(when (item.type) {
+        if (event.quantity > 0) {
+            formatted.append(when (event.type) {
                 LunaEvent.TYPE_TEMPERATURE ->
-                    (item.quantity / 10.0f).toString()
+                    (event.quantity / 10.0f).toString()
                 LunaEvent.TYPE_PUKE ->
-                    context.resources.getStringArray(R.array.AmountLabels)[item.quantity - 1]
+                    context.resources.getStringArray(R.array.AmountLabels)[event.quantity - 1]
                 else ->
-                    item.quantity
+                    event.quantity
             })
 
             formatted.append(" ")
             formatted.append(
-                when (item.type) {
+                when (event.type) {
                     LunaEvent.TYPE_BABY_BOTTLE -> measurement_unit_liquid_base
                     LunaEvent.TYPE_WEIGHT -> measurement_unit_weight_base
                     LunaEvent.TYPE_MEDICINE -> measurement_unit_weight_tiny

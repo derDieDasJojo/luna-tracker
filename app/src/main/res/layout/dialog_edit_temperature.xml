@@ -23,4 +23,12 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:textColor="@color/accent"/>
+
+    <TextView
+        android:id="@+id/dialog_date_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="20dp"/>
+
 </LinearLayout>

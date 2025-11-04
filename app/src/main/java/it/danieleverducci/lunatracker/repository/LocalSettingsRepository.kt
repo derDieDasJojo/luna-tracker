@@ -23,14 +23,6 @@ class LocalSettingsRepository(val context: Context) {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFS_FILE_NAME, MODE_PRIVATE)
     }
 
-    fun saveBabyBottleContent(content: Int) {
-        sharedPreferences.edit { putInt(SHARED_PREFS_BB_CONTENT, content) }
-    }
-
-    fun loadBabyBottleContent(): Int {
-        return sharedPreferences.getInt(SHARED_PREFS_BB_CONTENT, 1)
-    }
-
     fun saveSignature(content: String) {
         sharedPreferences.edit { putString(SHARED_PREFS_SIGNATURE, content) }
     }
