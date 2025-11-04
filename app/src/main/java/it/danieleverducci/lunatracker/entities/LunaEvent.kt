@@ -69,6 +69,15 @@ class LunaEvent: Comparable<LunaEvent> {
             throw IllegalArgumentException("JSONObject is not a LunaEvent")
     }
 
+    constructor(event: LunaEvent) {
+        this.jo = JSONObject()
+        this.type = event.type
+        this.time = event.time
+        this.quantity = event.quantity
+        this.notes = event.notes
+        this.signature = event.signature
+    }
+
     constructor(type: String) {
         this.jo = JSONObject()
         this.time = System.currentTimeMillis() / 1000

@@ -24,4 +24,11 @@
         android:hint="@string/log_notes_dialog_note_hint"
         android:background="@drawable/textview_background"/>
 
+    <TextView
+        android:id="@+id/dialog_date_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"/>
+
 </LinearLayout>

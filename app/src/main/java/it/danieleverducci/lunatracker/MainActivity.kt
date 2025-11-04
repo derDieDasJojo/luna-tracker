@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     val updateListRunnable: Runnable = Runnable {
         if (logbook != null && !pauseLogbookUpdate)
             loadLogbook(logbook!!.name)
-        handler.postDelayed(updateListRunnable, 1000*60)
+        handler.postDelayed(updateListRunnable, 1000 * 60)
     }
     var logbookRepo: LogbookRepository? = null
     var showingOverflowPopupWindow = false
@@ -81,34 +81,30 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setLayoutManager(LinearLayoutManager(applicationContext))
 
         // Set listeners
-        findViewById<View>(R.id.logbooks_add_button).setOnClickListener { showAddLogbookDialog(true) }
-        findViewById<View>(R.id.button_bottle).setOnClickListener { askBabyBottleContent() }
-        findViewById<View>(R.id.button_food).setOnClickListener { askNotes(LunaEvent(LunaEvent.TYPE_FOOD)) }
-        findViewById<View>(R.id.button_nipple_left).setOnClickListener { logEvent(
-            LunaEvent(
-                LunaEvent.TYPE_BREASTFEEDING_LEFT_NIPPLE
-            )
-        ) }
-        findViewById<View>(R.id.button_nipple_both).setOnClickListener { logEvent(
-            LunaEvent(
-                LunaEvent.TYPE_BREASTFEEDING_BOTH_NIPPLE
-            )
-        ) }
-        findViewById<View>(R.id.button_nipple_right).setOnClickListener { logEvent(
-            LunaEvent(
-                LunaEvent.TYPE_BREASTFEEDING_RIGHT_NIPPLE
-            )
-        ) }
-        findViewById<View>(R.id.button_change_poo).setOnClickListener { logEvent(
-            LunaEvent(
-                LunaEvent.TYPE_DIAPERCHANGE_POO
-            )
-        ) }
-        findViewById<View>(R.id.button_change_pee).setOnClickListener { logEvent(
-            LunaEvent(
-                LunaEvent.TYPE_DIAPERCHANGE_PEE
-            )
-        ) }
+        findViewById<View>(R.id.logbooks_add_button).setOnClickListener {
+            showAddLogbookDialog(true)
+        }
+        findViewById<View>(R.id.button_bottle).setOnClickListener {
+            addBabyBottleEvent()
+        }
+        findViewById<View>(R.id.button_food).setOnClickListener {
+            addNoteEvent(LunaEvent(LunaEvent.TYPE_FOOD))
+        }
+        findViewById<View>(R.id.button_nipple_left).setOnClickListener {
+            addPlainEvent(LunaEvent(LunaEvent.TYPE_BREASTFEEDING_LEFT_NIPPLE))
+        }
+        findViewById<View>(R.id.button_nipple_both).setOnClickListener {
+            addPlainEvent(LunaEvent(LunaEvent.TYPE_BREASTFEEDING_BOTH_NIPPLE))
+        }
+        findViewById<View>(R.id.button_nipple_right).setOnClickListener {
+            addPlainEvent(LunaEvent(LunaEvent.TYPE_BREASTFEEDING_RIGHT_NIPPLE))
+        }
+        findViewById<View>(R.id.button_change_poo).setOnClickListener {
+            addPlainEvent(LunaEvent(LunaEvent.TYPE_DIAPERCHANGE_POO))
+        }
+        findViewById<View>(R.id.button_change_pee).setOnClickListener {
+            addPlainEvent(LunaEvent(LunaEvent.TYPE_DIAPERCHANGE_PEE))
+        }
         val moreButton = findViewById<View>(R.id.button_more)
         moreButton.setOnClickListener {
             showOverflowPopupWindow(moreButton)
@@ -130,9 +126,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setListAdapter(items: ArrayList<LunaEvent>) {
         val adapter = LunaEventRecyclerAdapter(this, items)
-        adapter.onItemClickListener = object: LunaEventRecyclerAdapter.OnItemClickListener {
+        adapter.onItemClickListener = object : LunaEventRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(event: LunaEvent) {
-                showEventDetailDialog(event, items)
+                showEventDetailDialog(event)
             }
         }
         recyclerView.adapter = adapter
@@ -195,118 +191,313 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
 
-    fun askBabyBottleContent() {
-        // Show number picker dialog
-        val localSettings = LocalSettingsRepository(this)
+    fun getAllEvents(): ArrayList<LunaEvent> {
+        return logbook?.logs ?: arrayListOf()
+    }
+
+    fun addBabyBottleEvent() {
+        val event = LunaEvent(LunaEvent.TYPE_BABY_BOTTLE)
+        askBabyBottleContent(event, true) {
+            saveEvent(event)
+        }
+    }
+
+    fun askBabyBottleContent(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
         val d = AlertDialog.Builder(this)
-        val dialogView = layoutInflater.inflate(R.layout.number_picker_dialog, null)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_bottle, null)
         d.setTitle(R.string.log_bottle_dialog_title)
         d.setMessage(R.string.log_bottle_dialog_description)
         d.setView(dialogView)
+
         val numberPicker = dialogView.findViewById<NumberPicker>(R.id.dialog_number_picker)
         numberPicker.minValue = 1 // "10"
         numberPicker.maxValue = 25 // "250
         numberPicker.displayedValues = ((10..250 step 10).map { it.toString() }.toTypedArray())
         numberPicker.wrapSelectorWheel = false
-        numberPicker.value = localSettings.loadBabyBottleContent()
-        d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
-            logEvent(LunaEvent(LunaEvent.TYPE_BABY_BOTTLE, numberPicker.value * 10))
-            localSettings.saveBabyBottleContent(numberPicker.value)
+        numberPicker.value = event.quantity / 10
+
+        val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
+        val pickedTime = datePickerHelper(event.time, dateTV)
+
+        if (!showTime) {
+            dateTV.visibility = View.GONE
         }
-        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i -> dialogInterface.dismiss() }
+
+        d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
+            event.time = pickedTime.time.time / 1000
+            event.quantity = numberPicker.value * 10
+            onPositive()
+            dialogInterface.dismiss()
+        }
+
+        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+
         val alertDialog = d.create()
         alertDialog.show()
     }
 
-    fun askWeightValue() {
+    fun addWeightEvent(event: LunaEvent) {
+        askWeightValue(event, true) { saveEvent(event) }
+    }
+
+    fun askWeightValue(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
         // Show number picker dialog
         val d = AlertDialog.Builder(this)
-        val dialogView = layoutInflater.inflate(R.layout.number_edit_dialog, null)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_weight, null)
         d.setTitle(R.string.log_weight_dialog_title)
         d.setMessage(R.string.log_weight_dialog_description)
         d.setView(dialogView)
+
         val weightET = dialogView.findViewById<EditText>(R.id.dialog_number_edittext)
+        weightET.setText(event.quantity.toString())
+
+        val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
+        val pickedTime = datePickerHelper(event.time, dateTV)
+
+        if (!showTime) {
+            dateTV.visibility = View.GONE
+        }
+
         d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
             val weight = weightET.text.toString().toIntOrNull()
-            if (weight != null)
-                logEvent(LunaEvent(LunaEvent.TYPE_WEIGHT, weight))
-            else
+            if (weight != null) {
+                event.time = pickedTime.time.time / 1000
+                event.quantity = weight
+                onPositive()
+            } else {
                 Toast.makeText(this, R.string.toast_integer_error, Toast.LENGTH_SHORT).show()
+            }
+
+            dialogInterface.dismiss()
         }
-        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i -> dialogInterface.dismiss() }
+
+        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+
         val alertDialog = d.create()
         alertDialog.show()
     }
 
-    fun askTemperatureValue() {
+    fun addTemperatureEvent(event: LunaEvent) {
+        askTemperatureValue(event, true) { saveEvent(event) }
+    }
+
+    fun askTemperatureValue(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
         // Show number picker dialog
         val d = AlertDialog.Builder(this)
-        val dialogView = layoutInflater.inflate(R.layout.temperature_dialog, null)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_temperature, null)
         d.setTitle(R.string.log_temperature_dialog_title)
         d.setMessage(R.string.log_temperature_dialog_description)
         d.setView(dialogView)
+
         val tempSlider = dialogView.findViewById<Slider>(R.id.dialog_temperature_value)
         val range = NumericUtils(this).getValidEventQuantityRange(LunaEvent.TYPE_TEMPERATURE)!!
         tempSlider.valueFrom = range.first.toFloat()
         tempSlider.valueTo = range.second.toFloat()
-        tempSlider.value = range.third.toFloat()
-        val tempTextView = dialogView.findViewById<TextView>(R.id.dialog_temperature_display)
-        tempTextView.text = range.third.toString()
-        tempSlider.addOnChangeListener({s, v, b -> tempTextView.text = v.toString()})
-        d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
-            val temperature = (tempSlider.value * 10).toInt()   // In tenth of a grade
-            logEvent(LunaEvent(LunaEvent.TYPE_TEMPERATURE, temperature))
+        tempSlider.value = if (event.quantity == 0) {
+            range.third.toFloat() // default
+        } else {
+            event.quantity.toFloat() / 10
         }
-        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i -> dialogInterface.dismiss() }
+
+        val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
+        val pickedTime = datePickerHelper(event.time, dateTV)
+        if (!showTime) {
+            dateTV.visibility = View.GONE
+        }
+
+        val tempTextView = dialogView.findViewById<TextView>(R.id.dialog_temperature_display)
+        tempTextView.text = tempSlider.value.toString()
+        tempSlider.addOnChangeListener({ s, v, b -> tempTextView.text = v.toString() })
+
+        d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
+            event.time = pickedTime.time.time / 1000
+            event.quantity = (tempSlider.value * 10).toInt()   // temperature in tenth of a grade
+            onPositive()
+            dialogInterface.dismiss()
+        }
+
+        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+
         val alertDialog = d.create()
         alertDialog.show()
     }
 
-    fun askPukeValue() {
+    fun datePickerHelper(time: Long, dateTextView: TextView): Calendar {
+        dateTextView.text = DateUtils.formatDateTime(time)
+
+        val dateTime = Calendar.getInstance()
+        dateTime.time = Date(time * 1000)
+        dateTextView.setOnClickListener {
+            // Show datetime picker
+            val startYear = dateTime.get(Calendar.YEAR)
+            val startMonth = dateTime.get(Calendar.MONTH)
+            val startDay = dateTime.get(Calendar.DAY_OF_MONTH)
+            val startHour = dateTime.get(Calendar.HOUR_OF_DAY)
+            val startMinute = dateTime.get(Calendar.MINUTE)
+
+            DatePickerDialog(this, { _, year, month, day ->
+                TimePickerDialog(
+                    this,
+                    { _, hour, minute ->
+                        dateTime.set(year, month, day, hour, minute)
+                        dateTextView.text = DateUtils.formatDateTime(dateTime.time.time / 1000)
+                    },
+                    startHour,
+                    startMinute,
+                    android.text.format.DateFormat.is24HourFormat(this@MainActivity)
+                ).show()
+            }, startYear, startMonth, startDay).show()
+        }
+
+        return dateTime
+    }
+
+    fun saveEvent(event: LunaEvent) {
+        if (!getAllEvents().contains(event)) {
+            // new event
+            logEvent(event)
+        }
+
+        logbook?.sort()
+        recyclerView.adapter?.notifyDataSetChanged()
+        saveLogbook()
+    }
+
+    fun addPukeEvent(event: LunaEvent) {
+        askPukeValue(event, true) { saveEvent(event) }
+    }
+
+    fun askPukeValue(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
         val d = AlertDialog.Builder(this)
-        val dialogView = layoutInflater.inflate(R.layout.puke_dialog, null)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_puke, null)
         d.setTitle(R.string.log_puke_dialog_title)
         d.setMessage(R.string.log_puke_dialog_description)
         d.setView(dialogView)
 
         val spinner = dialogView.findViewById<Spinner>(R.id.dialog_puke_value)
-        spinner.adapter = ArrayAdapter.createFromResource(this, R.array.AmountLabels, android.R.layout.simple_spinner_dropdown_item)
-        spinner.setSelection(1)
+        spinner.adapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.AmountLabels,
+            android.R.layout.simple_spinner_dropdown_item
+        )
+        spinner.setSelection(event.quantity - 1)
+
+        val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
+        val pickedTime = datePickerHelper(event.time, dateTV)
+        if (!showTime) {
+            dateTV.visibility = View.GONE
+        }
 
         d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
-            val pos = spinner.selectedItemPosition
-            logEvent(LunaEvent(LunaEvent.TYPE_PUKE, pos + 1))
+            event.time = pickedTime.time.time / 1000
+            event.quantity = spinner.selectedItemPosition + 1
+            onPositive()
+            dialogInterface.dismiss()
         }
-        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i -> dialogInterface.dismiss() }
+
+        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+
         val alertDialog = d.create()
         alertDialog.show()
     }
 
-    fun askNotes(lunaEvent: LunaEvent) {
+    fun addPlainEvent(event: LunaEvent) {
+        askDateValue(event, true) { saveEvent(event) }
+    }
+
+    // Ask to edit events to be edited (only affects date)
+    fun askDateValue(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
         val d = AlertDialog.Builder(this)
-        val dialogView = layoutInflater.inflate(R.layout.dialog_notes, null)
-        d.setTitle(lunaEvent.getTypeDescription(this))
-        d.setMessage(lunaEvent.getDialogMessage(this))
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_plain, null)
+        d.setTitle(event.getTypeDescription(this))
+        d.setMessage(event.getDialogMessage(this))
+        d.setView(dialogView)
+
+        val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
+        val pickedDateTime = datePickerHelper(event.time, dateTV)
+        if (!showTime) {
+            dateTV.visibility = View.GONE
+        }
+
+        d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
+            event.time = pickedDateTime.time.time / 1000
+            onPositive()
+            dialogInterface.dismiss()
+        }
+
+        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+
+        val alertDialog = d.create()
+        alertDialog.show()
+    }
+
+    fun addNoteEvent(event: LunaEvent) {
+        askNotes(event, true) { saveEvent(event) }
+    }
+
+    fun askNotes(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
+        val useQuantity = (event.type != LunaEvent.TYPE_NOTE && event.type != LunaEvent.TYPE_CUSTOM)
+
+        val d = AlertDialog.Builder(this)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_notes, null)
+        d.setTitle(event.getTypeDescription(this))
+        d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
         val notesET = dialogView.findViewById<EditText>(R.id.notes_edittext)
         val qtyET = dialogView.findViewById<EditText>(R.id.notes_qty_edittext)
-        if (lunaEvent.type == LunaEvent.TYPE_NOTE || lunaEvent.type == LunaEvent.TYPE_CUSTOM)
-            qtyET.visibility = View.GONE
-        d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
-            val qtyStr = qtyET.text.toString()
-            if (qtyStr.isNotEmpty()) {
-                val qty = qtyStr.toIntOrNull()
-                if (qty == null) {
-                    Toast.makeText(this, R.string.toast_integer_error, Toast.LENGTH_SHORT).show()
-                    return@setPositiveButton
-                }
-                lunaEvent.quantity = qty
-            }
-            val notes = notesET.text.toString()
-            lunaEvent.notes = notes
-            logEvent(lunaEvent)
+
+        val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
+        val pickedTime = datePickerHelper(event.time, dateTV)
+
+        if (!showTime) {
+            dateTV.visibility = View.GONE
         }
-        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i -> dialogInterface.dismiss() }
+
+        notesET.setText(event.notes)
+
+        if (useQuantity) {
+            qtyET.setText(event.quantity.toString())
+        } else {
+            qtyET.visibility = View.GONE
+        }
+
+        d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
+            val notes = notesET.text.toString()
+
+            if (useQuantity) {
+                val quantity = qtyET.text.toString().toIntOrNull()
+                if (quantity != null) {
+                    event.time = pickedTime.time.time / 1000
+                    event.notes = notes
+                    event.quantity = quantity
+                    onPositive()
+                } else {
+                    Toast.makeText(this, R.string.toast_integer_error, Toast.LENGTH_SHORT).show()
+                }
+
+            } else {
+                event.time = pickedTime.time.time / 1000
+                event.notes = notes
+                onPositive()
+            }
+
+            dialogInterface.dismiss()
+        }
+
+        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+
         val alertDialog = d.create()
         alertDialog.show()
     }
@@ -359,55 +550,83 @@ class MainActivity : AppCompatActivity() {
         return nextEvent
     }
 
-    fun showEventDetailDialog(event: LunaEvent, items: ArrayList<LunaEvent>) {
+    fun showEventDetailDialog(originalEvent: LunaEvent) {
+        val event = LunaEvent(originalEvent)
+
         // Do not update list while the detail is shown, to avoid changing the object below while it is changed by the user
         pauseLogbookUpdate = true
+
         val d = AlertDialog.Builder(this)
         d.setTitle(R.string.dialog_event_detail_title)
-        val dialogView = layoutInflater.inflate(R.layout.dialog_event_detail, null)
-        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_emoji).text = event.getTypeEmoji(this)
-        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_description).text = event.getTypeDescription(this)
-        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_quantity).text =
-            NumericUtils(this).formatEventQuantity(event)
-        dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_notes).text = event.notes
 
-        val currentDateTime = Calendar.getInstance()
-        currentDateTime.time = Date(event.time * 1000)
-
+        val dialogView = layoutInflater.inflate(R.layout.dialog_event_details, null)
+        val emojiTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_emoji)
+        val descriptionTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_description)
         val dateTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_date)
-        dateTextView.text = String.format(getString(R.string.dialog_event_detail_datetime_icon), DateUtils.formatDateTime(event.time))
-        dateTextView.setOnClickListener {
-            // Show datetime picker
-            val startYear = currentDateTime.get(Calendar.YEAR)
-            val startMonth = currentDateTime.get(Calendar.MONTH)
-            val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
-            val startHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
-            val startMinute = currentDateTime.get(Calendar.MINUTE)
+        val quantityTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_quantity)
+        val notesTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_notes)
 
-            DatePickerDialog(this, { _, year, month, day ->
-                TimePickerDialog(this, { _, hour, minute ->
-                    val pickedDateTime = Calendar.getInstance()
-                    pickedDateTime.set(year, month, day, hour, minute)
-                    // Save event and move it to the right position in the logbook
-                    event.time = pickedDateTime.time.time / 1000 // Seconds since epoch
-                    dateTextView.text = String.format(getString(R.string.dialog_event_detail_datetime_icon), DateUtils.formatDateTime(event.time))
-                    logbook?.sort()
-                    recyclerView.adapter?.notifyDataSetChanged()
-                    saveLogbook()
-                }, startHour, startMinute, android.text.format.DateFormat.is24HourFormat(this@MainActivity)).show()
-            }, startYear, startMonth, startDay).show()
+        emojiTextView.text = event.getTypeEmoji(this)
+        descriptionTextView.text = event.getTypeDescription(this)
+
+        val pickedTime = datePickerHelper(event.time, dateTextView)
+        val updateValues = {
+            quantityTextView.text = NumericUtils(this).formatEventQuantity(event)
+            notesTextView.text = event.notes
+        }
+        updateValues()
+
+        quantityTextView.setOnClickListener {
+            when (event.type) {
+                LunaEvent.TYPE_BABY_BOTTLE -> askBabyBottleContent(event, false, updateValues)
+                LunaEvent.TYPE_WEIGHT -> askWeightValue(event, false, updateValues)
+                LunaEvent.TYPE_PUKE -> askPukeValue(event, false, updateValues)
+                LunaEvent.TYPE_TEMPERATURE -> askTemperatureValue(event, false, updateValues)
+                LunaEvent.TYPE_NOTE -> askNotes(event, false, updateValues)
+            }
+        }
+
+        notesTextView.setOnClickListener {
+            when (event.type) {
+                LunaEvent.TYPE_FOOD,
+                LunaEvent.TYPE_MEDICINE,
+                LunaEvent.TYPE_NOTE -> askNotes(event, false, updateValues)
+            }
         }
 
         d.setView(dialogView)
-        d.setPositiveButton(R.string.dialog_event_detail_close_button) { dialogInterface, i -> dialogInterface.dismiss() }
-        d.setNeutralButton(R.string.dialog_event_detail_delete_button) { dialogInterface, i -> deleteEvent(event) }
+
+        d.setNeutralButton(R.string.dialog_event_detail_delete_button) { dialogInterface, i ->
+            deleteEvent(originalEvent)
+            dialogInterface.dismiss()
+        }
+
+        d.setPositiveButton(R.string.dialog_event_detail_close_button) { dialogInterface, i ->
+            event.time = pickedTime.time.time / 1000
+
+            if (event.time != originalEvent.time
+                    || event.quantity != originalEvent.quantity
+                    || event.notes != originalEvent.notes) {
+                originalEvent.time = event.time
+                originalEvent.quantity = event.quantity
+                originalEvent.notes = event.notes
+                saveEvent(originalEvent)
+            }
+
+            dialogInterface.dismiss()
+        }
+
         val alertDialog = d.create()
         alertDialog.show()
-        alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(ContextCompat.getColor(this, R.color.danger))
-        alertDialog.setOnDismissListener({
+
+        alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(
+            ContextCompat.getColor(this, R.color.danger)
+        )
+
+        alertDialog.setOnDismissListener {
             // Resume logbook update
             pauseLogbookUpdate = false
-        })
+        }
 
         // show optional signature
         if (event.signature.isNotEmpty()) {
@@ -416,32 +635,33 @@ class MainActivity : AppCompatActivity() {
             signatureTextEdit.visibility = View.VISIBLE
         }
 
-        // create next/previous links to events of the same type
+        val allEvents = getAllEvents()
 
+        // create link to prevent event of the same type
         val previousTextView = dialogView.findViewById<TextView>(R.id.dialog_event_previous)
-        val nextTextView = dialogView.findViewById<TextView>(R.id.dialog_event_next)
-        val nextEvent = getNextSameEvent(event, items)
-        val previousEvent = getPreviousSameEvent(event, items)
-
+        val previousEvent = getPreviousSameEvent(event, allEvents)
         if (previousEvent != null) {
             val emoji = previousEvent.getTypeEmoji(applicationContext)
             val time = DateUtils.formatTimeDuration(applicationContext, event.time - previousEvent.time)
             previousTextView.text = String.format("⬅️ %s %s", emoji, time)
             previousTextView.setOnClickListener {
                 alertDialog.cancel()
-                showEventDetailDialog(previousEvent, items)
+                showEventDetailDialog(previousEvent)
             }
         } else {
             previousTextView.visibility = View.GONE
         }
 
+        // create link to next event of the same type
+        val nextTextView = dialogView.findViewById<TextView>(R.id.dialog_event_next)
+        val nextEvent = getNextSameEvent(event, allEvents)
         if (nextEvent != null) {
             val emoji = nextEvent.getTypeEmoji(applicationContext)
             val time = DateUtils.formatTimeDuration(applicationContext, nextEvent.time - event.time)
             nextTextView.text = String.format("%s %s ➡️", time, emoji)
             nextTextView.setOnClickListener {
                 alertDialog.cancel()
-                showEventDetailDialog(nextEvent, items)
+                showEventDetailDialog(nextEvent)
             }
         } else {
             nextTextView.visibility = View.GONE
@@ -801,41 +1021,37 @@ class MainActivity : AppCompatActivity() {
             val inflater = LayoutInflater.from(anchor.context)
             contentView = inflater.inflate(R.layout.more_events_popup, null)
             contentView.findViewById<View>(R.id.button_medicine).setOnClickListener {
-                askNotes(LunaEvent(LunaEvent.TYPE_MEDICINE))
+                addNoteEvent(LunaEvent(LunaEvent.TYPE_MEDICINE))
                 dismiss()
             }
-            contentView.findViewById<View>(R.id.button_enema).setOnClickListener({
-                logEvent(LunaEvent(LunaEvent.TYPE_ENEMA))
+            contentView.findViewById<View>(R.id.button_enema).setOnClickListener {
+                addPlainEvent(LunaEvent(LunaEvent.TYPE_ENEMA))
                 dismiss()
-            })
-            contentView.findViewById<View>(R.id.button_note).setOnClickListener({
-                askNotes(LunaEvent(LunaEvent.TYPE_NOTE))
+            }
+            contentView.findViewById<View>(R.id.button_note).setOnClickListener {
+                addNoteEvent(LunaEvent(LunaEvent.TYPE_NOTE))
                 dismiss()
-            })
-            contentView.findViewById<View>(R.id.button_temperature).setOnClickListener({
-                askTemperatureValue()
+            }
+            contentView.findViewById<View>(R.id.button_temperature).setOnClickListener {
+                addTemperatureEvent(LunaEvent(LunaEvent.TYPE_TEMPERATURE))
                 dismiss()
-            })
-            contentView.findViewById<View>(R.id.button_puke).setOnClickListener({
-                askPukeValue()
+            }
+            contentView.findViewById<View>(R.id.button_puke).setOnClickListener {
+                addPukeEvent(LunaEvent(LunaEvent.TYPE_PUKE, 1))
                 dismiss()
-            })
-            contentView.findViewById<View>(R.id.button_colic).setOnClickListener({
-                logEvent(
-                    LunaEvent(LunaEvent.TYPE_COLIC)
-                )
+            }
+            contentView.findViewById<View>(R.id.button_colic).setOnClickListener {
+                addPlainEvent(LunaEvent(LunaEvent.TYPE_COLIC))
                 dismiss()
-            })
-            contentView.findViewById<View>(R.id.button_scale).setOnClickListener({
-                askWeightValue()
+            }
+            contentView.findViewById<View>(R.id.button_scale).setOnClickListener {
+                addWeightEvent(LunaEvent(LunaEvent.TYPE_WEIGHT))
                 dismiss()
-            })
-            contentView.findViewById<View>(R.id.button_bath).setOnClickListener({
-                logEvent(
-                    LunaEvent(LunaEvent.TYPE_BATH)
-                )
+            }
+            contentView.findViewById<View>(R.id.button_bath).setOnClickListener {
+                addPlainEvent(LunaEvent(LunaEvent.TYPE_BATH))
                 dismiss()
-            })
+            }
         }.also { popupWindow ->
             popupWindow.setOnDismissListener({
                 Handler(mainLooper).postDelayed({
