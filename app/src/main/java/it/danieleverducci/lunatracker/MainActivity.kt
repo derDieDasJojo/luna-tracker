@@ -128,6 +128,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getAllEvents(): ArrayList<LunaEvent> {
+        return logbook?.logs ?: arrayListOf()
+    }
+
     private fun setListAdapter(items: ArrayList<LunaEvent>) {
         val adapter = LunaEventRecyclerAdapter(this, items)
         adapter.onItemClickListener = object: LunaEventRecyclerAdapter.OnItemClickListener {
@@ -283,6 +287,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun askNotes(lunaEvent: LunaEvent) {
+        val allEvents = getAllEvents()
+        val useQuantity = (lunaEvent.type != LunaEvent.TYPE_NOTE && lunaEvent.type != LunaEvent.TYPE_CUSTOM)
+
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_notes, null)
         d.setTitle(lunaEvent.getTypeDescription(this))
@@ -290,11 +297,61 @@ class MainActivity : AppCompatActivity() {
         d.setView(dialogView)
         val notesET = dialogView.findViewById<EditText>(R.id.notes_edittext)
         val qtyET = dialogView.findViewById<EditText>(R.id.notes_qty_edittext)
-        if (lunaEvent.type == LunaEvent.TYPE_NOTE || lunaEvent.type == LunaEvent.TYPE_CUSTOM)
+
+        val nextTextView = dialogView.findViewById<TextView>(R.id.notes_template_next)
+        val prevTextView = dialogView.findViewById<TextView>(R.id.notes_template_prev)
+
+        fun updateContent(current: LunaEvent) {
+            val prevEvent = getPreviousSameEvent(current, allEvents)
+            var nextEvent = getNextSameEvent(current, allEvents)
+
+            notesET.setText(current.notes)
+            if (useQuantity) {
+                qtyET.setText(current.quantity.toString())
+            }
+
+            if (nextEvent == null && current != lunaEvent) {
+                nextEvent = lunaEvent
+            }
+
+            if (nextEvent != null) {
+                nextTextView.setOnClickListener {
+                    notesET.setText(nextEvent.notes)
+                    if (useQuantity) {
+                        qtyET.setText(nextEvent.quantity.toString())
+                    }
+                    updateContent(nextEvent)
+                }
+                nextTextView.alpha = 1.0f
+            } else {
+                nextTextView.setOnClickListener {}
+                nextTextView.alpha = 0.5f
+            }
+
+            if (prevEvent != null) {
+                prevTextView.setOnClickListener {
+                    notesET.setText(prevEvent.notes)
+                    if (useQuantity) {
+                        qtyET.setText(prevEvent.quantity.toString())
+                    }
+                    updateContent(prevEvent)
+                }
+                prevTextView.alpha = 1.0f
+            } else {
+                prevTextView.setOnClickListener {}
+                prevTextView.alpha = 0.5f
+            }
+        }
+
+        if (!useQuantity) {
             qtyET.visibility = View.GONE
+        }
+
+        updateContent(lunaEvent)
+
         d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
             val qtyStr = qtyET.text.toString()
-            if (qtyStr.isNotEmpty()) {
+            if (qtyStr.isNotEmpty() && useQuantity) {
                 val qty = qtyStr.toIntOrNull()
                 if (qty == null) {
                     Toast.makeText(this, R.string.toast_integer_error, Toast.LENGTH_SHORT).show()
