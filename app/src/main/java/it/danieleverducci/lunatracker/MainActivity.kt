@@ -465,6 +465,52 @@ class MainActivity : AppCompatActivity() {
             dateTV.visibility = View.GONE
         }
 
+        val nextTextView = dialogView.findViewById<TextView>(R.id.notes_template_next)
+        val prevTextView = dialogView.findViewById<TextView>(R.id.notes_template_prev)
+
+        fun updateContent(current: LunaEvent) {
+            val allEvents = getAllEvents()
+            val prevEvent = getPreviousSameEvent(current, allEvents)
+            var nextEvent = getNextSameEvent(current, allEvents)
+
+            notesET.setText(current.notes)
+            if (useQuantity) {
+                qtyET.setText(current.quantity.toString())
+            }
+
+            if (nextEvent == null && current != event) {
+                nextEvent = event
+            }
+
+            if (nextEvent != null) {
+                nextTextView.setOnClickListener {
+                    notesET.setText(nextEvent.notes)
+                    if (useQuantity) {
+                        qtyET.setText(nextEvent.quantity.toString())
+                    }
+                    updateContent(nextEvent)
+                }
+                nextTextView.alpha = 1.0f
+            } else {
+                nextTextView.setOnClickListener {}
+                nextTextView.alpha = 0.5f
+            }
+
+            if (prevEvent != null) {
+                prevTextView.setOnClickListener {
+                    notesET.setText(prevEvent.notes)
+                    if (useQuantity) {
+                        qtyET.setText(prevEvent.quantity.toString())
+                    }
+                    updateContent(prevEvent)
+                }
+                prevTextView.alpha = 1.0f
+            } else {
+                prevTextView.setOnClickListener {}
+                prevTextView.alpha = 0.5f
+            }
+        }
+
         notesET.setText(event.notes)
 
         if (useQuantity) {
@@ -472,6 +518,8 @@ class MainActivity : AppCompatActivity() {
         } else {
             qtyET.visibility = View.GONE
         }
+
+        updateContent(event)
 
         d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
             val notes = notesET.text.toString()

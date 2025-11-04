@@ -24,6 +24,29 @@
         android:hint="@string/log_notes_dialog_note_hint"
         android:background="@drawable/textview_background"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/notes_template_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="⬅️"/>
+
+        <TextView
+            android:id="@+id/notes_template_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="➡️"/>
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/dialog_date_picker"
         android:layout_width="wrap_content"
