@@ -3,6 +3,7 @@ package utils
 import android.content.Context
 import android.icu.util.LocaleData
 import android.icu.util.ULocale
+import android.os.Build
 import it.danieleverducci.lunatracker.R
 import it.danieleverducci.lunatracker.entities.LunaEvent
 import java.text.NumberFormat
@@ -14,29 +15,45 @@ class NumericUtils (val context: Context) {
     val measurement_unit_weight_tiny: String
     val measurement_unit_temperature_base: String
 
+    private fun isMetricSystem(): Boolean {
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val measurementSystem = LocaleData.getMeasurementSystem(ULocale.getDefault())
+            return (measurementSystem == LocaleData.MeasurementSystem.SI)
+       } else {
+            val locale = context.resources.configuration.locale
+            return when (locale.country) {
+                // https://en.wikipedia.org/wiki/United_States_customary_units
+                // https://en.wikipedia.org/wiki/Imperial_units
+                "US" -> false // US IMPERIAL
+                // UK, Myanmar, Liberia,
+                "GB", "MM", "LR" -> false // IMPERIAL
+                else -> true // METRIC
+            }
+       }
+    }
+
     init {
         this.numberFormat = NumberFormat.getInstance()
-        val measurementSystem = LocaleData.getMeasurementSystem(ULocale.getDefault())
         this.measurement_unit_liquid_base = context.getString(
-            if (measurementSystem == LocaleData. MeasurementSystem.SI)
+            if (isMetricSystem())
                 R.string.measurement_unit_liquid_base_metric
             else
                 R.string.measurement_unit_liquid_base_imperial
         )
         this.measurement_unit_weight_base = context.getString(
-            if (measurementSystem == LocaleData. MeasurementSystem.SI)
+            if (isMetricSystem())
                 R.string.measurement_unit_weight_base_metric
             else
                 R.string.measurement_unit_weight_base_imperial
         )
         this.measurement_unit_weight_tiny = context.getString(
-            if (measurementSystem == LocaleData. MeasurementSystem.SI)
+            if (isMetricSystem())
                 R.string.measurement_unit_weight_tiny_metric
             else
                 R.string.measurement_unit_weight_tiny_imperial
         )
         this.measurement_unit_temperature_base = context.getString(
-            if (measurementSystem == LocaleData. MeasurementSystem.SI)
+            if (isMetricSystem())
                 R.string.measurement_unit_temperature_base_metric
             else
                 R.string.measurement_unit_temperature_base_imperial
@@ -45,11 +62,15 @@ class NumericUtils (val context: Context) {
 
     fun formatEventQuantity(item: LunaEvent): String {
         val formatted = StringBuilder()
-        if ((item.quantity ?: 0) > 0) {
-            if (item.type == LunaEvent.TYPE_TEMPERATURE)
-                formatted.append((item.quantity / 10.0f).toString())
-            else
-                formatted.append(item.quantity)
+        if (item.quantity > 0) {
+            formatted.append(when (item.type) {
+                LunaEvent.TYPE_TEMPERATURE ->
+                    (item.quantity / 10.0f).toString()
+                LunaEvent.TYPE_PUKE ->
+                    context.resources.getStringArray(R.array.AmountLabels)[item.quantity]
+                else ->
+                    item.quantity
+            })
 
             formatted.append(" ")
             formatted.append(
@@ -70,10 +91,9 @@ class NumericUtils (val context: Context) {
      * @return min, max, normal
      */
     fun getValidEventQuantityRange(lunaEventType: String): Triple<Int, Int, Int>? {
-        val measurementSystem = LocaleData.getMeasurementSystem(ULocale.getDefault())
         return when (lunaEventType) {
             LunaEvent.TYPE_TEMPERATURE -> {
-                if (measurementSystem == LocaleData. MeasurementSystem.SI)
+                if (isMetricSystem())
                     Triple(
                         context.resources.getInteger(R.integer.human_body_temp_min_metric),
                         context.resources.getInteger(R.integer.human_body_temp_max_metric),

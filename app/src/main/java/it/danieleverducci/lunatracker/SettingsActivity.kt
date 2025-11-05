@@ -2,6 +2,7 @@ package it.danieleverducci.lunatracker
 
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +25,7 @@ open class SettingsActivity : AppCompatActivity() {
     protected lateinit var textViewWebDAVPass: TextView
     protected lateinit var progressIndicator: LinearProgressIndicator
     protected lateinit var switchNoBreastfeeding: SwitchMaterial
+    protected lateinit var textViewSignature: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,7 @@ open class SettingsActivity : AppCompatActivity() {
         textViewWebDAVPass = findViewById(R.id.settings_data_webdav_pass)
         progressIndicator = findViewById(R.id.progress_indicator)
         switchNoBreastfeeding = findViewById(R.id.switch_no_breastfeeding)
+        textViewSignature = findViewById(R.id.settings_signature)
 
         findViewById<View>(R.id.settings_save).setOnClickListener({
             validateAndSave()
@@ -52,18 +55,20 @@ open class SettingsActivity : AppCompatActivity() {
         val dataRepo = settingsRepository.loadDataRepository()
         val webDavCredentials = settingsRepository.loadWebdavCredentials()
         val noBreastfeeding = settingsRepository.loadNoBreastfeeding()
+        val signature = settingsRepository.loadSignature()
 
         when (dataRepo) {
             LocalSettingsRepository.DATA_REPO.LOCAL_FILE -> radioDataLocal.isChecked = true
             LocalSettingsRepository.DATA_REPO.WEBDAV -> radioDataWebDAV.isChecked = true
         }
 
+        textViewSignature.setText(signature)
         switchNoBreastfeeding.isChecked = noBreastfeeding
 
         if (webDavCredentials != null) {
-            textViewWebDAVUrl.setText(webDavCredentials[0])
-            textViewWebDAVUser.setText(webDavCredentials[1])
-            textViewWebDAVPass.setText(webDavCredentials[2])
+            textViewWebDAVUrl.text = webDavCredentials[0]
+            textViewWebDAVUser.text = webDavCredentials[1]
+            textViewWebDAVPass.text = webDavCredentials[2]
         }
     }
 
@@ -156,6 +161,7 @@ open class SettingsActivity : AppCompatActivity() {
             else LocalSettingsRepository.DATA_REPO.LOCAL_FILE
         )
         settingsRepository.saveNoBreastfeeding(switchNoBreastfeeding.isChecked)
+        settingsRepository.saveSignature(textViewSignature.text.toString())
         settingsRepository.saveWebdavCredentials(
             textViewWebDAVUrl.text.toString(),
             textViewWebDAVUser.text.toString(),
@@ -170,7 +176,7 @@ open class SettingsActivity : AppCompatActivity() {
      */
     private fun copyLocalLogbooksToWebdav(webDAVLogbookRepository: WebDAVLogbookRepository, listener: OnCopyLocalLogbooksToWebdavFinishedListener) {
         Thread(Runnable {
-            var errors = StringBuilder()
+            val errors = StringBuilder()
             val fileLogbookRepo = FileLogbookRepository()
             val logbooks = fileLogbookRepo.getAllLogbooks(this)
             for (logbook in logbooks) {

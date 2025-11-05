@@ -7,13 +7,14 @@ import androidx.core.content.edit
 
 class LocalSettingsRepository(val context: Context) {
     companion object {
-        val SHARED_PREFS_FILE_NAME = "lunasettings"
-        val SHARED_PREFS_BB_CONTENT = "bbcontent"
-        val SHARED_PREFS_DATA_REPO = "data_repo"
-        val SHARED_PREFS_DAV_URL = "webdav_url"
-        val SHARED_PREFS_DAV_USER = "webdav_user"
-        val SHARED_PREFS_DAV_PASS = "webdav_password"
-        val SHARED_PREFS_NO_BREASTFEEDING = "no_breastfeeding"
+        const val SHARED_PREFS_FILE_NAME = "lunasettings"
+        const val SHARED_PREFS_BB_CONTENT = "bbcontent"
+        const val SHARED_PREFS_DATA_REPO = "data_repo"
+        const val SHARED_PREFS_DAV_URL = "webdav_url"
+        const val SHARED_PREFS_DAV_USER = "webdav_user"
+        const val SHARED_PREFS_DAV_PASS = "webdav_password"
+        const val SHARED_PREFS_NO_BREASTFEEDING = "no_breastfeeding"
+        const val SHARED_PREFS_SIGNATURE = "signature"
     }
     enum class DATA_REPO {LOCAL_FILE, WEBDAV}
     val sharedPreferences: SharedPreferences
@@ -23,15 +24,23 @@ class LocalSettingsRepository(val context: Context) {
     }
 
     fun saveBabyBottleContent(content: Int) {
-        sharedPreferences.edit().putInt(SHARED_PREFS_BB_CONTENT, content).apply()
+        sharedPreferences.edit { putInt(SHARED_PREFS_BB_CONTENT, content) }
     }
 
     fun loadBabyBottleContent(): Int {
         return sharedPreferences.getInt(SHARED_PREFS_BB_CONTENT, 1)
     }
 
+    fun saveSignature(content: String) {
+        sharedPreferences.edit { putString(SHARED_PREFS_SIGNATURE, content) }
+    }
+
+    fun loadSignature(): String {
+        return sharedPreferences.getString(SHARED_PREFS_SIGNATURE, "") ?: ""
+    }
+
     fun saveNoBreastfeeding(content: Boolean) {
-        sharedPreferences.edit().putBoolean(SHARED_PREFS_NO_BREASTFEEDING, content).apply()
+        sharedPreferences.edit { putBoolean(SHARED_PREFS_NO_BREASTFEEDING, content) }
     }
 
     fun loadNoBreastfeeding(): Boolean {
@@ -39,15 +48,15 @@ class LocalSettingsRepository(val context: Context) {
     }
 
     fun saveDataRepository(repo: DATA_REPO) {
-        val spe = sharedPreferences.edit()
-        spe.putString(
-            SHARED_PREFS_DATA_REPO,
-            when (repo) {
-                DATA_REPO.WEBDAV -> "webdav"
-                DATA_REPO.LOCAL_FILE -> "localfile"
-            }
-        )
-        spe.commit()
+        sharedPreferences.edit(commit = true) {
+            putString(
+                SHARED_PREFS_DATA_REPO,
+                when (repo) {
+                    DATA_REPO.WEBDAV -> "webdav"
+                    DATA_REPO.LOCAL_FILE -> "localfile"
+                }
+            )
+        }
     }
 
     fun loadDataRepository(): DATA_REPO {
@@ -60,11 +69,11 @@ class LocalSettingsRepository(val context: Context) {
     }
 
     fun saveWebdavCredentials(url: String, username: String, password: String) {
-        val spe = sharedPreferences.edit()
-        spe.putString(SHARED_PREFS_DAV_URL, url)
-        spe.putString(SHARED_PREFS_DAV_USER, username)
-        spe.putString(SHARED_PREFS_DAV_PASS, password)
-        spe.commit()
+        sharedPreferences.edit(commit = true) {
+            putString(SHARED_PREFS_DAV_URL, url)
+            putString(SHARED_PREFS_DAV_USER, username)
+            putString(SHARED_PREFS_DAV_PASS, password)
+        }
     }
 
     fun loadWebdavCredentials(): Array<String>? {

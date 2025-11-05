@@ -28,6 +28,8 @@ class LunaEvent: Comparable<LunaEvent> {
         const val TYPE_COLIC = "COLIC"
         const val TYPE_TEMPERATURE = "TEMPERATURE"
         const val TYPE_FOOD = "FOOD"
+        const val TYPE_PUKE = "PUKE"
+        const val TYPE_BATH = "BATH"
     }
 
     private val jo: JSONObject
@@ -52,6 +54,12 @@ class LunaEvent: Comparable<LunaEvent> {
         get(): String = jo.optString("notes")
         set(value) {
             jo.put("notes", value)
+        }
+    var signature: String
+        get(): String = jo.optString("signature")
+        set(value) {
+            if (value.isNotEmpty())
+                jo.put("signature", value)
         }
 
     constructor(jo: JSONObject) {
@@ -90,6 +98,8 @@ class LunaEvent: Comparable<LunaEvent> {
                 TYPE_TEMPERATURE -> R.string.event_temperature_type
                 TYPE_COLIC -> R.string.event_colic_type
                 TYPE_FOOD -> R.string.event_food_type
+                TYPE_PUKE -> R.string.event_puke_type
+                TYPE_BATH -> R.string.event_bath_type
                 else -> R.string.event_unknown_type
             }
         )
@@ -111,6 +121,8 @@ class LunaEvent: Comparable<LunaEvent> {
                 TYPE_TEMPERATURE -> R.string.event_temperature_desc
                 TYPE_COLIC -> R.string.event_colic_desc
                 TYPE_FOOD -> R.string.event_food_desc
+                TYPE_PUKE -> R.string.event_puke_desc
+                TYPE_BATH -> R.string.event_bath_desc
                 else -> R.string.event_unknown_desc
             }
         )
@@ -128,7 +140,7 @@ class LunaEvent: Comparable<LunaEvent> {
     }
 
     override fun toString(): String {
-        return "${type} qty: $quantity time: ${Date(time * 1000)}"
+        return "$type qty: $quantity time: ${Date(time * 1000)}"
     }
 
     override fun compareTo(other: LunaEvent): Int {
