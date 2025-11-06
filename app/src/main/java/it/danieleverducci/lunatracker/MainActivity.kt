@@ -275,7 +275,7 @@ class MainActivity : AppCompatActivity() {
 
         d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
             val pos = spinner.selectedItemPosition
-            logEvent(LunaEvent(LunaEvent.TYPE_PUKE, pos))
+            logEvent(LunaEvent(LunaEvent.TYPE_PUKE, pos + 1))
         }
         d.setNegativeButton(android.R.string.cancel) { dialogInterface, i -> dialogInterface.dismiss() }
         val alertDialog = d.create()
