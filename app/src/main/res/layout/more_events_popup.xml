@@ -11,9 +11,20 @@
         android:orientation="vertical">
 
             <TextView
+                android:id="@+id/button_statistics"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:background="@drawable/dropdown_list_item_background"
+                style="@style/OverflowMenuText"
+                android:text="📊 Statistics"/>
+
+            <TextView
                 android:id="@+id/button_medicine"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:padding="10dp"
                 android:background="@drawable/dropdown_list_item_background"
                 style="@style/OverflowMenuText"
