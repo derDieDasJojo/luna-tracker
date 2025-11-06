@@ -67,7 +67,7 @@ class NumericUtils (val context: Context) {
                 LunaEvent.TYPE_TEMPERATURE ->
                     (item.quantity / 10.0f).toString()
                 LunaEvent.TYPE_PUKE ->
-                    context.resources.getStringArray(R.array.AmountLabels)[item.quantity]
+                    context.resources.getStringArray(R.array.AmountLabels)[item.quantity - 1]
                 else ->
                     item.quantity
             })
