@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -50,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         const val TAG = "MainActivity"
         const val UPDATE_EVERY_SECS: Long = 30
         const val DEBUG_CHECK_LOGBOOK_CONSISTENCY = false
+        // list of all events
+        var allEvents = arrayListOf<LunaEvent>()
     }
 
     var logbook: Logbook? = null
@@ -145,7 +148,8 @@ class MainActivity : AppCompatActivity() {
         if (logbook == null)
             Log.w(TAG, "showLogbook(): logbook is null!")
 
-        setListAdapter(logbook?.logs ?: arrayListOf())
+        allEvents = logbook?.logs ?: arrayListOf()
+        setListAdapter(allEvents)
     }
 
     override fun onStart() {
@@ -190,10 +194,6 @@ class MainActivity : AppCompatActivity() {
         handler.removeCallbacks(updateListRunnable)
 
         super.onStop()
-    }
-
-    fun getAllEvents(): ArrayList<LunaEvent> {
-        return logbook?.logs ?: arrayListOf()
     }
 
     fun addBabyBottleEvent(event: LunaEvent) {
@@ -363,7 +363,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun saveEvent(event: LunaEvent) {
-        if (!getAllEvents().contains(event)) {
+        if (!allEvents.contains(event)) {
             // new event
             logEvent(event)
         }
@@ -557,7 +557,7 @@ class MainActivity : AppCompatActivity() {
 
         val nextTextView = dialogView.findViewById<TextView>(R.id.notes_template_next)
         val prevTextView = dialogView.findViewById<TextView>(R.id.notes_template_prev)
-        val templates = getAllEvents().filter { it.type == event.type }.distinctBy { it.notes }.sortedBy { it.time }
+        val templates = allEvents.filter { it.type == event.type }.distinctBy { it.notes }.sortedBy { it.time }
 
         fun updateContent(current: LunaEvent) {
             val prevEvent = getPreviousSameEvent(current, templates)
@@ -663,7 +663,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setToPreviousQuantity(event: LunaEvent) {
-        val prev = getPreviousSameEvent(event, getAllEvents())
+        val prev = getPreviousSameEvent(event, allEvents)
         if (prev != null) {
             event.quantity = prev.quantity
         }
@@ -807,8 +807,6 @@ class MainActivity : AppCompatActivity() {
             signatureTextEdit.text =  String.format(getString(R.string.dialog_event_detail_signature), event.signature)
             signatureTextEdit.visibility = View.VISIBLE
         }
-
-        val allEvents = getAllEvents()
 
         // create link to prevent event of the same type
         val previousTextView = dialogView.findViewById<TextView>(R.id.dialog_event_previous)
@@ -1227,6 +1225,16 @@ class MainActivity : AppCompatActivity() {
             }
             contentView.findViewById<View>(R.id.button_bath).setOnClickListener {
                 addPlainEvent(LunaEvent(LunaEvent.TYPE_BATH))
+                dismiss()
+            }
+            contentView.findViewById<View>(R.id.button_statistics).setOnClickListener {
+                if (logbook != null && !pauseLogbookUpdate) {
+                    val i = Intent(applicationContext, StatisticsActivity::class.java)
+                    i.putExtra("LOOGBOOK_NAME", logbook!!.name)
+                    startActivity(i)
+                } else {
+                    Toast.makeText(applicationContext, "No logbook selected!", Toast.LENGTH_SHORT).show()
+                }
                 dismiss()
             }
         }.also { popupWindow ->

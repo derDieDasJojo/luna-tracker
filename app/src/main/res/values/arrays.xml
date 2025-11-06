@@ -6,4 +6,37 @@
         <item>@string/amount_normal</item>
         <item>@string/amount_plenty</item>
     </string-array>
+
+    <string-array name="StatisticsTypeLabels">
+        <item>Bottle</item>
+        <item>Sleep</item>
+    </string-array>
+
+    <string-array name="StatisticsTypeValues">
+        <item>BOTTLE</item>
+        <item>SLEEP</item>
+    </string-array>
+
+    <string-array name="StatisticsDataLabels">
+        <item>Event</item>
+        <item>Amount</item>
+    </string-array>
+
+    <string-array name="StatisticsDataValues">
+        <item>EVENT</item>
+        <item>AMOUNT</item>
+    </string-array>
+
+    <string-array name="StatisticsTimeLabels">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
+
+    <string-array name="StatisticsTimeValues">
+        <item>DAY</item>
+        <item>WEEK</item>
+        <item>MONTH</item>
+    </string-array>
+
 </resources>

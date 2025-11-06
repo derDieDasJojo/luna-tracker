@@ -77,6 +77,8 @@
     <string name="no_connection_go_to_settings">Settings</string>
     <string name="no_connection_retry">Retry</string>
 
+    <string name="statistics_title">Statistics</string>
+
     <string name="settings_title">Settings</string>
     <string name="settings_signature">Signature</string>
     <string name="settings_signature_desc">Attach a signature to each event you create and for others to see. Useful if multiple people add events.</string>

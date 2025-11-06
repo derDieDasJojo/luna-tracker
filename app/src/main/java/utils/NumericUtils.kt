@@ -63,28 +63,31 @@ class NumericUtils (val context: Context) {
     }
 
     fun formatEventQuantity(event: LunaEvent): String {
+        return formatEventQuantity(event.type, event.quantity)
+    }
+
+    fun formatEventQuantity(type: String, quantity: Int): String {
         val formatted = StringBuilder()
-        if (event.quantity > 0) {
-            formatted.append(when (event.type) {
+        if (quantity > 0) {
+            formatted.append(when (type) {
                 LunaEvent.TYPE_TEMPERATURE ->
-                    (event.quantity / 10.0f).toString()
+                    (quantity / 10.0f).toString()
                 LunaEvent.TYPE_DIAPERCHANGE_POO,
                 LunaEvent.TYPE_DIAPERCHANGE_PEE,
                 LunaEvent.TYPE_PUKE -> {
                     val array = context.resources.getStringArray(R.array.AmountLabels)
-                    return array.getOrElse(event.quantity) {
-                        Log.e("NumericUtils", "Invalid index ${event.quantity}")
+                    return array.getOrElse(quantity) {
+                        Log.e("NumericUtils", "Invalid index $quantity")
                         return ""
                     }
                 }
-                LunaEvent.TYPE_SLEEP -> formatTimeDuration(context, event.quantity.toLong())
-                else ->
-                    event.quantity
+                LunaEvent.TYPE_SLEEP -> formatTimeDuration(context, quantity.toLong())
+                else -> quantity
             })
 
             formatted.append(" ")
             formatted.append(
-                when (event.type) {
+                when (type) {
                     LunaEvent.TYPE_BABY_BOTTLE -> measurement_unit_liquid_base
                     LunaEvent.TYPE_WEIGHT -> measurement_unit_weight_base
                     LunaEvent.TYPE_MEDICINE -> measurement_unit_weight_tiny
@@ -93,7 +96,7 @@ class NumericUtils (val context: Context) {
                 }
             )
         } else {
-            formatted.append(when (event.type) {
+            formatted.append(when (type) {
                 LunaEvent.TYPE_SLEEP -> "💤" // baby is sleeping
                 else -> ""
             })
