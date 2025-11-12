@@ -100,10 +100,10 @@ class MainActivity : AppCompatActivity() {
             addPlainEvent(LunaEvent(LunaEvent.TYPE_BREASTFEEDING_RIGHT_NIPPLE))
         }
         findViewById<View>(R.id.button_change_poo).setOnClickListener {
-            addPlainEvent(LunaEvent(LunaEvent.TYPE_DIAPERCHANGE_POO))
+            addAmountEvent(LunaEvent(LunaEvent.TYPE_DIAPERCHANGE_POO))
         }
         findViewById<View>(R.id.button_change_pee).setOnClickListener {
-            addPlainEvent(LunaEvent(LunaEvent.TYPE_DIAPERCHANGE_PEE))
+            addAmountEvent(LunaEvent(LunaEvent.TYPE_DIAPERCHANGE_PEE))
         }
         val moreButton = findViewById<View>(R.id.button_more)
         moreButton.setOnClickListener {
@@ -205,8 +205,8 @@ class MainActivity : AppCompatActivity() {
     fun askBabyBottleContent(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_bottle, null)
-        d.setTitle(R.string.log_bottle_dialog_title)
-        d.setMessage(R.string.log_bottle_dialog_description)
+        d.setTitle(event.getTypeDescription(this))
+        d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
 
         val numberPicker = dialogView.findViewById<NumberPicker>(R.id.dialog_number_picker)
@@ -246,8 +246,8 @@ class MainActivity : AppCompatActivity() {
         // Show number picker dialog
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_weight, null)
-        d.setTitle(R.string.log_weight_dialog_title)
-        d.setMessage(R.string.log_weight_dialog_description)
+        d.setTitle(event.getTypeDescription(this))
+        d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
 
         val weightET = dialogView.findViewById<EditText>(R.id.dialog_number_edittext)
@@ -289,8 +289,8 @@ class MainActivity : AppCompatActivity() {
         // Show number picker dialog
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_temperature, null)
-        d.setTitle(R.string.log_temperature_dialog_title)
-        d.setMessage(R.string.log_temperature_dialog_description)
+        d.setTitle(event.getTypeDescription(this))
+        d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
 
         val tempSlider = dialogView.findViewById<Slider>(R.id.dialog_temperature_value)
@@ -369,24 +369,25 @@ class MainActivity : AppCompatActivity() {
         saveLogbook()
     }
 
-    fun addPukeEvent(event: LunaEvent) {
-        askPukeValue(event, true) { saveEvent(event) }
+    fun addAmountEvent(event: LunaEvent) {
+        askAmountValue(event, true) { saveEvent(event) }
     }
 
-    fun askPukeValue(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
+    fun askAmountValue(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
         val d = AlertDialog.Builder(this)
-        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_puke, null)
-        d.setTitle(R.string.log_puke_dialog_title)
-        d.setMessage(R.string.log_puke_dialog_description)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_amount, null)
+        d.setTitle(event.getTypeDescription(this))
+        d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
 
-        val spinner = dialogView.findViewById<Spinner>(R.id.dialog_puke_value)
+        val spinner = dialogView.findViewById<Spinner>(R.id.dialog_amount_value)
         spinner.adapter = ArrayAdapter.createFromResource(
             this,
             R.array.AmountLabels,
             android.R.layout.simple_spinner_dropdown_item
         )
-        spinner.setSelection(event.quantity - 1)
+        // set pre-selected item and ensure the quantity to index is in bounds
+        spinner.setSelection(event.quantity.coerceIn(0, spinner.count - 1))
 
         val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
         val pickedTime = datePickerHelper(event.time, dateTV)
@@ -396,7 +397,7 @@ class MainActivity : AppCompatActivity() {
 
         d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
             event.time = pickedTime.time.time / 1000
-            event.quantity = spinner.selectedItemPosition + 1
+            event.quantity = spinner.selectedItemPosition
             onPositive()
             dialogInterface.dismiss()
         }
@@ -580,7 +581,9 @@ class MainActivity : AppCompatActivity() {
             when (event.type) {
                 LunaEvent.TYPE_BABY_BOTTLE -> askBabyBottleContent(event, false, updateValues)
                 LunaEvent.TYPE_WEIGHT -> askWeightValue(event, false, updateValues)
-                LunaEvent.TYPE_PUKE -> askPukeValue(event, false, updateValues)
+                LunaEvent.TYPE_DIAPERCHANGE_POO,
+                LunaEvent.TYPE_DIAPERCHANGE_PEE,
+                LunaEvent.TYPE_PUKE -> askAmountValue(event, false, updateValues)
                 LunaEvent.TYPE_TEMPERATURE -> askTemperatureValue(event, false, updateValues)
                 LunaEvent.TYPE_NOTE -> askNotes(event, false, updateValues)
             }
@@ -1037,7 +1040,7 @@ class MainActivity : AppCompatActivity() {
                 dismiss()
             }
             contentView.findViewById<View>(R.id.button_puke).setOnClickListener {
-                addPukeEvent(LunaEvent(LunaEvent.TYPE_PUKE, 1))
+                addAmountEvent(LunaEvent(LunaEvent.TYPE_PUKE))
                 dismiss()
             }
             contentView.findViewById<View>(R.id.button_colic).setOnClickListener {

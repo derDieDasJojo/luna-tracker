@@ -138,10 +138,18 @@ class LunaEvent: Comparable<LunaEvent> {
     }
 
     fun getDialogMessage(context: Context): String? {
-        return when(type) {
-            TYPE_MEDICINE -> context.getString(R.string.log_medicine_dialog_description)
-            else -> null
-        }
+        return context.getString(
+            when(type) {
+                TYPE_BABY_BOTTLE -> R.string.log_bottle_dialog_description
+                TYPE_MEDICINE -> R.string.log_medicine_dialog_description
+                TYPE_TEMPERATURE -> R.string.log_temperature_dialog_description
+                TYPE_DIAPERCHANGE_POO,
+                TYPE_DIAPERCHANGE_PEE,
+                TYPE_PUKE -> R.string.log_amount_dialog_description
+                TYPE_WEIGHT -> R.string.log_weight_dialog_description
+                else -> R.string.log_unknown_dialog_description
+            }
+        )
     }
 
     fun toJson(): JSONObject {

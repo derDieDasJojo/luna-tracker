@@ -3,18 +3,6 @@
     <string name="title">🌜 LunaTracker 🌛</string>
     <string name="logbook">Logged events</string>
 
-    <string name="log_bottle_dialog_title">Baby bottle</string>
-    <string name="log_bottle_dialog_description">Insert the quantity contained in the baby bottle</string>
-
-    <string name="log_weight_dialog_title">Weight</string>
-    <string name="log_weight_dialog_description">Insert the weight</string>
-
-    <string name="log_temperature_dialog_title">Temperature</string>
-    <string name="log_temperature_dialog_description">Insert the temperature</string>
-
-    <string name="log_puke_dialog_title">Puke</string>
-    <string name="log_puke_dialog_description">Select the amount</string>
-
     <string name="event_bottle_type" translatable="false">🍼</string>
     <string name="event_food_type" translatable="false">🥣</string>
     <string name="event_weight_type" translatable="false">⚖️</string>
@@ -75,6 +63,7 @@
     <string name="year_ago">year</string>
     <string name="years_ago">years</string>
 
+    <string name="amount_unspecified"></string>
     <string name="amount_little">Little</string>
     <string name="amount_normal">Normal</string>
     <string name="amount_plenty">Plenty</string>
@@ -114,10 +103,15 @@
     <string name="trim_logbook_dialog_button_ok">Trim it now</string>
     <string name="trim_logbook_dialog_button_cancel">Remind me later</string>
 
-    <string name="log_notes_dialog_description">Notes:</string>
+    <string name="log_amount_dialog_description">Select the amount:</string>
+    <string name="log_bottle_dialog_description">Insert the quantity contained in the baby bottle:</string>
     <string name="log_medicine_dialog_description">Medicine name, quantity, type, notes…:</string>
-    <string name="log_notes_dialog_qty_hint">Quantity (or empty)</string>
+    <string name="log_notes_dialog_description">Notes:</string>
     <string name="log_notes_dialog_note_hint">Write some notes</string>
+    <string name="log_notes_dialog_qty_hint">Quantity (or empty)</string>
+    <string name="log_temperature_dialog_description">Select the temperature:</string>
+    <string name="log_unknown_dialog_description"></string>
+    <string name="log_weight_dialog_description">Insert the weight:</string>
 
     <string name="measurement_unit_liquid_base_metric" translatable="false">ml</string>
     <string name="measurement_unit_weight_base_metric" translatable="false">g</string>
