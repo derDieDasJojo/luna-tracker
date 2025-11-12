@@ -14,7 +14,7 @@
 
     <string name="event_bottle_desc">Fläschchen</string>
     <string name="event_food_desc">Essen</string>
-    <string name="event_scale_desc">Gewicht</string>
+    <string name="event_weight_desc">Gewicht</string>
     <string name="event_breastfeeding_left_desc">Stillen (links)</string>
     <string name="event_breastfeeding_both_desc">Stillen</string>
     <string name="event_breastfeeding_right_desc">Stillen (rechts)</string>
@@ -27,7 +27,7 @@
     <string name="event_colic_desc">Blähungskolik</string>
     <string name="event_unknown_desc"></string>
 
-    <string name="overflow_event_scale">⚖️ Gewicht</string>
+    <string name="overflow_event_weight">⚖️ Gewicht</string>
     <string name="overflow_event_medicine">💊 Medikament</string>
     <string name="overflow_event_enema">🪠 Einlauf</string>
     <string name="overflow_event_note">📝 Notiz</string>

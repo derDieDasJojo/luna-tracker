@@ -17,7 +17,7 @@
 
     <string name="event_bottle_type" translatable="false">🍼</string>
     <string name="event_food_type" translatable="false">🥣</string>
-    <string name="event_scale_type" translatable="false">⚖️</string>
+    <string name="event_weight_type" translatable="false">⚖️</string>
     <string name="event_breastfeeding_left_type" translatable="false">🤱 ←</string>
     <string name="event_breastfeeding_both_type" translatable="false">🤱 ↔</string>
     <string name="event_breastfeeding_right_type" translatable="false">🤱 →</string>
@@ -34,7 +34,7 @@
 
     <string name="event_bottle_desc">Baby bottle</string>
     <string name="event_food_desc">Food</string>
-    <string name="event_scale_desc">Weight</string>
+    <string name="event_weight_desc">Weight</string>
     <string name="event_breastfeeding_left_desc">Breastfeeding (left)</string>
     <string name="event_breastfeeding_both_desc">Breastfeeding</string>
     <string name="event_breastfeeding_right_desc">Breastfeeding (right)</string>
@@ -49,7 +49,7 @@
     <string name="event_bath_desc">Bath</string>
     <string name="event_unknown_desc"></string>
 
-    <string name="overflow_event_scale">⚖️ Weight</string>
+    <string name="overflow_event_weight">⚖️ Weight</string>
     <string name="overflow_event_medicine">💊 Medicine</string>
     <string name="overflow_event_enema">🪠 Enema</string>
     <string name="overflow_event_note">📝 Note</string>

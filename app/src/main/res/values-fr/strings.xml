@@ -14,7 +14,7 @@
 
     <string name="event_bottle_desc">Biberon</string>
     <string name="event_food_desc">Nourriture</string>
-    <string name="event_scale_desc">Poids</string>
+    <string name="event_weight_desc">Poids</string>
     <string name="event_breastfeeding_left_desc">Allaitement (sein gauche)</string>
     <string name="event_breastfeeding_both_desc">Allaitement</string>
     <string name="event_breastfeeding_right_desc">Allaitement (sein droit)</string>
@@ -27,7 +27,7 @@
     <string name="event_colic_desc">Colique gazeuse</string>
     <string name="event_unknown_desc"></string>
 
-    <string name="overflow_event_scale">⚖️ Poids</string>
+    <string name="overflow_event_weight">⚖️ Poids</string>
     <string name="overflow_event_medicine">💊 Médicament</string>
     <string name="overflow_event_enema">🪠 Lavement</string>
     <string name="overflow_event_note">📝 Note</string>
