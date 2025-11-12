@@ -97,7 +97,7 @@ class LunaEvent: Comparable<LunaEvent> {
         return context.getString(
             when (type) {
                 TYPE_BABY_BOTTLE -> R.string.event_bottle_type
-                TYPE_WEIGHT -> R.string.event_scale_type
+                TYPE_WEIGHT -> R.string.event_weight_type
                 TYPE_BREASTFEEDING_LEFT_NIPPLE -> R.string.event_breastfeeding_left_type
                 TYPE_BREASTFEEDING_BOTH_NIPPLE -> R.string.event_breastfeeding_both_type
                 TYPE_BREASTFEEDING_RIGHT_NIPPLE -> R.string.event_breastfeeding_right_type
@@ -120,7 +120,7 @@ class LunaEvent: Comparable<LunaEvent> {
         return context.getString(
             when (type) {
                 TYPE_BABY_BOTTLE -> R.string.event_bottle_desc
-                TYPE_WEIGHT -> R.string.event_scale_desc
+                TYPE_WEIGHT -> R.string.event_weight_desc
                 TYPE_BREASTFEEDING_LEFT_NIPPLE -> R.string.event_breastfeeding_left_desc
                 TYPE_BREASTFEEDING_BOTH_NIPPLE -> R.string.event_breastfeeding_both_desc
                 TYPE_BREASTFEEDING_RIGHT_NIPPLE -> R.string.event_breastfeeding_right_desc
