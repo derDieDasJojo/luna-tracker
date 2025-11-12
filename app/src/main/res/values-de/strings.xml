@@ -3,15 +3,6 @@
     <string name="title">🌜 LunaTracker 🌛</string>
     <string name="logbook">Ereignisprotokoll</string>
 
-    <string name="log_bottle_dialog_title">Fläschchen</string>
-    <string name="log_bottle_dialog_description">Trinkmenge eingeben</string>
-
-    <string name="log_weight_dialog_title">Gewicht</string>
-    <string name="log_weight_dialog_description">Gewicht eingeben</string>
-
-    <string name="log_temperature_dialog_title">Temperatur</string>
-    <string name="log_temperature_dialog_description">Temperatur eingeben</string>
-
     <string name="event_bottle_desc">Fläschchen</string>
     <string name="event_food_desc">Essen</string>
     <string name="event_weight_desc">Gewicht</string>
@@ -77,10 +68,13 @@
     <string name="trim_logbook_dialog_button_ok">Jetzt bereinigen</string>
     <string name="trim_logbook_dialog_button_cancel">Später erinnern</string>
 
-    <string name="log_notes_dialog_description">Notizen:</string>
+    <string name="log_bottle_dialog_description">Trinkmenge eingeben</string>
     <string name="log_medicine_dialog_description">Medikamentenname, Menge, Art, Notizen, …:</string>
-    <string name="log_notes_dialog_qty_hint">Menge (optional)</string>
+    <string name="log_notes_dialog_description">Notizen:</string>
     <string name="log_notes_dialog_note_hint">Notiz eingeben</string>
+    <string name="log_notes_dialog_qty_hint">Menge (optional)</string>
+    <string name="log_temperature_dialog_description">Temperatur eingeben</string>
+    <string name="log_weight_dialog_description">Gewicht eingeben</string>
 
     <string name="dialog_event_detail_title">Ereignisdetails</string>
     <string name="dialog_event_detail_close_button">OK</string>

@@ -4,6 +4,7 @@ import android.content.Context
 import android.icu.util.LocaleData
 import android.icu.util.ULocale
 import android.os.Build
+import android.util.Log
 import it.danieleverducci.lunatracker.R
 import it.danieleverducci.lunatracker.entities.LunaEvent
 import java.text.NumberFormat
@@ -66,8 +67,15 @@ class NumericUtils (val context: Context) {
             formatted.append(when (event.type) {
                 LunaEvent.TYPE_TEMPERATURE ->
                     (event.quantity / 10.0f).toString()
-                LunaEvent.TYPE_PUKE ->
-                    context.resources.getStringArray(R.array.AmountLabels)[event.quantity - 1]
+                LunaEvent.TYPE_DIAPERCHANGE_POO,
+                LunaEvent.TYPE_DIAPERCHANGE_PEE,
+                LunaEvent.TYPE_PUKE -> {
+                    val array = context.resources.getStringArray(R.array.AmountLabels)
+                    return array.getOrElse(event.quantity) {
+                        Log.e("NumericUtils", "Invalid index ${event.quantity}")
+                        return ""
+                    }
+                }
                 else ->
                     event.quantity
             })

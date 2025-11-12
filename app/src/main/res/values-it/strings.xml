@@ -3,15 +3,6 @@
     <string name="title">🌜 LunaTracker 🌛</string>
     <string name="logbook">Diario di bordo</string>
 
-    <string name="log_bottle_dialog_title">Biberon</string>
-    <string name="log_bottle_dialog_description">Inserisci la quantità contenuta nel biberon</string>
-
-    <string name="log_weight_dialog_title">Pesata</string>
-    <string name="log_weight_dialog_description">Inserisci il peso rilevato</string>
-
-    <string name="log_temperature_dialog_title">Temperatura</string>
-    <string name="log_temperature_dialog_description">Inserisci la temperatura</string>
-
     <string name="overflow_event_weight">⚖️ Peso</string>
     <string name="overflow_event_medicine">💊 Medicina</string>
     <string name="overflow_event_enema">🪠 Clistere</string>
@@ -76,10 +67,13 @@
     <string name="trim_logbook_dialog_button_ok">Cancella i più vecchi</string>
     <string name="trim_logbook_dialog_button_cancel">Ricordamelo dopo</string>
 
-    <string name="log_notes_dialog_description">Note:</string>
+    <string name="log_bottle_dialog_description">Inserisci la quantità contenuta nel biberon</string>
     <string name="log_medicine_dialog_description">Nome della medicina, quantità, formato, note…:</string>
-    <string name="log_notes_dialog_qty_hint">Quantità, o vuoto</string>
+    <string name="log_notes_dialog_description">Note:</string>
     <string name="log_notes_dialog_note_hint">Inserisci le note</string>
+    <string name="log_notes_dialog_qty_hint">Quantità, o vuoto</string>
+    <string name="log_temperature_dialog_description">Inserisci la temperatura</string>
+    <string name="log_weight_dialog_description">Inserisci il peso rilevato</string>
 
     <string name="dialog_event_detail_title">Dettaglio evento</string>
     <string name="dialog_event_detail_close_button">OK</string>
