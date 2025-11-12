@@ -62,7 +62,7 @@ class NumericUtils (val context: Context) {
 
     fun formatEventQuantity(event: LunaEvent): String {
         val formatted = StringBuilder()
-        if (event.quantity > 0) {
+        if (event.quantity >= 0) {
             formatted.append(when (event.type) {
                 LunaEvent.TYPE_TEMPERATURE ->
                     (event.quantity / 10.0f).toString()
