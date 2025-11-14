@@ -49,6 +49,8 @@ class LunaEvent: Comparable<LunaEvent> {
         set(value) {
             if (value > 0)
                 jo.put("quantity", value)
+            else
+                jo.remove("quantity")
         }
     var notes: String
         get(): String = jo.optString("notes")
