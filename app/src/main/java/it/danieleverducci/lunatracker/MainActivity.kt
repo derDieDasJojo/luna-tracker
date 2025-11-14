@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             showAddLogbookDialog(true)
         }
         findViewById<View>(R.id.button_bottle).setOnClickListener {
-            addBabyBottleEvent()
+            addBabyBottleEvent(LunaEvent(LunaEvent.TYPE_BABY_BOTTLE))
         }
         findViewById<View>(R.id.button_food).setOnClickListener {
             addNoteEvent(LunaEvent(LunaEvent.TYPE_FOOD))
@@ -195,8 +195,8 @@ class MainActivity : AppCompatActivity() {
         return logbook?.logs ?: arrayListOf()
     }
 
-    fun addBabyBottleEvent() {
-        val event = LunaEvent(LunaEvent.TYPE_BABY_BOTTLE)
+    fun addBabyBottleEvent(event: LunaEvent) {
+        setToPreviousQuantity(event)
         askBabyBottleContent(event, true) {
             saveEvent(event)
         }
@@ -239,6 +239,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addWeightEvent(event: LunaEvent) {
+        setToPreviousQuantity(event)
         askWeightValue(event, true) { saveEvent(event) }
     }
 
@@ -282,6 +283,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addTemperatureEvent(event: LunaEvent) {
+        setToPreviousQuantity(event)
         askTemperatureValue(event, true) { saveEvent(event) }
     }
 
@@ -520,6 +522,13 @@ class MainActivity : AppCompatActivity() {
         }
         val alertDialog = d.create()
         alertDialog.show()
+    }
+
+    fun setToPreviousQuantity(event: LunaEvent) {
+        val prev = getPreviousSameEvent(event, getAllEvents())
+        if (prev != null) {
+            event.quantity = prev.quantity
+        }
     }
 
     fun getPreviousSameEvent(event: LunaEvent, items: ArrayList<LunaEvent>): LunaEvent? {
