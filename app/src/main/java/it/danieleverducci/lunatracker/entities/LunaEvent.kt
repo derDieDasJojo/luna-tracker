@@ -30,6 +30,7 @@ class LunaEvent: Comparable<LunaEvent> {
         const val TYPE_FOOD = "FOOD"
         const val TYPE_PUKE = "PUKE"
         const val TYPE_BATH = "BATH"
+        const val TYPE_SLEEP = "SLEEP"
     }
 
     private val jo: JSONObject
@@ -93,6 +94,18 @@ class LunaEvent: Comparable<LunaEvent> {
         this.quantity = quantity
     }
 
+    fun getStartTime(): Long {
+        return time
+    }
+
+    fun getEndTime(): Long {
+        return if (type == TYPE_SLEEP) {
+            time + quantity
+        } else {
+            time
+        }
+    }
+
     fun getTypeEmoji(context: Context): String {
         return context.getString(
             when (type) {
@@ -111,6 +124,7 @@ class LunaEvent: Comparable<LunaEvent> {
                 TYPE_FOOD -> R.string.event_food_type
                 TYPE_PUKE -> R.string.event_puke_type
                 TYPE_BATH -> R.string.event_bath_type
+                TYPE_SLEEP -> R.string.event_sleep_type
                 else -> R.string.event_unknown_type
             }
         )
@@ -134,6 +148,7 @@ class LunaEvent: Comparable<LunaEvent> {
                 TYPE_FOOD -> R.string.event_food_desc
                 TYPE_PUKE -> R.string.event_puke_desc
                 TYPE_BATH -> R.string.event_bath_desc
+                TYPE_SLEEP -> R.string.event_sleep_desc
                 else -> R.string.event_unknown_desc
             }
         )
@@ -149,6 +164,7 @@ class LunaEvent: Comparable<LunaEvent> {
                 TYPE_DIAPERCHANGE_PEE,
                 TYPE_PUKE -> R.string.log_amount_dialog_description
                 TYPE_WEIGHT -> R.string.log_weight_dialog_description
+                TYPE_SLEEP -> R.string.log_sleep_dialog_description
                 else -> R.string.log_unknown_dialog_description
             }
         )

@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.Log
 import it.danieleverducci.lunatracker.R
 import it.danieleverducci.lunatracker.entities.LunaEvent
+import utils.DateUtils.Companion.formatTimeDuration
 import java.text.NumberFormat
 
 class NumericUtils (val context: Context) {
@@ -76,6 +77,7 @@ class NumericUtils (val context: Context) {
                         return ""
                     }
                 }
+                LunaEvent.TYPE_SLEEP -> formatTimeDuration(context, event.quantity.toLong())
                 else ->
                     event.quantity
             })
@@ -90,6 +92,11 @@ class NumericUtils (val context: Context) {
                     else -> ""
                 }
             )
+        } else {
+            formatted.append(when (event.type) {
+                LunaEvent.TYPE_SLEEP -> "💤" // baby is sleeping
+                else -> ""
+            })
         }
         return formatted.toString()
     }

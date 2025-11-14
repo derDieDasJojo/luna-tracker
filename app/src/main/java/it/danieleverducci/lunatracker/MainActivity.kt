@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.PopupWindow
@@ -330,7 +331,7 @@ class MainActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-    fun datePickerHelper(time: Long, dateTextView: TextView): Calendar {
+    fun datePickerHelper(time: Long, dateTextView: TextView, onChange: (Long) -> Unit = {}): Calendar {
         dateTextView.text = DateUtils.formatDateTime(time)
 
         val dateTime = Calendar.getInstance()
@@ -349,6 +350,7 @@ class MainActivity : AppCompatActivity() {
                     { _, hour, minute ->
                         dateTime.set(year, month, day, hour, minute)
                         dateTextView.text = DateUtils.formatDateTime(dateTime.time.time / 1000)
+                        onChange.invoke(dateTime.time.time / 1000)
                     },
                     startHour,
                     startMinute,
@@ -371,7 +373,103 @@ class MainActivity : AppCompatActivity() {
         saveLogbook()
     }
 
+    fun addSleepEvent(event: LunaEvent) {
+        askSleepValue(event, true) { saveEvent(event) }
+    }
+
+    fun askSleepValue(event: LunaEvent, hideDurationButtons: Boolean, onPositive: () -> Unit) {
+        val d = AlertDialog.Builder(this)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_duration, null)
+        d.setTitle(event.getTypeDescription(this))
+        d.setMessage(event.getDialogMessage(this))
+        d.setView(dialogView)
+
+        val durationTextView = dialogView.findViewById<TextView>(R.id.dialog_date_duration)
+        val datePicker = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
+        val durationButtons = dialogView.findViewById<LinearLayout>(R.id.duration_buttons)
+        val durationNowButton = dialogView.findViewById<Button>(R.id.dialog_date_duration_now)
+        val durationMinus5Button = dialogView.findViewById<Button>(R.id.dialog_date_duration_minus5)
+        val durationPlus5Button = dialogView.findViewById<Button>(R.id.dialog_date_duration_plus5)
+
+        val currentDurationTextColor = durationTextView.currentTextColor
+        val invalidDurationTextColor = ContextCompat.getColor(this, R.color.danger)
+
+        var duration = event.quantity
+
+        fun isValidTime(timeSeconds: Long, durationSeconds: Int): Boolean {
+            val now = System.currentTimeMillis() / 1000
+            return (timeSeconds + durationSeconds) <= now && durationSeconds < (24 * 60 * 60)
+        }
+
+        val onDateChange = { time: Long ->
+            durationTextView.setTextColor(currentDurationTextColor)
+
+            if (duration == 0) {
+                // baby is sleeping
+                durationTextView.text = "💤"
+            } else {
+                durationTextView.text = DateUtils.formatTimeDuration(applicationContext, duration.toLong())
+                if (!isValidTime(time, duration)) {
+                    durationTextView.setTextColor(invalidDurationTextColor)
+                }
+            }
+        }
+
+        val pickedDateTime = datePickerHelper(event.time, datePicker, onDateChange)
+
+        onDateChange(pickedDateTime.time.time / 1000)
+
+        if (hideDurationButtons) {
+            durationButtons.visibility = View.GONE
+            d.setMessage(getString(R.string.log_sleep_dialog_description_start))
+        } else {
+            durationButtons.visibility = View.VISIBLE
+            d.setMessage(event.getDialogMessage(this))
+
+            fun adjust(minutes: Int) {
+                duration += minutes * 60
+                if (duration < 0) {
+                    duration = 0
+                }
+                onDateChange(pickedDateTime.time.time / 1000)
+            }
+
+            durationMinus5Button.setOnClickListener { adjust(-5) }
+            durationPlus5Button.setOnClickListener { adjust(5) }
+
+            durationNowButton.setOnClickListener {
+                val now = System.currentTimeMillis() / 1000
+                val start = pickedDateTime.time.time / 1000
+                if (now > start) {
+                    duration = (now - start).toInt()
+                    duration -= duration % 60 // prevent printing of seconds
+                    onDateChange(pickedDateTime.time.time / 1000)
+                }
+            }
+        }
+
+        d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
+            val time = pickedDateTime.time.time / 1000
+            if (isValidTime(time, duration)) {
+                event.time = time
+                event.quantity = duration
+                onPositive()
+            } else {
+                Toast.makeText(this, R.string.toast_date_error, Toast.LENGTH_SHORT).show()
+            }
+            dialogInterface.dismiss()
+        }
+
+        d.setNegativeButton(android.R.string.cancel) { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+
+        val alertDialog = d.create()
+        alertDialog.show()
+    }
+
     fun addAmountEvent(event: LunaEvent) {
+        setToPreviousQuantity(event)
         askAmountValue(event, true) { saveEvent(event) }
     }
 
@@ -388,7 +486,7 @@ class MainActivity : AppCompatActivity() {
             R.array.AmountLabels,
             android.R.layout.simple_spinner_dropdown_item
         )
-        // set pre-selected item and ensure the quantity to index is in bounds
+
         spinner.setSelection(event.quantity.coerceIn(0, spinner.count - 1))
 
         val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
@@ -621,18 +719,29 @@ class MainActivity : AppCompatActivity() {
         val emojiTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_emoji)
         val descriptionTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_description)
         val dateTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_date)
+        val dateEndTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_date_end)
         val quantityTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_quantity)
         val notesTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_notes)
 
         emojiTextView.text = event.getTypeEmoji(this)
         descriptionTextView.text = event.getTypeDescription(this)
 
-        val pickedTime = datePickerHelper(event.time, dateTextView)
         val updateValues = {
             quantityTextView.text = NumericUtils(this).formatEventQuantity(event)
             notesTextView.text = event.notes
+            if (event.type == LunaEvent.TYPE_SLEEP && event.quantity > 0) {
+                dateEndTextView.text = DateUtils.formatDateTime(event.time + event.quantity)
+                dateEndTextView.visibility = View.VISIBLE
+            } else {
+                dateEndTextView.visibility = View.GONE
+            }
         }
         updateValues()
+
+        val pickedTime = datePickerHelper(event.time, dateTextView, { newTime: Long ->
+            event.time = newTime
+            updateValues()
+        })
 
         quantityTextView.setOnClickListener {
             when (event.type) {
@@ -643,6 +752,7 @@ class MainActivity : AppCompatActivity() {
                 LunaEvent.TYPE_PUKE -> askAmountValue(event, false, updateValues)
                 LunaEvent.TYPE_TEMPERATURE -> askTemperatureValue(event, false, updateValues)
                 LunaEvent.TYPE_NOTE -> askNotes(event, false, updateValues)
+                LunaEvent.TYPE_SLEEP -> askSleepValue(event, false updateValues)
             }
         }
 
@@ -1098,6 +1208,10 @@ class MainActivity : AppCompatActivity() {
             }
             contentView.findViewById<View>(R.id.button_puke).setOnClickListener {
                 addAmountEvent(LunaEvent(LunaEvent.TYPE_PUKE))
+                dismiss()
+            }
+            contentView.findViewById<View>(R.id.button_sleep).setOnClickListener {
+                addSleepEvent(LunaEvent(LunaEvent.TYPE_SLEEP))
                 dismiss()
             }
             contentView.findViewById<View>(R.id.button_colic).setOnClickListener {

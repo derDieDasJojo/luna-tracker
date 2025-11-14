@@ -18,6 +18,7 @@
     <string name="event_colic_type" translatable="false">💨</string>
     <string name="event_puke_type" translatable="false">🤮</string>
     <string name="event_bath_type" translatable="false">🛁</string>
+    <string name="event_sleep_type" translatable="false">💤</string>
     <string name="event_unknown_type" translatable="false">\?</string>
 
     <string name="event_bottle_desc">Baby bottle</string>
@@ -35,6 +36,7 @@
     <string name="event_colic_desc">Gaseous colic</string>
     <string name="event_puke_desc">Puke</string>
     <string name="event_bath_desc">Bath</string>
+    <string name="event_sleep_desc">Sleep</string>
     <string name="event_unknown_desc"></string>
 
     <string name="overflow_event_weight">⚖️ Weight</string>
@@ -44,12 +46,14 @@
     <string name="overflow_event_temperature">🌡️ Temperature</string>
     <string name="overflow_event_colic">💨 Gaseous colic</string>
     <string name="overflow_event_puke">🤮 Puke</string>
+    <string name="overflow_event_sleep">💤 Sleep</string>
     <string name="overflow_event_bath">🛁 Bath</string>
 
     <string name="toast_event_added">Event logged</string>
     <string name="toast_logbook_saved">Logbook saved</string>
     <string name="toast_event_add_error">Unable to log the event</string>
     <string name="toast_integer_error">Invalid value. Insert an integer.</string>
+    <string name="toast_date_error">Invalid date.</string>
 
     <string name="now">now</string>
     <string name="second_ago">sec</string>
@@ -112,6 +116,8 @@
     <string name="log_temperature_dialog_description">Select the temperature:</string>
     <string name="log_unknown_dialog_description"></string>
     <string name="log_weight_dialog_description">Insert the weight:</string>
+    <string name="log_sleep_dialog_description">Set sleep duration:</string>
+    <string name="log_sleep_dialog_description_start">Start sleep cycle:</string>
 
     <string name="measurement_unit_liquid_base_metric" translatable="false">ml</string>
     <string name="measurement_unit_weight_base_metric" translatable="false">g</string>
