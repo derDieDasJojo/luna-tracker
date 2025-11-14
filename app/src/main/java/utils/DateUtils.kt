@@ -62,10 +62,8 @@ class DateUtils {
                 return format(days, hours, R.string.day_ago, R.string.days_ago, R.string.hour_ago, R.string.hours_ago)
             } else if (hours > 0) {
                 return format(hours, minutes, R.string.hour_ago, R.string.hours_ago, R.string.minute_ago, R.string.minutes_ago)
-            } else if (minutes > 0) {
-                return format(minutes, seconds, R.string.minute_ago, R.string.minute_ago, R.string.second_ago, R.string.seconds_ago)
             } else {
-                return context.getString(R.string.now)
+                return format(minutes, seconds, R.string.minute_ago, R.string.minute_ago, R.string.second_ago, R.string.seconds_ago)
             }
         }
 

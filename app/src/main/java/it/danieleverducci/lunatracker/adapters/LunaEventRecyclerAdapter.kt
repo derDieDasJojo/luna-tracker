@@ -59,7 +59,7 @@ class LunaEventRecyclerAdapter: RecyclerView.Adapter<LunaEventRecyclerAdapter.Lu
             LunaEvent.TYPE_CUSTOM -> item.notes
             else -> item.getTypeDescription(context)
         }
-        holder.time.text = DateUtils.formatTimeAgo(context, item.time)
+        holder.time.text = DateUtils.formatTimeAgo(context, item.getEndTime())
         var quantityText = numericUtils.formatEventQuantity(item)
 
         // if the event is weight, show difference with the last one
