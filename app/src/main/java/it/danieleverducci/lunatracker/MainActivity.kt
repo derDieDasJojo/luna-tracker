@@ -557,11 +557,11 @@ class MainActivity : AppCompatActivity() {
 
         val nextTextView = dialogView.findViewById<TextView>(R.id.notes_template_next)
         val prevTextView = dialogView.findViewById<TextView>(R.id.notes_template_prev)
+        val templates = getAllEvents().filter { it.type == event.type }.distinctBy { it.notes }.sortedBy { it.time }
 
         fun updateContent(current: LunaEvent) {
-            val allEvents = getAllEvents()
-            val prevEvent = getPreviousSameEvent(current, allEvents)
-            var nextEvent = getNextSameEvent(current, allEvents)
+            val prevEvent = getPreviousSameEvent(current, templates)
+            var nextEvent = getNextSameEvent(current, templates)
 
             notesET.setText(current.notes)
             if (useQuantity) {
@@ -612,7 +612,7 @@ class MainActivity : AppCompatActivity() {
         updateContent(event)
 
         d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
-            val notes = notesET.text.toString()
+            val notes = notesET.text.toString().trim()
 
             if (useQuantity) {
                 val quantity = qtyET.text.toString().toIntOrNull()
@@ -669,7 +669,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getPreviousSameEvent(event: LunaEvent, items: ArrayList<LunaEvent>): LunaEvent? {
+    fun getPreviousSameEvent(event: LunaEvent, items: List<LunaEvent>): LunaEvent? {
         var previousEvent: LunaEvent? = null
         for (item in items) {
             if (item.type == event.type && item.time < event.time) {
@@ -683,7 +683,7 @@ class MainActivity : AppCompatActivity() {
         return previousEvent
     }
 
-    fun getNextSameEvent(event: LunaEvent, items: ArrayList<LunaEvent>): LunaEvent? {
+    fun getNextSameEvent(event: LunaEvent, items: List<LunaEvent>): LunaEvent? {
         var nextEvent: LunaEvent? = null
         for (item in items) {
             if (item.type == event.type && item.time > event.time) {
