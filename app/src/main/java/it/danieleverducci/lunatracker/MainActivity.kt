@@ -709,6 +709,12 @@ class MainActivity : AppCompatActivity() {
     fun showEventDetailDialog(originalEvent: LunaEvent) {
         val event = LunaEvent(originalEvent)
 
+        fun eventValuesChanged(): Boolean {
+            return (event.time != originalEvent.time
+                || event.quantity != originalEvent.quantity
+                || event.notes != originalEvent.notes)
+        }
+
         // Do not update list while the detail is shown, to avoid changing the object below while it is changed by the user
         pauseLogbookUpdate = true
 
@@ -726,6 +732,40 @@ class MainActivity : AppCompatActivity() {
         emojiTextView.text = event.getTypeEmoji(this)
         descriptionTextView.text = event.getTypeDescription(this)
 
+        d.setView(dialogView)
+
+        d.setNeutralButton(R.string.dialog_event_detail_delete_button) { dialogInterface, i ->
+            deleteEvent(originalEvent)
+            dialogInterface.dismiss()
+        }
+
+        d.setNegativeButton(R.string.dialog_event_detail_save_button) { dialogInterface, i ->
+            if (eventValuesChanged()) {
+                originalEvent.time = event.time
+                originalEvent.quantity = event.quantity
+                originalEvent.notes = event.notes
+                saveEvent(originalEvent)
+            }
+
+            dialogInterface.dismiss()
+        }
+
+        d.setPositiveButton(R.string.dialog_event_detail_close_button) { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+
+        val alertDialog = d.create()
+        alertDialog.show()
+
+        alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(
+            ContextCompat.getColor(this, R.color.danger)
+        )
+
+        alertDialog.setOnDismissListener {
+            // Resume logbook update
+            pauseLogbookUpdate = false
+        }
+
         val updateValues = {
             quantityTextView.text = NumericUtils(this).formatEventQuantity(event)
             notesTextView.text = event.notes
@@ -735,10 +775,16 @@ class MainActivity : AppCompatActivity() {
             } else {
                 dateEndTextView.visibility = View.GONE
             }
+
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).visibility = if (eventValuesChanged()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
         }
         updateValues()
 
-        val pickedTime = datePickerHelper(event.time, dateTextView, { newTime: Long ->
+        datePickerHelper(event.time, dateTextView, { newTime: Long ->
             event.time = newTime
             updateValues()
         })
@@ -762,40 +808,6 @@ class MainActivity : AppCompatActivity() {
                 LunaEvent.TYPE_MEDICINE,
                 LunaEvent.TYPE_NOTE -> askNotes(event, false, updateValues)
             }
-        }
-
-        d.setView(dialogView)
-
-        d.setNeutralButton(R.string.dialog_event_detail_delete_button) { dialogInterface, i ->
-            deleteEvent(originalEvent)
-            dialogInterface.dismiss()
-        }
-
-        d.setPositiveButton(R.string.dialog_event_detail_close_button) { dialogInterface, i ->
-            event.time = pickedTime.time.time / 1000
-
-            if (event.time != originalEvent.time
-                    || event.quantity != originalEvent.quantity
-                    || event.notes != originalEvent.notes) {
-                originalEvent.time = event.time
-                originalEvent.quantity = event.quantity
-                originalEvent.notes = event.notes
-                saveEvent(originalEvent)
-            }
-
-            dialogInterface.dismiss()
-        }
-
-        val alertDialog = d.create()
-        alertDialog.show()
-
-        alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(
-            ContextCompat.getColor(this, R.color.danger)
-        )
-
-        alertDialog.setOnDismissListener {
-            // Resume logbook update
-            pauseLogbookUpdate = false
         }
 
         // show optional signature
