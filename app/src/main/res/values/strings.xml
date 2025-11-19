@@ -132,7 +132,8 @@
     <string name="row_luna_event_time">Time</string>
 
     <string name="dialog_event_detail_title">Event detail</string>
-    <string name="dialog_event_detail_close_button">OK</string>
+    <string name="dialog_event_detail_close_button">Close</string>
+    <string name="dialog_event_detail_save_button">Save</string>
     <string name="dialog_event_detail_delete_button">Delete</string>
     <string name="dialog_event_detail_quantity">Quantity</string>
     <string name="dialog_event_detail_notes">Notes</string>
