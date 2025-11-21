@@ -13,6 +13,7 @@ mpandroidchart = "v4.2.2"
 mpandroidchartVersion = "v3.1.0"
 recyclerview = "1.3.2"
 material = "1.12.0"
+sardineAndroid = "v0.9"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +35,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
 mpandroidchart-vv310 = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchartVersion" }
+sardine-android = { module = "com.github.thegrizzlylabs:sardine-android", version.ref = "sardineAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
