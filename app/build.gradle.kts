@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "it.danieleverducci.lunatracker"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "it.danieleverducci.lunatracker"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 7
         versionName = "0.9"
 

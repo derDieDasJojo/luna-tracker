@@ -4,6 +4,11 @@
     <style name="Theme.LunaTracker" parent="Theme.AppCompat.NoActionBar">
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColor">@color/textColor</item>
+
+        <!-- make the screen not overlap with the system bars -->
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="OverflowMenuText">
