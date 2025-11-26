@@ -8,23 +8,19 @@
     </string-array>
 
     <string-array name="StatisticsTypeLabels">
-        <item>Bottle</item>
-        <item>Sleep</item>
+        <item>@string/statistics_bottle_sum</item>
+        <item>@string/statistics_bottle_events</item>
+        <item>@string/statistics_sleep_sum</item>
+        <item>@string/statistics_sleep_events</item>
+        <item>@string/statistics_sleep_pattern</item>
     </string-array>
 
     <string-array name="StatisticsTypeValues">
-        <item>BOTTLE</item>
-        <item>SLEEP</item>
-    </string-array>
-
-    <string-array name="StatisticsDataLabels">
-        <item>Event</item>
-        <item>Amount</item>
-    </string-array>
-
-    <string-array name="StatisticsDataValues">
-        <item>EVENT</item>
-        <item>AMOUNT</item>
+        <item>BOTTLE_SUM</item>
+        <item>BOTTLE_EVENTS</item>
+        <item>SLEEP_SUM</item>
+        <item>SLEEP_EVENTS</item>
+        <item>SLEEP_PATTERN</item>
     </string-array>
 
     <string-array name="StatisticsTimeLabels">
@@ -38,5 +34,4 @@
         <item>WEEK</item>
         <item>MONTH</item>
     </string-array>
-
 </resources>
