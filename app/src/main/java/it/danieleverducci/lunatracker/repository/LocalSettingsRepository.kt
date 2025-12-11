@@ -13,7 +13,7 @@ class LocalSettingsRepository(val context: Context) {
         const val SHARED_PREFS_DAV_URL = "webdav_url"
         const val SHARED_PREFS_DAV_USER = "webdav_user"
         const val SHARED_PREFS_DAV_PASS = "webdav_password"
-        const val SHARED_PREFS_NO_BREASTFEEDING = "no_breastfeeding"
+        const val SHARED_PREFS_DYNAMIC_MENU = "dynamic_menu"
         const val SHARED_PREFS_SIGNATURE = "signature"
     }
     enum class DATA_REPO {LOCAL_FILE, WEBDAV}
@@ -31,12 +31,12 @@ class LocalSettingsRepository(val context: Context) {
         return sharedPreferences.getString(SHARED_PREFS_SIGNATURE, "") ?: ""
     }
 
-    fun saveNoBreastfeeding(content: Boolean) {
-        sharedPreferences.edit { putBoolean(SHARED_PREFS_NO_BREASTFEEDING, content) }
+    fun saveDynamicMenu(content: Boolean) {
+        sharedPreferences.edit { putBoolean(SHARED_PREFS_DYNAMIC_MENU, content) }
     }
 
-    fun loadNoBreastfeeding(): Boolean {
-        return sharedPreferences.getBoolean(SHARED_PREFS_NO_BREASTFEEDING, false)
+    fun loadDynamicMenu(): Boolean {
+        return sharedPreferences.getBoolean(SHARED_PREFS_DYNAMIC_MENU, false)
     }
 
     fun saveDataRepository(repo: DATA_REPO) {

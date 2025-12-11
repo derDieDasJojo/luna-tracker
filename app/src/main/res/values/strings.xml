@@ -3,12 +3,13 @@
     <string name="title">🌜 LunaTracker 🌛</string>
     <string name="logbook">Logged events</string>
 
+    <!-- menu header items -->
     <string name="event_bottle_type" translatable="false">🍼</string>
     <string name="event_food_type" translatable="false">🥣</string>
     <string name="event_weight_type" translatable="false">⚖️</string>
-    <string name="event_breastfeeding_left_type" translatable="false">🤱 ←</string>
-    <string name="event_breastfeeding_both_type" translatable="false">🤱 ↔</string>
-    <string name="event_breastfeeding_right_type" translatable="false">🤱 →</string>
+    <string name="event_breastfeeding_left_type" translatable="false">🤱⬅️</string>
+    <string name="event_breastfeeding_both_type" translatable="false">🤱↔️</string>
+    <string name="event_breastfeeding_right_type" translatable="false">🤱➡️️</string>
     <string name="event_diaperchange_poo_type" translatable="false">🚼 💩</string>
     <string name="event_diaperchange_pee_type" translatable="false">🚼 💧</string>
     <string name="event_medicine_type" translatable="false">💊</string>
@@ -19,16 +20,36 @@
     <string name="event_puke_type" translatable="false">🤮</string>
     <string name="event_bath_type" translatable="false">🛁</string>
     <string name="event_sleep_type" translatable="false">💤</string>
-    <string name="event_unknown_type" translatable="false">\?</string>
+    <string name="event_unknown_type" translatable="false">❓</string>
 
-    <string name="event_bottle_desc">Baby bottle</string>
+    <!-- dropdown menu item -->
+    <string name="event_type_item_bottle">🍼 Bottle</string>
+    <string name="event_type_item_food">🥣 Food</string>
+    <string name="event_type_item_weight">⚖️ Weight</string>
+    <string name="event_type_item_breastfeeding_left">🤱⬅️ Nursing</string>
+    <string name="event_type_item_breastfeeding_both">🤱↔️ Nursing</string>
+    <string name="event_type_item_breastfeeding_right">🤱➡️️ Nursing</string>
+    <string name="event_type_item_diaperchange_poo">🚼💩 Diaper</string>
+    <string name="event_type_item_diaperchange_pee">🚼💧 Diaper</string>
+    <string name="event_type_item_medicine">💊 Medicine</string>
+    <string name="event_type_item_enema">🪠 Enema</string>
+    <string name="event_type_item_note">📝 Note</string>
+    <string name="event_type_item_temperature">🌡️ Temperature</string>
+    <string name="event_type_item_colic">💨 Colic</string>
+    <string name="event_type_item_puke">🤮 Puke</string>
+    <string name="event_type_item_sleep">💤 Sleep</string>
+    <string name="event_type_item_bath">🛁 Bath</string>
+    <string name="event_type_item_unknown">❓ Unknown</string>
+
+    <!-- dialog titles -->
+    <string name="event_bottle_desc">Milk Bottle</string>
     <string name="event_food_desc">Food</string>
     <string name="event_weight_desc">Weight</string>
-    <string name="event_breastfeeding_left_desc">Breastfeeding (left)</string>
-    <string name="event_breastfeeding_both_desc">Breastfeeding</string>
-    <string name="event_breastfeeding_right_desc">Breastfeeding (right)</string>
-    <string name="event_diaperchange_poo_desc">Diaper chg (poo)</string>
-    <string name="event_diaperchange_pee_desc">Diaper chg (pee)</string>
+    <string name="event_breastfeeding_left_desc">Nursing (left)</string>
+    <string name="event_breastfeeding_both_desc">Nursing (both)</string>
+    <string name="event_breastfeeding_right_desc">Nursing (right)</string>
+    <string name="event_diaperchange_poo_desc">Diaper Change (poo)</string>
+    <string name="event_diaperchange_pee_desc">Diaper Change (pee)</string>
     <string name="event_medicine_desc">Medicine</string>
     <string name="event_enema_desc">Enema</string>
     <string name="event_note_desc">Note</string>
@@ -37,17 +58,7 @@
     <string name="event_puke_desc">Puke</string>
     <string name="event_bath_desc">Bath</string>
     <string name="event_sleep_desc">Sleep</string>
-    <string name="event_unknown_desc"></string>
-
-    <string name="overflow_event_weight">⚖️ Weight</string>
-    <string name="overflow_event_medicine">💊 Medicine</string>
-    <string name="overflow_event_enema">🪠 Enema</string>
-    <string name="overflow_event_note">📝 Note</string>
-    <string name="overflow_event_temperature">🌡️ Temperature</string>
-    <string name="overflow_event_colic">💨 Gaseous colic</string>
-    <string name="overflow_event_puke">🤮 Puke</string>
-    <string name="overflow_event_sleep">💤 Sleep</string>
-    <string name="overflow_event_bath">🛁 Bath</string>
+    <string name="event_unknown_desc">Unknown</string>
 
     <string name="toast_event_added">Event logged</string>
     <string name="toast_logbook_saved">Logbook saved</string>
@@ -79,6 +90,8 @@
 
     <string name="statistics_title">Statistics</string>
 
+    <string name="settings_dynamic_menu">Dynamic Menu</string>
+    <string name="settings_dynamic_menu_desc">Populate the header menu with the most used events.</string>
     <string name="settings_title">Settings</string>
     <string name="settings_signature">Signature</string>
     <string name="settings_signature_desc">Attach a signature to each event you create and for others to see. Useful if multiple people add events.</string>
@@ -97,8 +110,6 @@
     <string name="settings_webdav_error_generic">Error while trying to access WebDAV:</string>
     <string name="settings_webdav_creation_error_generic">Unable to save a file on the WebDAV server:</string>
     <string name="settings_webdav_creation_ok">Successfully connected with the WebDAV server</string>
-    <string name="settings_no_breastfeeding">No Breastfeeding</string>
-    <string name="settings_no_breastfeeding_desc">Hide the Breastfeeding buttons for when they are not needed.</string>
     <string name="settings_json_error">There\'s a save file on the server, but it is corrupted or unreadable. Please delete it </string>
     <string name="settings_generic_error">Error: </string>
     <string name="settings_webdav_upload_error">Error while uploading local logbook %1$s to webdav: %2$s</string>

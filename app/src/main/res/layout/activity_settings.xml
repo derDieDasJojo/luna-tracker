@@ -137,7 +137,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/settings_signature_desc"/>
 
@@ -149,13 +149,13 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textStyle="bold"
-                android:text="@string/settings_no_breastfeeding" />
+                android:text="@string/settings_dynamic_menu" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switch_no_breastfeeding"
+                android:id="@+id/switch_dynamic_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
@@ -166,9 +166,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
-            android:text="@string/settings_no_breastfeeding_desc"/>
+            android:text="@string/settings_dynamic_menu_desc"/>
 
         <LinearLayout
             android:layout_width="match_parent"

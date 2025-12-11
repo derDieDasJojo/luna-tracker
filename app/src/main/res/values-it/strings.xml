@@ -3,13 +3,6 @@
     <string name="title">🌜 LunaTracker 🌛</string>
     <string name="logbook">Diario di bordo</string>
 
-    <string name="overflow_event_weight">⚖️ Peso</string>
-    <string name="overflow_event_medicine">💊 Medicina</string>
-    <string name="overflow_event_enema">🪠 Clistere</string>
-    <string name="overflow_event_note">📝 Nota</string>
-    <string name="overflow_event_temperature">🌡️ Temperatura</string>
-    <string name="overflow_event_colic">💨 Colichette</string>
-
     <string name="event_bottle_desc">Biberon</string>
     <string name="event_food_desc">Cibo</string>
     <string name="event_weight_desc">Pesata</string>

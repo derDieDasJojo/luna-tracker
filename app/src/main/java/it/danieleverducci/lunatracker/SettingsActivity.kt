@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +25,7 @@ open class SettingsActivity : AppCompatActivity() {
     protected lateinit var textViewWebDAVUser: TextView
     protected lateinit var textViewWebDAVPass: TextView
     protected lateinit var progressIndicator: LinearProgressIndicator
-    protected lateinit var switchNoBreastfeeding: SwitchMaterial
+    protected lateinit var switchDynamicMenu: SwitchMaterial
     protected lateinit var textViewSignature: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +38,7 @@ open class SettingsActivity : AppCompatActivity() {
         textViewWebDAVUser = findViewById(R.id.settings_data_webdav_user)
         textViewWebDAVPass = findViewById(R.id.settings_data_webdav_pass)
         progressIndicator = findViewById(R.id.progress_indicator)
-        switchNoBreastfeeding = findViewById(R.id.switch_no_breastfeeding)
+        switchDynamicMenu = findViewById(R.id.switch_dynamic_menu)
         textViewSignature = findViewById(R.id.settings_signature)
 
         findViewById<View>(R.id.settings_save).setOnClickListener({
@@ -54,7 +55,7 @@ open class SettingsActivity : AppCompatActivity() {
     fun loadSettings() {
         val dataRepo = settingsRepository.loadDataRepository()
         val webDavCredentials = settingsRepository.loadWebdavCredentials()
-        val noBreastfeeding = settingsRepository.loadNoBreastfeeding()
+        val dynamicMenu = settingsRepository.loadDynamicMenu()
         val signature = settingsRepository.loadSignature()
 
         when (dataRepo) {
@@ -63,7 +64,7 @@ open class SettingsActivity : AppCompatActivity() {
         }
 
         textViewSignature.setText(signature)
-        switchNoBreastfeeding.isChecked = noBreastfeeding
+        switchDynamicMenu.isChecked = dynamicMenu
 
         if (webDavCredentials != null) {
             textViewWebDAVUrl.text = webDavCredentials[0]
@@ -160,7 +161,7 @@ open class SettingsActivity : AppCompatActivity() {
             if (radioDataWebDAV.isChecked) LocalSettingsRepository.DATA_REPO.WEBDAV
             else LocalSettingsRepository.DATA_REPO.LOCAL_FILE
         )
-        settingsRepository.saveNoBreastfeeding(switchNoBreastfeeding.isChecked)
+        settingsRepository.saveDynamicMenu(switchDynamicMenu.isChecked)
         settingsRepository.saveSignature(textViewSignature.text.toString())
         settingsRepository.saveWebdavCredentials(
             textViewWebDAVUrl.text.toString(),

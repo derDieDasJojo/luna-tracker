@@ -15,6 +15,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.PopupWindow
 import android.widget.Spinner
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         const val DEBUG_CHECK_LOGBOOK_CONSISTENCY = false
         // list of all events
         var allEvents = arrayListOf<LunaEvent>()
+        var currentPopupItems = listOf<LunaEvent.Type>()
     }
 
     var logbook: Logbook? = null
@@ -84,31 +86,13 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.list_events)
         recyclerView.setLayoutManager(LinearLayoutManager(applicationContext))
 
+        populateHeaderMenu()
+
         // Set listeners
         findViewById<View>(R.id.logbooks_add_button).setOnClickListener {
             showAddLogbookDialog(true)
         }
-        findViewById<View>(R.id.button_bottle).setOnClickListener {
-            addBabyBottleEvent(LunaEvent(LunaEvent.TYPE_BABY_BOTTLE))
-        }
-        findViewById<View>(R.id.button_food).setOnClickListener {
-            addNoteEvent(LunaEvent(LunaEvent.TYPE_FOOD))
-        }
-        findViewById<View>(R.id.button_nipple_left).setOnClickListener {
-            addPlainEvent(LunaEvent(LunaEvent.TYPE_BREASTFEEDING_LEFT_NIPPLE))
-        }
-        findViewById<View>(R.id.button_nipple_both).setOnClickListener {
-            addPlainEvent(LunaEvent(LunaEvent.TYPE_BREASTFEEDING_BOTH_NIPPLE))
-        }
-        findViewById<View>(R.id.button_nipple_right).setOnClickListener {
-            addPlainEvent(LunaEvent(LunaEvent.TYPE_BREASTFEEDING_RIGHT_NIPPLE))
-        }
-        findViewById<View>(R.id.button_change_poo).setOnClickListener {
-            addAmountEvent(LunaEvent(LunaEvent.TYPE_DIAPERCHANGE_POO))
-        }
-        findViewById<View>(R.id.button_change_pee).setOnClickListener {
-            addAmountEvent(LunaEvent(LunaEvent.TYPE_DIAPERCHANGE_PEE))
-        }
+
         val moreButton = findViewById<View>(R.id.button_more)
         moreButton.setOnClickListener {
             showOverflowPopupWindow(moreButton)
@@ -150,6 +134,82 @@ class MainActivity : AppCompatActivity() {
 
         allEvents = logbook?.logs ?: arrayListOf()
         setListAdapter(allEvents)
+
+        populateHeaderMenu()
+    }
+
+    private fun populateHeaderMenu() {
+        val settingsRepository = LocalSettingsRepository(this)
+        val dynamicMenu = settingsRepository.loadDynamicMenu()
+        val eventTypeStats = mutableMapOf<LunaEvent.Type, Int>()
+
+        if (dynamicMenu) {
+            val sampleSize = 100
+            // populate frequency map from first 100 events
+            allEvents.take(sampleSize.coerceAtMost(allEvents.size)).forEach {
+                eventTypeStats[it.type] = 1 + (eventTypeStats[it.type] ?: 0)
+            }
+        }
+
+        // sort all event types by frequency and ordinal
+        val eventTypesSorted = LunaEvent.Type.entries.toList().sortedWith(
+            compareBy({ -1 * (eventTypeStats[it] ?: 0) }, { it.ordinal })
+        ).filter { it != LunaEvent.Type.UNKNOWN }
+
+        fun setupMenu(maxButtonCount: Int, sortedEventTypes: List<LunaEvent.Type>): Int {
+            val row1 = findViewById<View>(R.id.linear_layout_row1)
+            val row1Button1 = findViewById<TextView>(R.id.button1_row1)
+            val row1Button2 = findViewById<TextView>(R.id.button2_row1)
+
+            val row2 = findViewById<View>(R.id.linear_layout_row2)
+            val row2Button1 = findViewById<TextView>(R.id.button1_row2)
+            val row2Button2 = findViewById<TextView>(R.id.button2_row2)
+            val row2Button3 = findViewById<TextView>(R.id.button3_row2)
+
+            val row3 = findViewById<View>(R.id.linear_layout_row3)
+            val row3Button1 = findViewById<TextView>(R.id.button1_row3)
+            val row3Button2 = findViewById<TextView>(R.id.button2_row3)
+
+            // hide all rows/buttons (except row 3)
+            for (view in listOf(row1, row1Button1, row1Button2,
+                                row2, row2Button1, row2Button2, row2Button3,
+                                row3, row3Button1, row3Button2)) {
+                view.visibility = View.GONE
+            }
+            row3.visibility = View.VISIBLE
+
+            var showCounter = 0
+
+            fun show(vararg tvs: TextView) {
+                for (tv in tvs) {
+                    val type = sortedEventTypes[showCounter]
+                    tv.text = LunaEvent.getTypeEmoji(applicationContext, type)
+                    tv.setOnClickListener { showCreateDialog(type) }
+                    tv.visibility = View.VISIBLE
+                    // show parent row
+                    (tv.parent as View).visibility = View.VISIBLE
+                    showCounter += 1
+                }
+            }
+
+            when (maxButtonCount) {
+                0 -> { } // ignore - show empty row3
+                1 -> show(row3Button1)
+                2 -> show(row3Button1, row3Button2)
+                3 -> show(row1Button1, row3Button1)
+                4, 5, 6 -> show(row1Button1, row1Button2, row3Button1, row3Button2)
+                else -> show(row1Button1, row1Button2, row2Button1, row2Button2, row2Button3, row3Button1, row3Button2)
+            }
+
+            return showCounter
+        }
+
+        val usedEventCount = eventTypeStats.count { it.value > 0 }
+        val maxButtonCount = if (dynamicMenu) { usedEventCount } else { 7 }
+        val eventsShown = setupMenu(maxButtonCount, eventTypesSorted)
+
+        // store left over events for popup menu
+        currentPopupItems = eventTypesSorted.subList(eventsShown, eventTypesSorted.size)
     }
 
     override fun onStart() {
@@ -171,12 +231,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         signature = settingsRepository.loadSignature()
-
-        val noBreastfeeding = settingsRepository.loadNoBreastfeeding()
-        findViewById<View>(R.id.layout_nipples).visibility = when (noBreastfeeding) {
-            true -> View.GONE
-            false -> View.VISIBLE
-        }
 
         // Update list dates
         recyclerView.adapter?.notifyDataSetChanged()
@@ -1198,6 +1252,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showCreateDialog(type: LunaEvent.Type) {
+        val event = LunaEvent(type)
+        when (type) {
+            LunaEvent.Type.BABY_BOTTLE -> addBabyBottleEvent(event)
+            LunaEvent.Type.WEIGHT -> addWeightEvent(event)
+            LunaEvent.Type.BREASTFEEDING_LEFT_NIPPLE -> addPlainEvent(event)
+            LunaEvent.Type.BREASTFEEDING_BOTH_NIPPLE -> addPlainEvent(event)
+            LunaEvent.Type.BREASTFEEDING_RIGHT_NIPPLE -> addPlainEvent(event)
+            LunaEvent.Type.DIAPERCHANGE_POO -> addAmountEvent(event)
+            LunaEvent.Type.DIAPERCHANGE_PEE -> addAmountEvent(event)
+            LunaEvent.Type.MEDICINE -> addNoteEvent(event)
+            LunaEvent.Type.ENEMA -> addNoteEvent(event)
+            LunaEvent.Type.NOTE -> addNoteEvent(event)
+            LunaEvent.Type.COLIC -> addPlainEvent(event)
+            LunaEvent.Type.TEMPERATURE -> addTemperatureEvent(event)
+            LunaEvent.Type.FOOD -> addNoteEvent(event)
+            LunaEvent.Type.PUKE -> addAmountEvent(event)
+            LunaEvent.Type.BATH -> addPlainEvent(event)
+            LunaEvent.Type.SLEEP -> addSleepEvent(event)
+            LunaEvent.Type.UNKNOWN -> {} // ignore
+        }
+    }
+
     private fun showOverflowPopupWindow(anchor: View) {
         if (showingOverflowPopupWindow)
             return
@@ -1206,42 +1283,8 @@ class MainActivity : AppCompatActivity() {
             isOutsideTouchable = true
             val inflater = LayoutInflater.from(anchor.context)
             contentView = inflater.inflate(R.layout.more_events_popup, null)
-            contentView.findViewById<View>(R.id.button_medicine).setOnClickListener {
-                addNoteEvent(LunaEvent(LunaEvent.TYPE_MEDICINE))
-                dismiss()
-            }
-            contentView.findViewById<View>(R.id.button_enema).setOnClickListener {
-                addPlainEvent(LunaEvent(LunaEvent.TYPE_ENEMA))
-                dismiss()
-            }
-            contentView.findViewById<View>(R.id.button_note).setOnClickListener {
-                addNoteEvent(LunaEvent(LunaEvent.TYPE_NOTE))
-                dismiss()
-            }
-            contentView.findViewById<View>(R.id.button_temperature).setOnClickListener {
-                addTemperatureEvent(LunaEvent(LunaEvent.TYPE_TEMPERATURE))
-                dismiss()
-            }
-            contentView.findViewById<View>(R.id.button_puke).setOnClickListener {
-                addAmountEvent(LunaEvent(LunaEvent.TYPE_PUKE))
-                dismiss()
-            }
-            contentView.findViewById<View>(R.id.button_sleep).setOnClickListener {
-                addSleepEvent(LunaEvent(LunaEvent.TYPE_SLEEP))
-                dismiss()
-            }
-            contentView.findViewById<View>(R.id.button_colic).setOnClickListener {
-                addPlainEvent(LunaEvent(LunaEvent.TYPE_COLIC))
-                dismiss()
-            }
-            contentView.findViewById<View>(R.id.button_scale).setOnClickListener {
-                addWeightEvent(LunaEvent(LunaEvent.TYPE_WEIGHT))
-                dismiss()
-            }
-            contentView.findViewById<View>(R.id.button_bath).setOnClickListener {
-                addPlainEvent(LunaEvent(LunaEvent.TYPE_BATH))
-                dismiss()
-            }
+
+            // Add statistics (hard coded)
             contentView.findViewById<View>(R.id.button_statistics).setOnClickListener {
                 if (logbook != null && !pauseLogbookUpdate) {
                     val i = Intent(applicationContext, StatisticsActivity::class.java)
@@ -1251,6 +1294,20 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "No logbook selected!", Toast.LENGTH_SHORT).show()
                 }
                 dismiss()
+            }
+
+            val linearLayout = contentView.findViewById<LinearLayout>(R.id.layout_list)
+
+            // Add buttons to create other events
+            for (type in currentPopupItems) {
+                val view = layoutInflater.inflate(R.layout.more_events_popup_item, linearLayout, false)
+                val textView = view.findViewById<TextView>(R.id.tv)
+                textView.text = LunaEvent.getPopupItemTitle(applicationContext, type)
+                textView.setOnClickListener {
+                    showCreateDialog(type)
+                    dismiss()
+                }
+                linearLayout.addView(textView)
             }
         }.also { popupWindow ->
             popupWindow.setOnDismissListener({
