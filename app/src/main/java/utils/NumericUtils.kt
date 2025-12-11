@@ -66,38 +66,38 @@ class NumericUtils (val context: Context) {
         return formatEventQuantity(event.type, event.quantity)
     }
 
-    fun formatEventQuantity(type: String, quantity: Int): String {
+    fun formatEventQuantity(type: LunaEvent.Type, quantity: Int): String {
         val formatted = StringBuilder()
         if (quantity > 0) {
             formatted.append(when (type) {
-                LunaEvent.TYPE_TEMPERATURE ->
+                LunaEvent.Type.TEMPERATURE ->
                     (quantity / 10.0f).toString()
-                LunaEvent.TYPE_DIAPERCHANGE_POO,
-                LunaEvent.TYPE_DIAPERCHANGE_PEE,
-                LunaEvent.TYPE_PUKE -> {
+                LunaEvent.Type.DIAPERCHANGE_POO,
+                LunaEvent.Type.DIAPERCHANGE_PEE,
+                LunaEvent.Type.PUKE -> {
                     val array = context.resources.getStringArray(R.array.AmountLabels)
                     return array.getOrElse(quantity) {
                         Log.e("NumericUtils", "Invalid index $quantity")
                         return ""
                     }
                 }
-                LunaEvent.TYPE_SLEEP -> formatTimeDuration(context, quantity.toLong())
+                LunaEvent.Type.SLEEP -> formatTimeDuration(context, quantity.toLong())
                 else -> quantity
             })
 
             formatted.append(" ")
             formatted.append(
                 when (type) {
-                    LunaEvent.TYPE_BABY_BOTTLE -> measurement_unit_liquid_base
-                    LunaEvent.TYPE_WEIGHT -> measurement_unit_weight_base
-                    LunaEvent.TYPE_MEDICINE -> measurement_unit_weight_tiny
-                    LunaEvent.TYPE_TEMPERATURE -> measurement_unit_temperature_base
+                    LunaEvent.Type.BABY_BOTTLE -> measurement_unit_liquid_base
+                    LunaEvent.Type.WEIGHT -> measurement_unit_weight_base
+                    LunaEvent.Type.MEDICINE -> measurement_unit_weight_tiny
+                    LunaEvent.Type.TEMPERATURE -> measurement_unit_temperature_base
                     else -> ""
                 }
             )
         } else {
             formatted.append(when (type) {
-                LunaEvent.TYPE_SLEEP -> "💤" // baby is sleeping
+                LunaEvent.Type.SLEEP -> "💤" // baby is sleeping
                 else -> ""
             })
         }
@@ -108,9 +108,9 @@ class NumericUtils (val context: Context) {
      * Returns a valid quantity range for the event type.
      * @return min, max, normal
      */
-    fun getValidEventQuantityRange(lunaEventType: String): Triple<Int, Int, Int>? {
+    fun getValidEventQuantityRange(lunaEventType: LunaEvent.Type): Triple<Int, Int, Int>? {
         return when (lunaEventType) {
-            LunaEvent.TYPE_TEMPERATURE -> {
+            LunaEvent.Type.TEMPERATURE -> {
                 if (isMetricSystem())
                     Triple(
                         context.resources.getInteger(R.integer.human_body_temp_min_metric),

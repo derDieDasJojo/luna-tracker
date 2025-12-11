@@ -297,7 +297,7 @@ class MainActivity : AppCompatActivity() {
         d.setView(dialogView)
 
         val tempSlider = dialogView.findViewById<Slider>(R.id.dialog_temperature_value)
-        val range = NumericUtils(this).getValidEventQuantityRange(LunaEvent.TYPE_TEMPERATURE)!!
+        val range = NumericUtils(this).getValidEventQuantityRange(LunaEvent.Type.TEMPERATURE)!!
         tempSlider.valueFrom = range.first.toFloat()
         tempSlider.valueTo = range.second.toFloat()
         tempSlider.value = if (event.quantity == 0) {
@@ -547,7 +547,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun askNotes(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
-        val useQuantity = (event.type != LunaEvent.TYPE_NOTE && event.type != LunaEvent.TYPE_CUSTOM)
+        val useQuantity = (event.type != LunaEvent.Type.NOTE)
 
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_notes, null)
@@ -769,7 +769,7 @@ class MainActivity : AppCompatActivity() {
         val updateValues = {
             quantityTextView.text = NumericUtils(this).formatEventQuantity(event)
             notesTextView.text = event.notes
-            if (event.type == LunaEvent.TYPE_SLEEP && event.quantity > 0) {
+            if (event.type == LunaEvent.Type.SLEEP && event.quantity > 0) {
                 dateEndTextView.text = DateUtils.formatDateTime(event.time + event.quantity)
                 dateEndTextView.visibility = View.VISIBLE
             } else {
@@ -791,22 +791,28 @@ class MainActivity : AppCompatActivity() {
 
         quantityTextView.setOnClickListener {
             when (event.type) {
-                LunaEvent.TYPE_BABY_BOTTLE -> askBabyBottleContent(event, false, updateValues)
-                LunaEvent.TYPE_WEIGHT -> askWeightValue(event, false, updateValues)
-                LunaEvent.TYPE_DIAPERCHANGE_POO,
-                LunaEvent.TYPE_DIAPERCHANGE_PEE,
-                LunaEvent.TYPE_PUKE -> askAmountValue(event, false, updateValues)
-                LunaEvent.TYPE_TEMPERATURE -> askTemperatureValue(event, false, updateValues)
-                LunaEvent.TYPE_NOTE -> askNotes(event, false, updateValues)
-                LunaEvent.TYPE_SLEEP -> askSleepValue(event, false updateValues)
+                LunaEvent.Type.BABY_BOTTLE -> askBabyBottleContent(event, false, updateValues)
+                LunaEvent.Type.WEIGHT -> askWeightValue(event, false, updateValues)
+                LunaEvent.Type.DIAPERCHANGE_POO,
+                LunaEvent.Type.DIAPERCHANGE_PEE,
+                LunaEvent.Type.PUKE -> askAmountValue(event, false, updateValues)
+                LunaEvent.Type.TEMPERATURE -> askTemperatureValue(event, false, updateValues)
+                LunaEvent.Type.NOTE -> askNotes(event, false, updateValues)
+                LunaEvent.Type.SLEEP -> askSleepValue(event, false, updateValues)
+                else -> {
+                    Log.w(TAG, "Unexpected type: ${event.type}")
+                }
             }
         }
 
         notesTextView.setOnClickListener {
             when (event.type) {
-                LunaEvent.TYPE_FOOD,
-                LunaEvent.TYPE_MEDICINE,
-                LunaEvent.TYPE_NOTE -> askNotes(event, false, updateValues)
+                LunaEvent.Type.FOOD,
+                LunaEvent.Type.MEDICINE,
+                LunaEvent.Type.NOTE -> askNotes(event, false, updateValues)
+                else -> {
+                    Log.w(TAG, "Unexpected type: ${event.type}")
+                }
             }
         }
 

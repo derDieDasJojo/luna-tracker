@@ -13,24 +13,74 @@ import java.util.Date
  */
 class LunaEvent: Comparable<LunaEvent> {
 
+    enum class Type {
+        BABY_BOTTLE,
+        FOOD,
+        BREASTFEEDING_LEFT_NIPPLE,
+        BREASTFEEDING_BOTH_NIPPLE,
+        BREASTFEEDING_RIGHT_NIPPLE,
+        DIAPERCHANGE_POO,
+        DIAPERCHANGE_PEE,
+        SLEEP,
+        WEIGHT,
+        MEDICINE,
+        ENEMA,
+        NOTE,
+        COLIC,
+        TEMPERATURE,
+        PUKE,
+        BATH,
+        UNKNOWN
+    }
+
     companion object {
-        const val TYPE_BABY_BOTTLE = "BABY_BOTTLE"
-        const val TYPE_WEIGHT = "WEIGHT"
-        const val TYPE_BREASTFEEDING_LEFT_NIPPLE = "BREASTFEEDING_LEFT_NIPPLE"
-        const val TYPE_BREASTFEEDING_BOTH_NIPPLE = "BREASTFEEDING_BOTH_NIPPLE"
-        const val TYPE_BREASTFEEDING_RIGHT_NIPPLE = "BREASTFEEDING_RIGHT_NIPPLE"
-        const val TYPE_DIAPERCHANGE_POO = "DIAPERCHANGE_POO"
-        const val TYPE_DIAPERCHANGE_PEE = "DIAPERCHANGE_PEE"
-        const val TYPE_MEDICINE = "MEDICINE"
-        const val TYPE_ENEMA = "ENEMA"
-        const val TYPE_NOTE = "NOTE"
-        const val TYPE_CUSTOM = "CUSTOM"
-        const val TYPE_COLIC = "COLIC"
-        const val TYPE_TEMPERATURE = "TEMPERATURE"
-        const val TYPE_FOOD = "FOOD"
-        const val TYPE_PUKE = "PUKE"
-        const val TYPE_BATH = "BATH"
-        const val TYPE_SLEEP = "SLEEP"
+        fun getTypeEmoji(context: Context, type: Type): String {
+            return context.getString(
+                when (type) {
+                    Type.BABY_BOTTLE -> R.string.event_bottle_type
+                    Type.WEIGHT -> R.string.event_weight_type
+                    Type.BREASTFEEDING_LEFT_NIPPLE -> R.string.event_breastfeeding_left_type
+                    Type.BREASTFEEDING_BOTH_NIPPLE -> R.string.event_breastfeeding_both_type
+                    Type.BREASTFEEDING_RIGHT_NIPPLE -> R.string.event_breastfeeding_right_type
+                    Type.DIAPERCHANGE_POO -> R.string.event_diaperchange_poo_type
+                    Type.DIAPERCHANGE_PEE -> R.string.event_diaperchange_pee_type
+                    Type.MEDICINE -> R.string.event_medicine_type
+                    Type.ENEMA -> R.string.event_enema_type
+                    Type.NOTE -> R.string.event_note_type
+                    Type.TEMPERATURE -> R.string.event_temperature_type
+                    Type.COLIC -> R.string.event_colic_type
+                    Type.FOOD -> R.string.event_food_type
+                    Type.PUKE -> R.string.event_puke_type
+                    Type.BATH -> R.string.event_bath_type
+                    Type.SLEEP -> R.string.event_sleep_type
+                    Type.UNKNOWN -> R.string.event_unknown_type
+                }
+            )
+        }
+
+        fun getTypeDescription(context: Context, type: Type): String {
+            return context.getString(
+                when (type) {
+                    Type.BABY_BOTTLE -> R.string.event_bottle_desc
+                    Type.WEIGHT -> R.string.event_weight_desc
+                    Type.BREASTFEEDING_LEFT_NIPPLE -> R.string.event_breastfeeding_left_desc
+                    Type.BREASTFEEDING_BOTH_NIPPLE -> R.string.event_breastfeeding_both_desc
+                    Type.BREASTFEEDING_RIGHT_NIPPLE -> R.string.event_breastfeeding_right_desc
+                    Type.DIAPERCHANGE_POO -> R.string.event_diaperchange_poo_desc
+                    Type.DIAPERCHANGE_PEE -> R.string.event_diaperchange_pee_desc
+                    Type.MEDICINE -> R.string.event_medicine_desc
+                    Type.ENEMA -> R.string.event_enema_desc
+                    Type.NOTE -> R.string.event_note_desc
+                    Type.TEMPERATURE -> R.string.event_temperature_desc
+                    Type.COLIC -> R.string.event_colic_desc
+                    Type.FOOD -> R.string.event_food_desc
+                    Type.PUKE -> R.string.event_puke_desc
+                    Type.BATH -> R.string.event_bath_desc
+                    Type.SLEEP -> R.string.event_sleep_desc
+                    Type.UNKNOWN -> R.string.event_unknown_desc
+                }
+            )
+        }
     }
 
     private val jo: JSONObject
@@ -40,10 +90,16 @@ class LunaEvent: Comparable<LunaEvent> {
         set(value) {
             jo.put("time", value)
         }
-    var type: String
-        get(): String = jo.getString("type")
+    var type: Type
+        get(): Type {
+            return try {
+                Type.valueOf(jo.getString("type"))
+            } catch (_: Exception) {
+                Type.UNKNOWN
+            }
+        }
         set(value) {
-            jo.put("type", value)
+            jo.put("type", value.name)
         }
     var quantity: Int
         get() = jo.optInt("quantity")
@@ -81,13 +137,13 @@ class LunaEvent: Comparable<LunaEvent> {
         this.signature = event.signature
     }
 
-    constructor(type: String) {
+    constructor(type: Type) {
         this.jo = JSONObject()
         this.time = System.currentTimeMillis() / 1000
         this.type = type
     }
 
-    constructor(type: String, quantity: Int) {
+    constructor(type: Type, quantity: Int) {
         this.jo = JSONObject()
         this.time = System.currentTimeMillis() / 1000
         this.type = type
@@ -107,64 +163,24 @@ class LunaEvent: Comparable<LunaEvent> {
     }
 
     fun getTypeEmoji(context: Context): String {
-        return context.getString(
-            when (type) {
-                TYPE_BABY_BOTTLE -> R.string.event_bottle_type
-                TYPE_WEIGHT -> R.string.event_weight_type
-                TYPE_BREASTFEEDING_LEFT_NIPPLE -> R.string.event_breastfeeding_left_type
-                TYPE_BREASTFEEDING_BOTH_NIPPLE -> R.string.event_breastfeeding_both_type
-                TYPE_BREASTFEEDING_RIGHT_NIPPLE -> R.string.event_breastfeeding_right_type
-                TYPE_DIAPERCHANGE_POO -> R.string.event_diaperchange_poo_type
-                TYPE_DIAPERCHANGE_PEE -> R.string.event_diaperchange_pee_type
-                TYPE_MEDICINE -> R.string.event_medicine_type
-                TYPE_ENEMA -> R.string.event_enema_type
-                TYPE_NOTE -> R.string.event_note_type
-                TYPE_TEMPERATURE -> R.string.event_temperature_type
-                TYPE_COLIC -> R.string.event_colic_type
-                TYPE_FOOD -> R.string.event_food_type
-                TYPE_PUKE -> R.string.event_puke_type
-                TYPE_BATH -> R.string.event_bath_type
-                TYPE_SLEEP -> R.string.event_sleep_type
-                else -> R.string.event_unknown_type
-            }
-        )
+        return getTypeEmoji(context, type)
     }
 
     fun getTypeDescription(context: Context): String {
-        return context.getString(
-            when (type) {
-                TYPE_BABY_BOTTLE -> R.string.event_bottle_desc
-                TYPE_WEIGHT -> R.string.event_weight_desc
-                TYPE_BREASTFEEDING_LEFT_NIPPLE -> R.string.event_breastfeeding_left_desc
-                TYPE_BREASTFEEDING_BOTH_NIPPLE -> R.string.event_breastfeeding_both_desc
-                TYPE_BREASTFEEDING_RIGHT_NIPPLE -> R.string.event_breastfeeding_right_desc
-                TYPE_DIAPERCHANGE_POO -> R.string.event_diaperchange_poo_desc
-                TYPE_DIAPERCHANGE_PEE -> R.string.event_diaperchange_pee_desc
-                TYPE_MEDICINE -> R.string.event_medicine_desc
-                TYPE_ENEMA -> R.string.event_enema_desc
-                TYPE_NOTE -> R.string.event_note_desc
-                TYPE_TEMPERATURE -> R.string.event_temperature_desc
-                TYPE_COLIC -> R.string.event_colic_desc
-                TYPE_FOOD -> R.string.event_food_desc
-                TYPE_PUKE -> R.string.event_puke_desc
-                TYPE_BATH -> R.string.event_bath_desc
-                TYPE_SLEEP -> R.string.event_sleep_desc
-                else -> R.string.event_unknown_desc
-            }
-        )
+        return getTypeDescription(context, type)
     }
 
     fun getDialogMessage(context: Context): String? {
         return context.getString(
             when(type) {
-                TYPE_BABY_BOTTLE -> R.string.log_bottle_dialog_description
-                TYPE_MEDICINE -> R.string.log_medicine_dialog_description
-                TYPE_TEMPERATURE -> R.string.log_temperature_dialog_description
-                TYPE_DIAPERCHANGE_POO,
-                TYPE_DIAPERCHANGE_PEE,
-                TYPE_PUKE -> R.string.log_amount_dialog_description
-                TYPE_WEIGHT -> R.string.log_weight_dialog_description
-                TYPE_SLEEP -> R.string.log_sleep_dialog_description
+                Type.BABY_BOTTLE -> R.string.log_bottle_dialog_description
+                Type.MEDICINE -> R.string.log_medicine_dialog_description
+                Type.TEMPERATURE -> R.string.log_temperature_dialog_description
+                Type.DIAPERCHANGE_POO,
+                Type.DIAPERCHANGE_PEE,
+                Type.PUKE -> R.string.log_amount_dialog_description
+                Type.WEIGHT -> R.string.log_weight_dialog_description
+                Type.SLEEP -> R.string.log_sleep_dialog_description
                 else -> R.string.log_unknown_dialog_description
             }
         )

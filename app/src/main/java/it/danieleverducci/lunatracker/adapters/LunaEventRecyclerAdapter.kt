@@ -54,16 +54,20 @@ class LunaEventRecyclerAdapter: RecyclerView.Adapter<LunaEventRecyclerAdapter.Lu
         // Contents
         holder.type.text = item.getTypeEmoji(context)
         holder.description.text = when (item.type) {
-            LunaEvent.TYPE_MEDICINE -> item.notes
-            LunaEvent.TYPE_NOTE -> item.notes
-            LunaEvent.TYPE_CUSTOM -> item.notes
+            LunaEvent.Type.MEDICINE -> item.notes
+            LunaEvent.Type.NOTE -> item.notes
             else -> item.getTypeDescription(context)
         }
-        holder.time.text = DateUtils.formatTimeAgo(context, item.getEndTime())
+        val endTime = if (item.type == LunaEvent.Type.SLEEP) {
+            item.quantity + item.time
+        } else {
+            item.time
+        }
+        holder.time.text = DateUtils.formatTimeAgo(context, endTime)
         var quantityText = numericUtils.formatEventQuantity(item)
 
         // if the event is weight, show difference with the last one
-        if (item.type == LunaEvent.TYPE_WEIGHT) {
+        if (item.type == LunaEvent.Type.WEIGHT) {
             val lastWeight = getPreviousWeightEvent(position)
             if (lastWeight != null) {
                 val differenceInWeight = item.quantity - lastWeight.quantity
@@ -94,7 +98,7 @@ class LunaEventRecyclerAdapter: RecyclerView.Adapter<LunaEventRecyclerAdapter.Lu
             return null
         for (pos in startFromPosition + 1 until items.size) {
             val item = items.get(pos)
-            if (item.type != LunaEvent.TYPE_WEIGHT)
+            if (item.type != LunaEvent.Type.WEIGHT)
                 continue
             return item
         }
