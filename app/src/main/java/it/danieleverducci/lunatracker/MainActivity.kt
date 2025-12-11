@@ -212,8 +212,8 @@ class MainActivity : AppCompatActivity() {
 
         val numberPicker = dialogView.findViewById<NumberPicker>(R.id.dialog_number_picker)
         numberPicker.minValue = 1 // "10"
-        numberPicker.maxValue = 25 // "250
-        numberPicker.displayedValues = ((10..250 step 10).map { it.toString() }.toTypedArray())
+        numberPicker.maxValue = 34 // "340
+        numberPicker.displayedValues = ((10..340 step 10).map { it.toString() }.toTypedArray())
         numberPicker.wrapSelectorWheel = false
         numberPicker.value = event.quantity / 10
 
