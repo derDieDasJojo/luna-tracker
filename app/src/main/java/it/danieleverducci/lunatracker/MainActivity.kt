@@ -183,7 +183,7 @@ class MainActivity : AppCompatActivity() {
             fun show(vararg tvs: TextView) {
                 for (tv in tvs) {
                     val type = sortedEventTypes[showCounter]
-                    tv.text = LunaEvent.getTypeEmoji(applicationContext, type)
+                    tv.text = LunaEvent.getHeaderEmoji(applicationContext, type)
                     tv.setOnClickListener { showCreateDialog(type) }
                     tv.visibility = View.VISIBLE
                     // show parent row
@@ -260,7 +260,7 @@ class MainActivity : AppCompatActivity() {
     fun askBabyBottleContent(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_bottle, null)
-        d.setTitle(event.getTypeDescription(this))
+        d.setTitle(event.getDialogTitle(this))
         d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
 
@@ -302,7 +302,7 @@ class MainActivity : AppCompatActivity() {
         // Show number picker dialog
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_weight, null)
-        d.setTitle(event.getTypeDescription(this))
+        d.setTitle(event.getDialogTitle(this))
         d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
 
@@ -346,7 +346,7 @@ class MainActivity : AppCompatActivity() {
         // Show number picker dialog
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_temperature, null)
-        d.setTitle(event.getTypeDescription(this))
+        d.setTitle(event.getDialogTitle(this))
         d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
 
@@ -434,7 +434,7 @@ class MainActivity : AppCompatActivity() {
     fun askSleepValue(event: LunaEvent, hideDurationButtons: Boolean, onPositive: () -> Unit) {
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_duration, null)
-        d.setTitle(event.getTypeDescription(this))
+        d.setTitle(event.getDialogTitle(this))
         d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
 
@@ -530,7 +530,7 @@ class MainActivity : AppCompatActivity() {
     fun askAmountValue(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_amount, null)
-        d.setTitle(event.getTypeDescription(this))
+        d.setTitle(event.getDialogTitle(this))
         d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
 
@@ -572,7 +572,7 @@ class MainActivity : AppCompatActivity() {
     fun askDateValue(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_plain, null)
-        d.setTitle(event.getTypeDescription(this))
+        d.setTitle(event.getDialogTitle(this))
         d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
 
@@ -605,7 +605,7 @@ class MainActivity : AppCompatActivity() {
 
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_notes, null)
-        d.setTitle(event.getTypeDescription(this))
+        d.setTitle(event.getDialogTitle(this))
         d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
         val notesET = dialogView.findViewById<EditText>(R.id.notes_edittext)
@@ -783,8 +783,8 @@ class MainActivity : AppCompatActivity() {
         val quantityTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_quantity)
         val notesTextView = dialogView.findViewById<TextView>(R.id.dialog_event_detail_type_notes)
 
-        emojiTextView.text = event.getTypeEmoji(this)
-        descriptionTextView.text = event.getTypeDescription(this)
+        emojiTextView.text = event.getHeaderEmoji(this)
+        descriptionTextView.text = event.getDialogTitle(this)
 
         d.setView(dialogView)
 
@@ -881,7 +881,7 @@ class MainActivity : AppCompatActivity() {
         val previousTextView = dialogView.findViewById<TextView>(R.id.dialog_event_previous)
         val previousEvent = getPreviousSameEvent(event, allEvents)
         if (previousEvent != null) {
-            val emoji = previousEvent.getTypeEmoji(applicationContext)
+            val emoji = previousEvent.getHeaderEmoji(applicationContext)
             val time = DateUtils.formatTimeDuration(applicationContext, event.time - previousEvent.time)
             previousTextView.text = String.format("⬅️ %s %s", emoji, time)
             previousTextView.setOnClickListener {
@@ -896,7 +896,7 @@ class MainActivity : AppCompatActivity() {
         val nextTextView = dialogView.findViewById<TextView>(R.id.dialog_event_next)
         val nextEvent = getNextSameEvent(event, allEvents)
         if (nextEvent != null) {
-            val emoji = nextEvent.getTypeEmoji(applicationContext)
+            val emoji = nextEvent.getHeaderEmoji(applicationContext)
             val time = DateUtils.formatTimeDuration(applicationContext, nextEvent.time - event.time)
             nextTextView.text = String.format("%s %s ➡️", time, emoji)
             nextTextView.setOnClickListener {
@@ -1067,7 +1067,7 @@ class MainActivity : AppCompatActivity() {
 
                     if (DEBUG_CHECK_LOGBOOK_CONSISTENCY) {
                         for (e in logbook?.logs ?: listOf()) {
-                            val em = e.getTypeEmoji(this@MainActivity)
+                            val em = e.getHeaderEmoji(this@MainActivity)
                             if (em == getString(R.string.event_unknown_type)) {
                                 Log.e(TAG, "UNKNOWN: ${e.type}")
                             }

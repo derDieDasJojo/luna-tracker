@@ -52,11 +52,11 @@ class LunaEventRecyclerAdapter: RecyclerView.Adapter<LunaEventRecyclerAdapter.Lu
         )
         holder.quantity.setTextColor(ContextCompat.getColor(context, R.color.textColor))
         // Contents
-        holder.type.text = item.getTypeEmoji(context)
+        holder.type.text = item.getHeaderEmoji(context)
         holder.description.text = when (item.type) {
             LunaEvent.Type.MEDICINE -> item.notes
             LunaEvent.Type.NOTE -> item.notes
-            else -> item.getTypeDescription(context)
+            else -> item.getRowItemTitle(context)
         }
         val endTime = if (item.type == LunaEvent.Type.SLEEP) {
             item.quantity + item.time

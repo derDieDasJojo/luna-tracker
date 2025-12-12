@@ -12,7 +12,6 @@ import java.util.Date
  * release, it is simply ignored by previous ones).
  */
 class LunaEvent: Comparable<LunaEvent> {
-
     enum class Type {
         BABY_BOTTLE,
         FOOD,
@@ -100,24 +99,16 @@ class LunaEvent: Comparable<LunaEvent> {
         this.quantity = quantity
     }
 
-    fun getStartTime(): Long {
-        return time
+    fun getHeaderEmoji(context: Context): String {
+        return getHeaderEmoji(context, type)
     }
 
-    fun getEndTime(): Long {
-        return if (type == TYPE_SLEEP) {
-            time + quantity
-        } else {
-            time
-        }
+    fun getDialogTitle(context: Context): String {
+        return getDialogTitle(context, type)
     }
 
-    fun getTypeEmoji(context: Context): String {
-        return getTypeEmoji(context, type)
-    }
-
-    fun getTypeDescription(context: Context): String {
-        return getTypeDescription(context, type)
+    fun getRowItemTitle(context: Context): String {
+        return getPopupItemTitle(context, type).split(" ", limit = 2).last() // remove emoji
     }
 
     fun getDialogMessage(context: Context): String {
@@ -137,7 +128,7 @@ class LunaEvent: Comparable<LunaEvent> {
     }
 
     companion object {
-        fun getTypeEmoji(context: Context, type: Type): String {
+        fun getHeaderEmoji(context: Context, type: Type): String {
             return context.getString(
                 when (type) {
                     Type.BABY_BOTTLE -> R.string.event_bottle_type
@@ -177,7 +168,7 @@ class LunaEvent: Comparable<LunaEvent> {
             )
         }
 
-        fun getTypeDescription(context: Context, type: Type): String {
+        fun getDialogTitle(context: Context, type: Type): String {
             return context.getString(
                 when (type) {
                     Type.BABY_BOTTLE -> R.string.event_bottle_desc
