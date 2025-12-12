@@ -101,7 +101,7 @@ class NumericUtils (val context: Context) {
                 else -> ""
             })
         }
-        return formatted.toString()
+        return formatted.toString().trim()
     }
 
     /**
