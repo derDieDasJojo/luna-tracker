@@ -108,7 +108,11 @@ class MainActivity : AppCompatActivity() {
             loadLogbookList()
         }
         findViewById<View>(R.id.button_sync).setOnClickListener {
-            loadLogbookList()
+            if (logbook != null) {
+                loadLogbook(logbook!!.name)
+            } else {
+                loadLogbookList()
+            }
         }
     }
 
