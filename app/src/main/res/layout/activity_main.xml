@@ -177,15 +177,16 @@
                     android:gravity="center_horizontal"
                     android:textSize="30sp"/>
 
-                <ImageView
+                <TextView
                     android:id="@+id/button_more"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:background="@drawable/button_background"
                     android:gravity="center_horizontal"
-                    android:src="@drawable/ic_more"
+                    android:textSize="30sp"
+                    android:text="☰"
                     app:tint="@android:color/darker_gray"/>
 
             </LinearLayout>
