@@ -420,17 +420,6 @@ class MainActivity : AppCompatActivity() {
         return dateTime
     }
 
-    fun saveEvent(event: LunaEvent) {
-        if (!allEvents.contains(event)) {
-            // new event
-            logEvent(event)
-        }
-
-        logbook?.sort()
-        recyclerView.adapter?.notifyDataSetChanged()
-        saveLogbook()
-    }
-
     fun addSleepEvent(event: LunaEvent) {
         askSleepValue(event, true) { saveEvent(event) }
     }
@@ -1126,23 +1115,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun logEvent(event: LunaEvent) {
-        savingEvent(true)
-
-        event.signature = signature
-
-        setLoading(true)
-        logbook?.logs?.add(0, event)
-        recyclerView.adapter?.notifyItemInserted(0)
-        recyclerView.smoothScrollToPosition(0)
-        saveLogbook(event)
-
-        // Check logbook size to avoid OOM errors
-        if (logbook?.isTooBig() == true) {
-            askToTrimLogbook()
-        }
-    }
-
     fun deleteEvent(event: LunaEvent) {
         // Update view
         savingEvent(true)
@@ -1152,6 +1124,32 @@ class MainActivity : AppCompatActivity() {
         logbook?.logs?.remove(event)
         recyclerView.adapter?.notifyDataSetChanged()
         saveLogbook()
+    }
+
+    fun saveEvent(event: LunaEvent) {
+        if (allEvents.contains(event)) {
+            // event was modified
+            logbook?.sort()
+            recyclerView.adapter?.notifyDataSetChanged()
+            saveLogbook()
+        } else {
+            // add new event
+            savingEvent(true)
+            setLoading(true)
+            if (signature.isNotEmpty()) {
+                event.signature = signature
+            }
+            logbook?.logs?.add(0, event)
+            logbook?.sort()
+            recyclerView.adapter?.notifyDataSetChanged()
+            recyclerView.smoothScrollToPosition(0)
+            saveLogbook(event)
+
+            // Check logbook size to avoid OOM errors
+            if (logbook?.isTooBig() == true) {
+                askToTrimLogbook()
+            }
+        }
     }
 
     /**
