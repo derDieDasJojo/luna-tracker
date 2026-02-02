@@ -276,7 +276,7 @@ class MainActivity : AppCompatActivity() {
         numberPicker.value = event.quantity / 10
 
         val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
-        val pickedTime = datePickerHelper(event.time, dateTV)
+        val pickedTime = dateTimePicker(event.time, dateTV)
 
         if (!showTime) {
             dateTV.visibility = View.GONE
@@ -314,7 +314,7 @@ class MainActivity : AppCompatActivity() {
         weightET.setText(event.quantity.toString())
 
         val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
-        val pickedTime = datePickerHelper(event.time, dateTV)
+        val pickedTime = dateTimePicker(event.time, dateTV)
 
         if (!showTime) {
             dateTV.visibility = View.GONE
@@ -365,7 +365,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
-        val pickedTime = datePickerHelper(event.time, dateTV)
+        val pickedTime = dateTimePicker(event.time, dateTV)
         if (!showTime) {
             dateTV.visibility = View.GONE
         }
@@ -389,7 +389,8 @@ class MainActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-    fun datePickerHelper(time: Long, dateTextView: TextView, onChange: (Long) -> Unit = {}): Calendar {
+    // Pick a date/time.
+    fun dateTimePicker(time: Long, dateTextView: TextView, onChange: (Long) -> Unit = {}): Calendar {
         dateTextView.text = DateUtils.formatDateTime(time)
 
         val dateTime = Calendar.getInstance()
@@ -462,7 +463,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val pickedDateTime = datePickerHelper(event.time, datePicker, onDateChange)
+        val pickedDateTime = dateTimePicker(event.time, datePicker, onDateChange)
 
         onDateChange(pickedDateTime.time.time / 1000)
 
@@ -537,7 +538,7 @@ class MainActivity : AppCompatActivity() {
         spinner.setSelection(event.quantity.coerceIn(0, spinner.count - 1))
 
         val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
-        val pickedTime = datePickerHelper(event.time, dateTV)
+        val pickedTime = dateTimePicker(event.time, dateTV)
         if (!showTime) {
             dateTV.visibility = View.GONE
         }
@@ -570,7 +571,7 @@ class MainActivity : AppCompatActivity() {
         d.setView(dialogView)
 
         val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
-        val pickedDateTime = datePickerHelper(event.time, dateTV)
+        val pickedDateTime = dateTimePicker(event.time, dateTV)
         if (!showTime) {
             dateTV.visibility = View.GONE
         }
@@ -605,7 +606,7 @@ class MainActivity : AppCompatActivity() {
         val qtyET = dialogView.findViewById<EditText>(R.id.notes_qty_edittext)
 
         val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
-        val pickedTime = datePickerHelper(event.time, dateTV)
+        val pickedTime = dateTimePicker(event.time, dateTV)
 
         if (!showTime) {
             dateTV.visibility = View.GONE
@@ -831,7 +832,7 @@ class MainActivity : AppCompatActivity() {
         }
         updateValues()
 
-        datePickerHelper(event.time, dateTextView, { newTime: Long ->
+        dateTimePicker(event.time, dateTextView, { newTime: Long ->
             event.time = newTime
             updateValues()
         })
