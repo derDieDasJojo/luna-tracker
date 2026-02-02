@@ -425,82 +425,79 @@ class MainActivity : AppCompatActivity() {
         askSleepValue(event, true) { saveEvent(event) }
     }
 
-    fun askSleepValue(event: LunaEvent, hideDurationButtons: Boolean, onPositive: () -> Unit) {
+    fun askSleepValue(event: LunaEvent, showTime: Boolean, onPositive: () -> Unit) {
         val d = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_duration, null)
         d.setTitle(event.getDialogTitle(this))
-        d.setMessage(event.getDialogMessage(this))
         d.setView(dialogView)
 
         val durationTextView = dialogView.findViewById<TextView>(R.id.dialog_date_duration)
-        val datePicker = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
-        val durationButtons = dialogView.findViewById<LinearLayout>(R.id.duration_buttons)
-        val durationNowButton = dialogView.findViewById<Button>(R.id.dialog_date_duration_now)
-        val durationMinus5Button = dialogView.findViewById<Button>(R.id.dialog_date_duration_minus5)
-        val durationPlus5Button = dialogView.findViewById<Button>(R.id.dialog_date_duration_plus5)
+        val datePickerBegin = dialogView.findViewById<TextView>(R.id.dialog_date_picker_begin)
+        val datePickerEnd = dialogView.findViewById<TextView>(R.id.dialog_date_picker_end)
 
         val currentDurationTextColor = durationTextView.currentTextColor
         val invalidDurationTextColor = ContextCompat.getColor(this, R.color.danger)
 
-        var duration = event.quantity
+        // in seconds
+        var sleepStart = event.time
+        var sleepEnd = event.time + event.quantity
 
-        fun isValidTime(timeSeconds: Long, durationSeconds: Int): Boolean {
+        fun isValidTimeSpan(timeBeginUnix: Long, timeEndUnix: Long): Boolean {
             val now = System.currentTimeMillis() / 1000
-            return (timeSeconds + durationSeconds) <= now && durationSeconds < (24 * 60 * 60)
+            return (timeBeginUnix > 0)
+                && (timeEndUnix > 0)
+                && (timeBeginUnix <= timeEndUnix)
+                && (timeBeginUnix <= now)
+                && (timeEndUnix <= now)
+                && (timeEndUnix - timeBeginUnix) < (24 * 60 * 60)
         }
 
-        val onDateChange = { time: Long ->
-            durationTextView.setTextColor(currentDurationTextColor)
+        // prevent printing of seconds
+        fun adjustToMinute(unixTime: Long): Long {
+            return unixTime - (unixTime % 60)
+        }
 
-            if (duration == 0) {
+        fun updateDuration() {
+            durationTextView.setTextColor(currentDurationTextColor)
+            val duration = sleepEnd - sleepStart
+            if (duration == 0L) {
                 // baby is sleeping
                 durationTextView.text = "💤"
             } else {
-                durationTextView.text = DateUtils.formatTimeDuration(applicationContext, duration.toLong())
-                if (!isValidTime(time, duration)) {
+                durationTextView.text = DateUtils.formatTimeDuration(applicationContext, duration)
+                if (!isValidTimeSpan(sleepStart, sleepEnd)) {
                     durationTextView.setTextColor(invalidDurationTextColor)
                 }
             }
         }
 
-        val pickedDateTime = dateTimePicker(event.time, datePicker, onDateChange)
+        val pickedDateTimeBegin = dateTimePicker(event.time, datePickerBegin) { time: Long ->
+            sleepStart = adjustToMinute(time)
+            updateDuration()
+        }
 
-        onDateChange(pickedDateTime.time.time / 1000)
+        val pickedDateTimeEnd = dateTimePicker(event.time + event.quantity, datePickerEnd) { time: Long ->
+            sleepEnd = adjustToMinute(time)
+            updateDuration()
+        }
 
-        if (hideDurationButtons) {
-            durationButtons.visibility = View.GONE
-            d.setMessage(getString(R.string.log_sleep_dialog_description_start))
+        sleepStart = adjustToMinute(pickedDateTimeBegin.time.time / 1000)
+        sleepEnd = adjustToMinute(pickedDateTimeEnd.time.time / 1000)
+        updateDuration()
+
+        if (showTime) {
+            datePickerEnd.visibility = View.GONE
+            durationTextView.visibility = View.GONE
+            //d.setMessage("")
         } else {
-            durationButtons.visibility = View.VISIBLE
+            durationTextView.visibility = View.VISIBLE
             d.setMessage(event.getDialogMessage(this))
-
-            fun adjust(minutes: Int) {
-                duration += minutes * 60
-                if (duration < 0) {
-                    duration = 0
-                }
-                onDateChange(pickedDateTime.time.time / 1000)
-            }
-
-            durationMinus5Button.setOnClickListener { adjust(-5) }
-            durationPlus5Button.setOnClickListener { adjust(5) }
-
-            durationNowButton.setOnClickListener {
-                val now = System.currentTimeMillis() / 1000
-                val start = pickedDateTime.time.time / 1000
-                if (now > start) {
-                    duration = (now - start).toInt()
-                    duration -= duration % 60 // prevent printing of seconds
-                    onDateChange(pickedDateTime.time.time / 1000)
-                }
-            }
         }
 
         d.setPositiveButton(android.R.string.ok) { dialogInterface, i ->
-            val time = pickedDateTime.time.time / 1000
-            if (isValidTime(time, duration)) {
-                event.time = time
-                event.quantity = duration
+            if (isValidTimeSpan(sleepStart, sleepEnd)) {
+                event.time = sleepStart
+                event.quantity = (sleepEnd - sleepStart).toInt()
                 onPositive()
             } else {
                 Toast.makeText(this, R.string.toast_date_error, Toast.LENGTH_SHORT).show()
@@ -818,7 +815,7 @@ class MainActivity : AppCompatActivity() {
             quantityTextView.text = NumericUtils(this).formatEventQuantity(event)
             notesTextView.text = event.notes
             if (event.type == LunaEvent.Type.SLEEP && event.quantity > 0) {
-                dateEndTextView.text = DateUtils.formatDateTime(event.time + event.quantity)
+                dateEndTextView.text = DateUtils.formatDateTime(event.getEndTime())
                 dateEndTextView.visibility = View.VISIBLE
             } else {
                 dateEndTextView.visibility = View.GONE
@@ -876,7 +873,7 @@ class MainActivity : AppCompatActivity() {
         val previousEvent = getPreviousSameEvent(event, allEvents)
         if (previousEvent != null) {
             val emoji = previousEvent.getHeaderEmoji(applicationContext)
-            val time = DateUtils.formatTimeDuration(applicationContext, event.time - previousEvent.time)
+            val time = DateUtils.formatTimeDuration(applicationContext, event.getStartTime() - previousEvent.getEndTime())
             previousTextView.text = String.format("⬅️ %s %s", emoji, time)
             previousTextView.setOnClickListener {
                 alertDialog.cancel()
@@ -891,7 +888,7 @@ class MainActivity : AppCompatActivity() {
         val nextEvent = getNextSameEvent(event, allEvents)
         if (nextEvent != null) {
             val emoji = nextEvent.getHeaderEmoji(applicationContext)
-            val time = DateUtils.formatTimeDuration(applicationContext, nextEvent.time - event.time)
+            val time = DateUtils.formatTimeDuration(applicationContext, nextEvent.getStartTime() - event.getEndTime())
             nextTextView.text = String.format("%s %s ➡️", time, emoji)
             nextTextView.setOnClickListener {
                 alertDialog.cancel()

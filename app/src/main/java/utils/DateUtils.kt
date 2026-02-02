@@ -56,11 +56,11 @@ class DateUtils {
                 return builder.toString()
             }
 
-            if (years > 0) {
+            if (years != 0L) {
                 return format(years, days, R.string.year_ago, R.string.years_ago, R.string.day_ago, R.string.days_ago)
-            } else if (days > 0) {
+            } else if (days != 0L) {
                 return format(days, hours, R.string.day_ago, R.string.days_ago, R.string.hour_ago, R.string.hours_ago)
-            } else if (hours > 0) {
+            } else if (hours != 0L) {
                 return format(hours, minutes, R.string.hour_ago, R.string.hours_ago, R.string.minute_ago, R.string.minutes_ago)
             } else {
                 return format(minutes, seconds, R.string.minute_ago, R.string.minute_ago, R.string.second_ago, R.string.seconds_ago)

@@ -131,7 +131,6 @@
     <string name="log_unknown_dialog_description"></string>
     <string name="log_weight_dialog_description">Insert the weight:</string>
     <string name="log_sleep_dialog_description">Set sleep duration:</string>
-    <string name="log_sleep_dialog_description_start">Start sleep cycle:</string>
 
     <string name="measurement_unit_liquid_base_metric" translatable="false">ml</string>
     <string name="measurement_unit_weight_base_metric" translatable="false">g</string>
