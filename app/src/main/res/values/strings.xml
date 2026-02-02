@@ -130,8 +130,7 @@
     <string name="log_temperature_dialog_description">Select the temperature:</string>
     <string name="log_unknown_dialog_description"></string>
     <string name="log_weight_dialog_description">Insert the weight:</string>
-    <string name="log_sleep_dialog_description">Set sleep duration:</string>
-    <string name="log_sleep_dialog_description_start">Start sleep cycle:</string>
+    <string name="log_duration_dialog_description">Set duration:</string>
 
     <string name="measurement_unit_liquid_base_metric" translatable="false">ml</string>
     <string name="measurement_unit_weight_base_metric" translatable="false">g</string>
@@ -160,6 +159,11 @@
     <string name="dialog_event_detail_quantity">Quantity</string>
     <string name="dialog_event_detail_notes">Notes</string>
     <string name="dialog_event_detail_signature">by %s</string>
+
+    <string name="dialog_duration_button_clear">Clear</string>
+    <string name="dialog_duration_button_minus_5">-5 min</string>
+    <string name="dialog_duration_button_now">Now</string>
+    <string name="dialog_duration_button_plus_5">+5 min</string>
 
     <string name="dialog_add_logbook_title">Add logbook</string>
     <string name="dialog_add_logbook_logbookname">👶 Logbook name</string>

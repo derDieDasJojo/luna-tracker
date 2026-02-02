@@ -58,12 +58,7 @@ class LunaEventRecyclerAdapter: RecyclerView.Adapter<LunaEventRecyclerAdapter.Lu
             LunaEvent.Type.NOTE -> item.notes
             else -> item.getRowItemTitle(context)
         }
-        val endTime = if (item.type == LunaEvent.Type.SLEEP) {
-            item.quantity + item.time
-        } else {
-            item.time
-        }
-        holder.time.text = DateUtils.formatTimeAgo(context, endTime)
+        holder.time.text = DateUtils.formatTimeAgo(context, item.getEndTime())
         var quantityText = numericUtils.formatEventQuantity(item)
 
         // if the event is weight, show difference with the last one

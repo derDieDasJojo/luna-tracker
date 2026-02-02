@@ -115,6 +115,18 @@ class LunaEvent: Comparable<LunaEvent> {
         return getDialogMessage(context, type)
     }
 
+    fun getStartTime(): Long {
+        return time
+    }
+
+    fun getEndTime(): Long {
+        return if (type == Type.SLEEP) {
+            time + quantity
+        } else {
+            time
+        }
+    }
+
     fun toJson(): JSONObject {
         return jo
     }
@@ -162,7 +174,7 @@ class LunaEvent: Comparable<LunaEvent> {
                     Type.DIAPERCHANGE_PEE,
                     Type.PUKE -> R.string.log_amount_dialog_description
                     Type.WEIGHT -> R.string.log_weight_dialog_description
-                    Type.SLEEP -> R.string.log_sleep_dialog_description
+                    Type.SLEEP -> R.string.log_duration_dialog_description
                     else -> R.string.log_unknown_dialog_description
                 }
             )

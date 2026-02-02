@@ -11,13 +11,14 @@
         android:id="@+id/dialog_date_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:text="💤"/>
 
     <LinearLayout
         android:id="@+id/duration_buttons"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:gravity="center"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="10dp"
@@ -28,29 +29,61 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="-5"/>
+            android:text="@string/dialog_duration_button_minus_5"/>
 
         <Button
             android:id="@+id/dialog_date_duration_now"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/now"/>
+            android:text="@string/dialog_duration_button_now"/>
+
+        <Button
+            android:id="@+id/dialog_date_duration_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dialog_duration_button_clear"/>
 
         <Button
             android:id="@+id/dialog_date_duration_plus5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="+5"/>
+            android:text="@string/dialog_duration_button_plus_5"/>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/dialog_date_picker"
-        android:layout_width="wrap_content"
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dialog_date_picker_begin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/dialog_date_range_delimiter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="－"/>
+
+        <TextView
+            android:id="@+id/dialog_date_picker_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
 </LinearLayout>
