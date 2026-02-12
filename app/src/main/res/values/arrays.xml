@@ -6,32 +6,4 @@
         <item>@string/amount_normal</item>
         <item>@string/amount_plenty</item>
     </string-array>
-
-    <string-array name="StatisticsTypeLabels">
-        <item>@string/statistics_bottle_sum</item>
-        <item>@string/statistics_bottle_events</item>
-        <item>@string/statistics_sleep_sum</item>
-        <item>@string/statistics_sleep_events</item>
-        <item>@string/statistics_sleep_pattern</item>
-    </string-array>
-
-    <string-array name="StatisticsTypeValues">
-        <item>BOTTLE_SUM</item>
-        <item>BOTTLE_EVENTS</item>
-        <item>SLEEP_SUM</item>
-        <item>SLEEP_EVENTS</item>
-        <item>SLEEP_PATTERN</item>
-    </string-array>
-
-    <string-array name="StatisticsTimeLabels">
-        <item>Day</item>
-        <item>Week</item>
-        <item>Month</item>
-    </string-array>
-
-    <string-array name="StatisticsTimeValues">
-        <item>DAY</item>
-        <item>WEEK</item>
-        <item>MONTH</item>
-    </string-array>
 </resources>

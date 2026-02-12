@@ -1284,18 +1284,6 @@ class MainActivity : AppCompatActivity() {
             val inflater = LayoutInflater.from(anchor.context)
             contentView = inflater.inflate(R.layout.more_events_popup, null)
 
-            // Add statistics (hard coded)
-            contentView.findViewById<View>(R.id.button_statistics).setOnClickListener {
-                if (logbook != null && !pauseLogbookUpdate) {
-                    val i = Intent(applicationContext, StatisticsActivity::class.java)
-                    i.putExtra("LOOGBOOK_NAME", logbook!!.name)
-                    startActivity(i)
-                } else {
-                    Toast.makeText(applicationContext, "No logbook selected!", Toast.LENGTH_SHORT).show()
-                }
-                dismiss()
-            }
-
             val linearLayout = contentView.findViewById<LinearLayout>(R.id.layout_list)
 
             // Add buttons to create other events
