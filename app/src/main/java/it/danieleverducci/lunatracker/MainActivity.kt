@@ -148,10 +148,12 @@ class MainActivity : AppCompatActivity() {
         val eventTypeStats = mutableMapOf<LunaEvent.Type, Int>()
 
         if (dynamicMenu) {
-            val sampleSize = 100
-            // populate frequency map from first 100 events
-            allEvents.take(sampleSize.coerceAtMost(allEvents.size)).forEach {
-                eventTypeStats[it.type] = 1 + (eventTypeStats[it.type] ?: 0)
+            // populate frequency map from all events of the last two weeks
+            val lastWeekTime = (System.currentTimeMillis() / 1000) - (14 * 24 * 60 * 60)
+            allEvents.forEach {
+                if (it.time > lastWeekTime) {
+                    eventTypeStats[it.type] = 1 + (eventTypeStats[it.type] ?: 0)
+                }
             }
         }
 
