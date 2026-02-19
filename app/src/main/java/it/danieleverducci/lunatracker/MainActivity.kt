@@ -162,60 +162,55 @@ class MainActivity : AppCompatActivity() {
             compareBy({ -1 * (eventTypeStats[it] ?: 0) }, { it.ordinal })
         ).filter { it != LunaEvent.Type.UNKNOWN }
 
-        fun setupMenu(maxButtonCount: Int, sortedEventTypes: List<LunaEvent.Type>): Int {
-            val row1 = findViewById<View>(R.id.linear_layout_row1)
-            val row1Button1 = findViewById<TextView>(R.id.button1_row1)
-            val row1Button2 = findViewById<TextView>(R.id.button2_row1)
-
-            val row2 = findViewById<View>(R.id.linear_layout_row2)
-            val row2Button1 = findViewById<TextView>(R.id.button1_row2)
-            val row2Button2 = findViewById<TextView>(R.id.button2_row2)
-            val row2Button3 = findViewById<TextView>(R.id.button3_row2)
-
-            val row3 = findViewById<View>(R.id.linear_layout_row3)
-            val row3Button1 = findViewById<TextView>(R.id.button1_row3)
-            val row3Button2 = findViewById<TextView>(R.id.button2_row3)
-
-            // hide all rows/buttons (except row 3)
-            for (view in listOf(row1, row1Button1, row1Button2,
-                                row2, row2Button1, row2Button2, row2Button3,
-                                row3, row3Button1, row3Button2)) {
-                view.visibility = View.GONE
-            }
-            row3.visibility = View.VISIBLE
-
-            var showCounter = 0
-
-            fun show(vararg tvs: TextView) {
-                for (tv in tvs) {
-                    val type = sortedEventTypes[showCounter]
-                    tv.text = LunaEvent.getHeaderEmoji(applicationContext, type)
-                    tv.setOnClickListener { showCreateDialog(type) }
-                    tv.visibility = View.VISIBLE
-                    // show parent row
-                    (tv.parent as View).visibility = View.VISIBLE
-                    showCounter += 1
-                }
-            }
-
-            when (maxButtonCount) {
-                0 -> { } // ignore - show empty row3
-                1 -> show(row3Button1)
-                2 -> show(row3Button1, row3Button2)
-                3 -> show(row1Button1, row3Button1)
-                4, 5, 6 -> show(row1Button1, row1Button2, row3Button1, row3Button2)
-                else -> show(row1Button1, row1Button2, row2Button1, row2Button2, row2Button3, row3Button1, row3Button2)
-            }
-
-            return showCounter
-        }
-
         val usedEventCount = eventTypeStats.count { it.value > 0 }
         val maxButtonCount = if (dynamicMenu) { usedEventCount } else { 7 }
-        val eventsShown = setupMenu(maxButtonCount, eventTypesSorted)
+
+        val row1 = findViewById<View>(R.id.linear_layout_row1)
+        val row1Button1 = findViewById<TextView>(R.id.button1_row1)
+        val row1Button2 = findViewById<TextView>(R.id.button2_row1)
+
+        val row2 = findViewById<View>(R.id.linear_layout_row2)
+        val row2Button1 = findViewById<TextView>(R.id.button1_row2)
+        val row2Button2 = findViewById<TextView>(R.id.button2_row2)
+        val row2Button3 = findViewById<TextView>(R.id.button3_row2)
+
+        val row3 = findViewById<View>(R.id.linear_layout_row3)
+        val row3Button1 = findViewById<TextView>(R.id.button1_row3)
+        val row3Button2 = findViewById<TextView>(R.id.button2_row3)
+
+        // hide all rows/buttons (except row 3)
+        for (view in listOf(row1, row1Button1, row1Button2,
+                            row2, row2Button1, row2Button2, row2Button3,
+                            row3, row3Button1, row3Button2)) {
+            view.visibility = View.GONE
+        }
+        row3.visibility = View.VISIBLE
+
+        var showCounter = 0
+
+        fun show(vararg tvs: TextView) {
+            for (tv in tvs) {
+                val type = eventTypesSorted[showCounter]
+                tv.text = LunaEvent.getHeaderEmoji(applicationContext, type)
+                tv.setOnClickListener { showCreateDialog(type) }
+                tv.visibility = View.VISIBLE
+                // show parent row
+                (tv.parent as View).visibility = View.VISIBLE
+                showCounter += 1
+            }
+        }
+
+        when (maxButtonCount) {
+            0 -> { } // ignore - show empty row3
+            1 -> show(row3Button1)
+            2 -> show(row3Button1, row3Button2)
+            3 -> show(row1Button1, row3Button1)
+            4, 5, 6 -> show(row1Button1, row1Button2, row3Button1, row3Button2)
+            else -> show(row1Button1, row1Button2, row2Button1, row2Button2, row2Button3, row3Button1, row3Button2)
+        }
 
         // store left over events for popup menu
-        currentPopupItems = eventTypesSorted.subList(eventsShown, eventTypesSorted.size)
+        currentPopupItems = eventTypesSorted.subList(showCounter, eventTypesSorted.size)
     }
 
     override fun onStart() {
