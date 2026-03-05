@@ -9,10 +9,15 @@ import java.util.Date
 class DateUtils {
     companion object {
         /**
-         * Format time duration in seconds as e.g. "2 hours, 1 min".
+         * Format time duration in seconds as e.g. "2 hours, 1 min", rounded to minutes.
          * Used for the duration to the next/previous event in the event details dialog.
          */
         fun formatTimeDuration(context: Context, secondsDiff: Long): String {
+            val adjusted = (secondsDiff + 30) - (secondsDiff + 30) % 60
+            return formatTimeDurationExact(context, adjusted)
+        }
+
+        fun formatTimeDurationExact(context: Context, secondsDiff: Long): String {
             var seconds = secondsDiff
 
             val years = (seconds / (365 * 24 * 60 * 60F)).toLong()
