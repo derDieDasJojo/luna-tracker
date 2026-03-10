@@ -272,6 +272,9 @@ class MainActivity : AppCompatActivity() {
         numberPicker.wrapSelectorWheel = false
         numberPicker.value = event.quantity / 10
 
+        val numberPickerUnit = dialogView.findViewById<TextView>(R.id.dialog_number_picker_unit)
+        numberPickerUnit.text = NumericUtils(this).measurement_unit_liquid_base
+
         val dateTV = dialogView.findViewById<TextView>(R.id.dialog_date_picker)
         val pickedTime = dateTimePicker(event.time, dateTV)
 
