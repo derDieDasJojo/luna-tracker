@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - develop
+      - bottle_time
   pull_request:
     branches:
       - main
       - develop
+      - bottle_time
   workflow_dispatch:
 
 jobs:
